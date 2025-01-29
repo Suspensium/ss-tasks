@@ -66,7 +66,9 @@ void CodeReader::read() {
             }
         }
     } else {
-        threads.emplace_front(&CodeReader::readFile, this, filePath);
+        if (exists(filePath)) {
+            threads.emplace_front(&CodeReader::readFile, this, filePath);
+        }
     }
 
     joinThreads();

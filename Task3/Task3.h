@@ -1,7 +1,8 @@
 ﻿#pragma once
 
+#include <cassert>
 #include <filesystem>
-#include <forward_list>
+#include <queue>
 #include <set>
 #include <thread>
 
@@ -11,20 +12,34 @@ class CodeReader {
 public:
     CodeReader() {
         fileType = fs::file_type::directory;
-        directoryPath = fs::current_path().parent_path();
+        directoryPath = PROJECT_ROOT_DIR;
 
         read();
     }
 
-    explicit CodeReader(const fs::path &inPath, const fs::file_type type) {
+    explicit CodeReader(const fs::path &inPath, const fs::file_type type, const bool bAbsolutePath = false) {
         fileType = type;
 
         switch (fileType) {
             case fs::file_type::regular:
-                filePath = inPath;
+                if (!bAbsolutePath) {
+                    filePath = PROJECT_ROOT_DIR;
+                    filePath += "/";
+                }
+                filePath += inPath;
+                if (!fs::exists(filePath) || !fs::is_regular_file(filePath)) {
+                    throw std::runtime_error("File is not valid");
+                }
                 break;
             case fs::file_type::directory:
-                directoryPath = inPath;
+                if (!bAbsolutePath) {
+                    directoryPath = PROJECT_ROOT_DIR;
+                    directoryPath += "/";
+                }
+                directoryPath += inPath;
+                if (!fs::exists(directoryPath) || !fs::is_directory(directoryPath)) {
+                    throw std::runtime_error("Directory is not valid");
+                }
                 break;
             default:
                 throw std::invalid_argument("File type not supported");
@@ -74,7 +89,7 @@ private:
 
     inline static std::set<fs::path> codeFileExtensions{".h", ".hpp", ".c", ".cpp"};
 
-    std::forward_list<std::jthread> threads;
+    std::deque<std::jthread> threads;
 
     fs::file_type fileType;
 };

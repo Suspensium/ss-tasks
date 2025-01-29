@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <variant>
+#include <gtest/gtest-matchers.h>
 
 class AnyType {
 public:

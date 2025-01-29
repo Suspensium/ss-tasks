@@ -1,4 +1,4 @@
-﻿some_code/*
-.idea/*
+﻿.idea/*
 cmake-build-debug/*
 cmake-build-release/*
+googletest/*
