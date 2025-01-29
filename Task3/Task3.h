@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include <filesystem>
-#include <queue>
+#include <forward_list>
 #include <set>
 #include <thread>
 
@@ -89,7 +89,7 @@ private:
 
     inline static std::set<fs::path> codeFileExtensions{".h", ".hpp", ".c", ".cpp"};
 
-    std::deque<std::jthread> threads;
+    std::forward_list<std::jthread> threads;
 
     fs::file_type fileType;
 };
