@@ -9,7 +9,7 @@ void str_list::add_string(char ***list, const char *str) {
     if (*list == nullptr) {
         *list = static_cast<char **>(malloc(sizeof(char *) * 2));
 
-        (*list)[0] = _strdup(str);
+        (*list)[0] = strdup(str);
         (*list)[1] = nullptr;
     } else {
         int list_size = 0;
@@ -17,7 +17,7 @@ void str_list::add_string(char ***list, const char *str) {
 
         *list = static_cast<char **>(realloc(*list, sizeof(char *) * (list_size + 2)));
 
-        (*list)[list_size] = _strdup(str);
+        (*list)[list_size] = strdup(str);
         (*list)[list_size + 1] = nullptr;
     }
 }
@@ -96,7 +96,7 @@ void str_list::replace_str(char ***list, const char *str_to_replace, const char 
     for (int i = 0; (*list)[i] != nullptr; ++i) {
         if (strcmp((*list)[i], str_to_replace) != 0) continue;
 
-        (*list)[i] = _strdup(str_to_insert);
+        (*list)[i] = strdup(str_to_insert);
     }
 }
 
