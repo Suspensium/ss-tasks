@@ -49,16 +49,17 @@ void str_list::clear(char ***list) {
     *list = nullptr;
 }
 
-size_t str_list::match_index(char ***list, const char *str) {
-    if (list == nullptr || *list == nullptr) return NULL;
+bool str_list::match_index(char ***list, const char *str, unsigned int &found_index) {
+    if (list == nullptr || *list == nullptr) return false;
 
     for (int i = 0; (*list)[i] != nullptr; ++i) {
         if (strcmp((*list)[i], str) != 0) continue;
 
-        return i;
+        found_index = i;
+        return true;
     }
 
-    return NULL;
+    return false;
 }
 
 size_t str_list::num_items(char ***list) {
@@ -73,21 +74,27 @@ size_t str_list::num_items(char ***list) {
 void str_list::remove_duplicates(char ***list) {
     if (list == nullptr || *list == nullptr) return;
 
-    if (num_items(list) == 1) return;
+    const size_t list_size = num_items(list);
+    if (list_size < 2) return;
 
-    for (int i = 0; (*list)[i] != nullptr; ++i) {
-        for (int j = i + 1; (*list)[j] != nullptr; ++j) {
-            if (strcmp((*list)[i], (*list)[j]) != 0) continue;
+    for (int i = 0; i < list_size; ++i) {
+        if ((*list)[i] == nullptr) continue;
+        for (int j = i + 1; j < list_size; ++j) {
+            if ((*list)[i] == nullptr || (*list)[j] == nullptr || strcmp((*list)[i], (*list)[j]) != 0) continue;
 
             free((*list)[j]);
-
-            for (int k = j; (*list)[k] != nullptr; ++k) {
-                (*list)[k] = (*list)[k + 1];
-            }
-
-            --j;
+            (*list)[j] = nullptr;
         }
     }
+
+    int newIndex = 0;
+    for (int i = 0; i < list_size; ++i) {
+        if ((*list)[i] != nullptr) {
+            (*list)[newIndex++] = (*list)[i];
+        }
+    }
+
+    (*list)[newIndex] = nullptr;
 }
 
 void str_list::replace_str(char ***list, const char *str_to_replace, const char *str_to_insert) {
@@ -96,6 +103,7 @@ void str_list::replace_str(char ***list, const char *str_to_replace, const char 
     for (int i = 0; (*list)[i] != nullptr; ++i) {
         if (strcmp((*list)[i], str_to_replace) != 0) continue;
 
+        free((*list)[i]);
         (*list)[i] = strdup(str_to_insert);
     }
 }

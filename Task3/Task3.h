@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include <cassert>
 #include <filesystem>
 #include <forward_list>
 #include <set>
@@ -12,7 +11,7 @@ class CodeReader {
 public:
     CodeReader() {
         fileType = fs::file_type::directory;
-        directoryPath = PROJECT_ROOT_DIR;
+        path = PROJECT_ROOT_DIR;
 
         read();
     }
@@ -23,21 +22,21 @@ public:
         switch (fileType) {
             case fs::file_type::regular:
                 if (!bAbsolutePath) {
-                    filePath = PROJECT_ROOT_DIR;
-                    filePath += "/";
+                    path = PROJECT_ROOT_DIR;
+                    path += "/";
                 }
-                filePath += inPath;
-                if (!fs::exists(filePath) || !fs::is_regular_file(filePath)) {
+                path += inPath;
+                if (!fs::exists(path) || !fs::is_regular_file(path)) {
                     throw std::runtime_error("File is not valid");
                 }
                 break;
             case fs::file_type::directory:
                 if (!bAbsolutePath) {
-                    directoryPath = PROJECT_ROOT_DIR;
-                    directoryPath += "/";
+                    path = PROJECT_ROOT_DIR;
+                    path += "/";
                 }
-                directoryPath += inPath;
-                if (!fs::exists(directoryPath) || !fs::is_directory(directoryPath)) {
+                path += inPath;
+                if (!fs::exists(path) || !fs::is_directory(path)) {
                     throw std::runtime_error("Directory is not valid");
                 }
                 break;
@@ -46,19 +45,6 @@ public:
         }
 
         read();
-    }
-
-    ~CodeReader() {
-        switch (fileType) {
-            case fs::file_type::directory:
-                directoryPath.~path();
-                break;
-            case fs::file_type::regular:
-                filePath.~path();
-                break;
-            default:
-                break;
-        }
     }
 
     void read();
@@ -72,7 +58,7 @@ public:
     uint64_t outputInfo(std::ostream &os) const;
 
 private:
-    void readFile(fs::path filePath);
+    bool readFile(fs::path filePath);
 
     struct {
         std::atomic<size_t> totalProcessedFiles{};
@@ -82,10 +68,7 @@ private:
         uint64_t totalTime{};
     } results;
 
-    union {
-        fs::path directoryPath{};
-        fs::path filePath;
-    };
+    fs::path path;
 
     inline static std::set<fs::path> codeFileExtensions{".h", ".hpp", ".c", ".cpp"};
 

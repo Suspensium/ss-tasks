@@ -1,7 +1,7 @@
 ﻿#pragma once
 
+#include <any>
 #include <variant>
-#include <gtest/gtest-matchers.h>
 
 class AnyType {
 public:
@@ -48,6 +48,9 @@ private:
     } currentType = None;
 };
 
+template<typename T>
+concept fundamental = std::is_fundamental_v<T>;
+
 class VariadicType {
 public:
     VariadicType(const VariadicType &other);
@@ -56,33 +59,31 @@ public:
 
     void swap(VariadicType &other) noexcept;
 
-    VariadicType(const int val) : value(val) {
+    template<fundamental T>
+    VariadicType(T value) : variantValue(value) {
     }
 
-    VariadicType(const double val): value(val) {
+    template<fundamental T>
+    VariadicType &operator=(T value) {
+        variantValue = value;
+        return *this;
     }
 
-    VariadicType(const bool val) : value(val) {
+    template<fundamental T>
+    [[nodiscard]] T get() const {
+        return std::get<T>(variantValue);
     }
 
-    VariadicType &operator=(int val);
-
-    VariadicType &operator=(double val);
-
-    VariadicType &operator=(bool val);
-
-    [[nodiscard]] std::variant<std::monostate, int, double, bool> get() const;
-
-    [[nodiscard]] int getInt() const;
-
-    [[nodiscard]] double getDouble() const;
-
-    [[nodiscard]] bool getBool() const;
+    [[nodiscard]] std::any get() const {
+        return std::visit([](const auto &value) -> std::any {
+            return value;
+        }, variantValue);
+    }
 
     void reset();
 
 private:
-    std::variant<std::monostate, int, double, bool> value;
+    std::variant<std::monostate, bool, char, int, long, long long, float, double, long double> variantValue;
 };
 
 void run_task2_union();

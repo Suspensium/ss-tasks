@@ -147,51 +147,20 @@ void AnyType::reset() {
 // VariadicType
 
 VariadicType::VariadicType(const VariadicType &other) {
-    value = other.value;
+    variantValue = other.variantValue;
 }
 
 VariadicType::VariadicType(VariadicType &&other) noexcept {
-    value = other.value;
+    variantValue = other.variantValue;
     other.reset();
 }
 
 void VariadicType::swap(VariadicType &other) noexcept {
-    value.swap(other.value);
-}
-
-VariadicType &VariadicType::operator=(int val) {
-    value = val;
-    return *this;
-}
-
-VariadicType &VariadicType::operator=(double val) {
-    value = val;
-    return *this;
-}
-
-VariadicType &VariadicType::operator=(bool val) {
-    value = val;
-    return *this;
-}
-
-std::variant<std::monostate, int, double, bool> VariadicType::get() const {
-    return value;
-}
-
-int VariadicType::getInt() const {
-    return std::get<int>(value);
-}
-
-double VariadicType::getDouble() const {
-    return std::get<double>(value);
-}
-
-bool VariadicType::getBool() const {
-    return std::get<bool>(value);
+    variantValue.swap(other.variantValue);
 }
 
 void VariadicType::reset() {
-    value = std::monostate{};
+    variantValue = std::monostate{};
 }
 
 void run_task2_union() {
@@ -212,7 +181,7 @@ void run_task2_union() {
         std::printf("\n");
 
         AnyType anyType2 = anyType1;
-        std::printf("anyType2 getDouble(): %f\n", anyType1.getDouble());
+        std::printf("anyType2 getDouble(): %f\n", anyType2.getDouble());
 
         anyType1 = 1567;
         anyType2 = true;
@@ -240,43 +209,42 @@ std::ostream &operator<<(std::ostream &os, const std::monostate &) {
 }
 
 void run_task2_variadic() {
-    auto visitor = [](const auto value) {
-        std::cout << value;
-    };
-
     try {
         VariadicType variadicType1 = 1;
 
-        std::printf("variadicType1 getInt(): %d\n", variadicType1.getInt());
+        std::printf("variadicType1 getInt(): %d\n", variadicType1.get<int>());
 
         variadicType1 = 2.621515;
-        std::printf("variadicType1 getDouble(): %f\n", variadicType1.getDouble());
+        std::printf("variadicType1 getDouble(): %f\n", variadicType1.get<double>());
 
-        std::printf("variadicType1 get(): ");
-        std::visit(visitor, variadicType1.get());
-        std::printf("\n");
+        std::any value1 = variadicType1.get();
+        std::printf("variadicType1 get(): %f\n", std::any_cast<double>(value1));
 
         VariadicType variadicType2 = variadicType1;
-        std::printf("variadicType2 getDouble(): %f\n", variadicType1.getDouble());
+        std::printf("variadicType2 getDouble(): %f\n", variadicType2.get<double>());
 
         variadicType1 = 1567;
         variadicType2 = true;
 
+        std::printf("variadicType1 getInt(): %d\n", variadicType1.get<int>());
+        std::printf("variadicType2 getBool(): %d\n", variadicType2.get<bool>());
+
         variadicType1.swap(variadicType2);
 
-        std::printf("variadicType1 get(): ");
-        std::visit(visitor, variadicType1.get());
-        std::printf("\n");
-        std::printf("variadicType2 get(): ");
-        std::visit(visitor, variadicType2.get());
-        std::printf("\n");
+        value1 = variadicType1.get();
+        const std::any value2 = variadicType2.get();
+        std::printf("variadicType1 get(): %d\n", std::any_cast<bool>(value1));
+        std::printf("variadicType2 get(): %d\n", std::any_cast<int>(value2));
 
         variadicType1.reset();
-        std::printf("variadicType2 get(): ");
-        std::visit(visitor, variadicType1.get());
-        std::printf("\n");
-        std::printf("variadicType1 getDouble(): %f\n", variadicType1.getDouble());
+        value1 = variadicType1.get();
+        if (value1.type() != typeid(std::monostate)) {
+            std::printf("variadicType1 get(): %d\n", std::any_cast<int>(value1));
+        }
+        std::printf("variadicType1 getDouble(): %f\n", variadicType1.get<double>());
     } catch (const std::bad_variant_access &e) {
+        std::cerr << e.what() << std::endl;
+    } catch (const std::bad_any_cast &e) {
         std::cerr << e.what() << std::endl;
     }
 }

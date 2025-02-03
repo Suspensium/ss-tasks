@@ -2,11 +2,6 @@
 
 #include <cstdio>
 
-/* Comment section
- * comment
-also comment
-  */
-
 namespace str_list {
     // Adds string to list
     void add_string(char ***list, const char *str);
@@ -16,8 +11,8 @@ namespace str_list {
 
     void clear(char ***list);
 
-    // Returns index of found string, NULL if not found
-    size_t match_index(char ***list, const char *str);
+    // Returns true if index found, false otherwise
+    bool match_index(char ***list, const char *str, unsigned int &found_index);
 
     // Returns number of strings in list
     size_t num_items(char ***list);
@@ -31,6 +26,7 @@ namespace str_list {
     // Sorts list with bubble sort
     void sort(char ***list);
 
+    // Prints list to the console
     inline void print(char ***list) {
         if (list == nullptr || *list == nullptr) return;
 
@@ -63,29 +59,35 @@ namespace str_list {
         add_string(&list, "E");
         add_string(&list, "G");
 
-        printf("Matched index at: %llu\n", match_index(&list, "of"));
-
-        printf("Size: %llu\n", num_items(&list));
+        printf("Initial list: \n");
         print(&list);
+        printf("Size: %llu\n", num_items(&list));
+        printf("\n");
+
+        if (unsigned int index; match_index(&list, "of", index)) {
+            printf("'of': Matched index at: %d\n", index);
+        }
 
         remove_string(&list, "sized");
 
-        printf("Size: %llu\n", num_items(&list));
         print(&list);
+        printf("Size: %llu\n", num_items(&list));
 
         remove_duplicates(&list);
+
         print(&list);
+        printf("Size: %llu\n", num_items(&list));
 
         replace_str(&list, "list", "LIST");
         replace_str(&list, "G", "C++");
         print(&list);
 
         sort(&list);
-        printf("Size: %llu\n", num_items(&list));
         print(&list);
+        printf("Size: %llu\n", num_items(&list));
 
         clear(&list);
-        printf("Size: %llu\n", num_items(&list));
         print(&list);
+        printf("Size: %llu\n", num_items(&list));
     }
 }

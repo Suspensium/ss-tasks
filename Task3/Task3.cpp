@@ -13,12 +13,12 @@ void trimWhitespaces(std::string &line) {
     );
 }
 
-void CodeReader::readFile(const fs::path filePath) {
+bool CodeReader::readFile(const fs::path filePath) {
     std::ifstream file{filePath, std::ios::in};
 
     if (!file.is_open()) {
         std::cerr << "Error opening file " << filePath << std::endl;
-        return;
+        return false;
     }
 
     // For multi-lined comments
@@ -48,6 +48,8 @@ void CodeReader::readFile(const fs::path filePath) {
     file.close();
 
     ++results.totalProcessedFiles;
+
+    return true;
 }
 
 void CodeReader::read() {
@@ -56,7 +58,7 @@ void CodeReader::read() {
     const auto start = std::chrono::high_resolution_clock::now();
 
     if (fileType == fs::file_type::directory) {
-        for (auto it = rdir_iter{directoryPath}; it != rdir_iter{}; ++it) {
+        for (auto it = rdir_iter{path}; it != rdir_iter{}; ++it) {
             const fs::directory_entry &entry = *it;
 
             if (!entry.is_regular_file()) continue;
@@ -66,8 +68,8 @@ void CodeReader::read() {
             }
         }
     } else {
-        if (exists(filePath)) {
-            threads.emplace_front(&CodeReader::readFile, this, filePath);
+        if (exists(path)) {
+            threads.emplace_front(&CodeReader::readFile, this, path);
         }
     }
 
@@ -99,7 +101,7 @@ void run_task3() {
     for (size_t i = 0; i < iterations; ++i) {
         std::cout << "Iteration: " << i + 1 << "\n\n";
 
-        CodeReader reader{};
+        CodeReader reader{"D:/Programs/UE_5.5/Engine/Source/", fs::file_type::directory, true};
         reader.outputInfo(std::cout);
         ofstream.open("Output.txt", std::ios::out);
         resultSum += reader.outputInfo(ofstream);

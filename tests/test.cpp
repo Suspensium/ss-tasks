@@ -21,7 +21,11 @@ TEST(TestTask1, Test1) {
 
     replace_str(&list, "list", "LIST");
 
-    EXPECT_TRUE(match_index(&list, "LIST") == 2);
+    unsigned int index;
+    EXPECT_TRUE(match_index(&list, "LIST", index));
+    EXPECT_TRUE(index == 2);
+
+    EXPECT_FALSE(match_index(&list, "Missing string", index));
 
     clear(&list);
 
