@@ -1,0 +1,44 @@
+Start testing: Feb 03 22:47 FLE Standard Time
+----------------------------------------------------------
+1/1 Testing: RunTests
+1/1 Test: RunTests
+Command: "D:/Projects/SoftAcademy/Tasks/cmake-build-release-coverage/tests/Tests.exe"
+Directory: D:/Projects/SoftAcademy/Tasks/cmake-build-release-coverage/tests
+"RunTests" start time: Feb 03 22:47 FLE Standard Time
+Output:
+----------------------------------------------------------
+[==========] Running 4 tests from 4 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from TestTask1
+[ RUN      ] TestTask1.Test1
+I live again! 
+[       OK ] TestTask1.Test1 (0 ms)
+[----------] 1 test from TestTask1 (0 ms total)
+
+[----------] 1 test from TestTask2Union
+[ RUN      ] TestTask2Union.Test2Union
+[       OK ] TestTask2Union.Test2Union (0 ms)
+[----------] 1 test from TestTask2Union (0 ms total)
+
+[----------] 1 test from TestTask2Variadic
+[ RUN      ] TestTask2Variadic.Test2Variadic
+[       OK ] TestTask2Variadic.Test2Variadic (0 ms)
+[----------] 1 test from TestTask2Variadic (0 ms total)
+
+[----------] 1 test from TestTask3
+[ RUN      ] TestTask3.Test3
+[       OK ] TestTask3.Test3 (1 ms)
+[----------] 1 test from TestTask3 (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 4 test suites ran. (1 ms total)
+[  PASSED  ] 4 tests.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"RunTests" end time: Feb 03 22:47 FLE Standard Time
+"RunTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Feb 03 22:47 FLE Standard Time

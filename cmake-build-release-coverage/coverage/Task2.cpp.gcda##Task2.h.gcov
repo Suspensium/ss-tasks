@@ -1,0 +1,131 @@
+        -:    0:Source:D:/Projects/SoftAcademy/Tasks/Task2/Task2.h
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task2\Task2.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task2\Task2.cpp.gcda
+        -:    0:Runs:1
+        -:    1:﻿#pragma once
+        -:    2:
+        -:    3:#include <any>
+        -:    4:#include <variant>
+        -:    5:
+        -:    6:class AnyType {
+        -:    7:public:
+        -:    8:    AnyType(const AnyType &other);
+        -:    9:
+        -:   10:    AnyType(AnyType &&other) noexcept;
+        -:   11:
+        -:   12:    void swap(AnyType &other) noexcept;
+        -:   13:
+    #####:   14:    AnyType(const int value) : intValue(value), currentType(Int) {
+    %%%%%:   14-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   15:    }
+        -:   16:
+        -:   17:    AnyType(const double value): doubleValue(value), currentType(Double) {
+        -:   18:    }
+        -:   19:
+        -:   20:    AnyType(const bool value) : boolValue(value), currentType(Bool) {
+        -:   21:    }
+        -:   22:
+        -:   23:    AnyType &operator=(int value);
+        -:   24:
+        -:   25:    AnyType &operator=(double value);
+        -:   26:
+        -:   27:    AnyType &operator=(bool value);
+        -:   28:
+        -:   29:    [[nodiscard]] std::variant<int, double, bool> get() const;
+        -:   30:
+        -:   31:    [[nodiscard]] int getInt() const;
+        -:   32:
+        -:   33:    [[nodiscard]] double getDouble() const;
+        -:   34:
+        -:   35:    [[nodiscard]] bool getBool() const;
+        -:   36:
+        -:   37:    void reset();
+        -:   38:
+        -:   39:private:
+        -:   40:    union {
+        -:   41:        int intValue = 0;
+        -:   42:        double doubleValue;
+        -:   43:        bool boolValue;
+        -:   44:    };
+        -:   45:
+        -:   46:    enum Type {
+        -:   47:        None, Int, Double, Bool
+        -:   48:    } currentType = None;
+        -:   49:};
+        -:   50:
+        -:   51:template<typename T>
+        -:   52:concept fundamental = std::is_fundamental_v<T>;
+        -:   53:
+        -:   54:class VariadicType {
+        -:   55:public:
+        -:   56:    VariadicType(const VariadicType &other);
+        -:   57:
+        -:   58:    VariadicType(VariadicType &&other) noexcept;
+        -:   59:
+        -:   60:    void swap(VariadicType &other) noexcept;
+        -:   61:
+        -:   62:    template<fundamental T>
+    #####:   63:    VariadicType(T value) : variantValue(value) {
+    %%%%%:   63-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   64:    }
+        -:   65:
+        -:   66:    template<fundamental T>
+        -:   67:    VariadicType &operator=(T value) {
+        -:   68:        variantValue = value;
+        -:   69:        return *this;
+        -:   70:    }
+        -:   71:
+        -:   72:    template<fundamental T>
+        -:   73:    [[nodiscard]] T get() const {
+    #####:   74:        return std::get<T>(variantValue);
+    %%%%%:   74-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   74-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   74-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   74-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   74-block  4
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+        -:   75:    }
+        -:   76:
+        -:   77:    [[nodiscard]] std::any get() const {
+    #####:   78:        return std::visit([](const auto &value) -> std::any {
+    %%%%%:   78-block  0
+call    0 never executed
+    %%%%%:   78-block  1
+call    1 never executed
+    %%%%%:   78-block  2
+call    2 never executed
+    %%%%%:   78-block  3
+call    3 never executed
+        -:   79:            return value;
+        -:   80:        }, variantValue);
+        -:   81:    }
+        -:   82:
+        -:   83:    void reset();
+        -:   84:
+        -:   85:private:
+        -:   86:    std::variant<std::monostate, bool, char, int, long, long long, float, double, long double> variantValue;
+        -:   87:};
+        -:   88:
+        -:   89:void run_task2_union();
+        -:   90:
+        -:   91:void run_task2_variadic();

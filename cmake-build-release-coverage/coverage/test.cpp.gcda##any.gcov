@@ -1,0 +1,1093 @@
+        -:    0:Source:C:/Program Files/JetBrains/CLion 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/any
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// <any> -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2014-2023 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file include/any
+        -:   26: *  This is a Standard C++ Library header.
+        -:   27: */
+        -:   28:
+        -:   29:#ifndef _GLIBCXX_ANY
+        -:   30:#define _GLIBCXX_ANY 1
+        -:   31:
+        -:   32:#pragma GCC system_header
+        -:   33:
+        -:   34:#if __cplusplus >= 201703L
+        -:   35:
+        -:   36:#include <initializer_list>
+        -:   37:#include <typeinfo>
+        -:   38:#include <new>
+        -:   39:#include <type_traits>
+        -:   40:#include <bits/utility.h> // in_place_type_t
+        -:   41:
+        -:   42:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   43:{
+        -:   44:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   45:
+        -:   46:  /**
+        -:   47:   *  @addtogroup utilities
+        -:   48:   *  @{
+        -:   49:   */
+        -:   50:
+        -:   51:  /**
+        -:   52:   *  @brief Exception class thrown by a failed @c any_cast
+        -:   53:   *  @ingroup exceptions
+        -:   54:   */
+        1:   55:  class bad_any_cast : public bad_cast
+        -:   56:  {
+        -:   57:  public:
+function _ZNKSt12bad_any_cast4whatEv called 0 returned 0% blocks executed 0%
+    #####:   58:    virtual const char* what() const noexcept { return "bad any_cast"; }
+        -:   59:  };
+        -:   60:
+function _ZSt20__throw_bad_any_castv called 1 returned 0% blocks executed 100%
+        1:   61:  [[gnu::noreturn]] inline void __throw_bad_any_cast()
+        -:   62:  {
+        -:   63:#if __cpp_exceptions
+        1:   64:    throw bad_any_cast{};
+        1:   64-block  0
+call    0 returned 1
+        -:   65:#else
+        -:   66:    __builtin_abort();
+        -:   67:#endif
+        -:   68:  }
+        -:   69:
+        -:   70:#define __cpp_lib_any 201606L
+        -:   71:
+        -:   72:  /**
+        -:   73:   *  @brief A type-safe container of any type.
+        -:   74:   *
+        -:   75:   *  An `any` object's state is either empty or it stores a contained object
+        -:   76:   *  of CopyConstructible type.
+        -:   77:   *
+        -:   78:   *  @since C++17
+        -:   79:   */
+        -:   80:  class any
+        -:   81:  {
+        -:   82:    // Holds either pointer to a heap object or the contained object itself.
+        -:   83:    union _Storage
+        -:   84:    {
+       1*:   85:      constexpr _Storage() : _M_ptr{nullptr} {}
+        -:   86:
+        -:   87:      // Prevent trivial copies of this type, buffer might hold a non-POD.
+        -:   88:      _Storage(const _Storage&) = delete;
+        -:   89:      _Storage& operator=(const _Storage&) = delete;
+        -:   90:
+        -:   91:      void* _M_ptr;
+        -:   92:      aligned_storage<sizeof(_M_ptr), alignof(void*)>::type _M_buffer;
+        -:   93:    };
+        -:   94:
+        -:   95:    template<typename _Tp, typename _Safe = is_nothrow_move_constructible<_Tp>,
+        -:   96:	     bool _Fits = (sizeof(_Tp) <= sizeof(_Storage))
+        -:   97:			  && (alignof(_Tp) <= alignof(_Storage))>
+        -:   98:      using _Internal = std::integral_constant<bool, _Safe::value && _Fits>;
+        -:   99:
+        -:  100:    template<typename _Tp>
+        -:  101:      struct _Manager_internal; // uses small-object optimization
+        -:  102:
+        -:  103:    template<typename _Tp>
+        -:  104:      struct _Manager_external; // creates contained object on the heap
+        -:  105:
+        -:  106:    template<typename _Tp>
+        -:  107:      using _Manager = __conditional_t<_Internal<_Tp>::value,
+        -:  108:				       _Manager_internal<_Tp>,
+        -:  109:				       _Manager_external<_Tp>>;
+        -:  110:
+        -:  111:    template<typename _Tp, typename _VTp = decay_t<_Tp>>
+        -:  112:      using _Decay_if_not_any = enable_if_t<!is_same_v<_VTp, any>, _VTp>;
+        -:  113:
+        -:  114:    /// Emplace with an object created from @p __args as the contained object.
+        -:  115:    template <typename _Tp, typename... _Args,
+        -:  116:	      typename _Mgr = _Manager<_Tp>>
+        -:  117:      void __do_emplace(_Args&&... __args)
+        -:  118:      {
+        -:  119:	reset();
+        -:  120:        _Mgr::_S_create(_M_storage, std::forward<_Args>(__args)...);
+        -:  121:	_M_manager = &_Mgr::_S_manage;
+        -:  122:      }
+        -:  123:
+        -:  124:    /// Emplace with an object created from @p __il and @p __args as
+        -:  125:    /// the contained object.
+        -:  126:    template <typename _Tp, typename _Up, typename... _Args,
+        -:  127:	      typename _Mgr = _Manager<_Tp>>
+        -:  128:      void __do_emplace(initializer_list<_Up> __il, _Args&&... __args)
+        -:  129:      {
+        -:  130:	reset();
+        -:  131:	_Mgr::_S_create(_M_storage, __il, std::forward<_Args>(__args)...);
+        -:  132:	_M_manager = &_Mgr::_S_manage;
+        -:  133:      }
+        -:  134:
+        -:  135:    template <typename _Res, typename _Tp, typename... _Args>
+        -:  136:      using __any_constructible
+        -:  137:	= enable_if<__and_<is_copy_constructible<_Tp>,
+        -:  138:			   is_constructible<_Tp, _Args...>>::value,
+        -:  139:		    _Res>;
+        -:  140:
+        -:  141:    template <typename _Tp, typename... _Args>
+        -:  142:      using __any_constructible_t
+        -:  143:	= typename __any_constructible<bool, _Tp, _Args...>::type;
+        -:  144:
+        -:  145:    template<typename _VTp, typename... _Args>
+        -:  146:      using __emplace_t
+        -:  147:	= typename __any_constructible<_VTp&, _VTp, _Args...>::type;
+        -:  148:
+        -:  149:  public:
+        -:  150:    // construct/destruct
+        -:  151:
+        -:  152:    /// Default constructor, creates an empty object.
+        -:  153:    constexpr any() noexcept : _M_manager(nullptr) { }
+        -:  154:
+        -:  155:    /// Copy constructor, copies the state of @p __other
+        -:  156:    any(const any& __other)
+        -:  157:    {
+        -:  158:      if (!__other.has_value())
+        -:  159:	_M_manager = nullptr;
+        -:  160:      else
+        -:  161:	{
+        -:  162:	  _Arg __arg;
+        -:  163:	  __arg._M_any = this;
+        -:  164:	  __other._M_manager(_Op_clone, &__other, &__arg);
+        -:  165:	}
+        -:  166:    }
+        -:  167:
+        -:  168:    /**
+        -:  169:     * @brief Move constructor, transfer the state from @p __other
+        -:  170:     *
+        -:  171:     * @post @c !__other.has_value() (this postcondition is a GNU extension)
+        -:  172:     */
+        -:  173:    any(any&& __other) noexcept
+        -:  174:    {
+        -:  175:      if (!__other.has_value())
+        -:  176:	_M_manager = nullptr;
+        -:  177:      else
+        -:  178:	{
+        -:  179:	  _Arg __arg;
+        -:  180:	  __arg._M_any = this;
+        -:  181:	  __other._M_manager(_Op_xfer, &__other, &__arg);
+        -:  182:	}
+        -:  183:    }
+        -:  184:
+        -:  185:    /// Construct with a copy of @p __value as the contained object.
+        -:  186:    template <typename _Tp, typename _VTp = _Decay_if_not_any<_Tp>,
+        -:  187:	      typename _Mgr = _Manager<_VTp>,
+        -:  188:	      enable_if_t<is_copy_constructible_v<_VTp>
+        -:  189:			  && !__is_in_place_type_v<_VTp>, bool> = true>
+        -:  190:      any(_Tp&& __value)
+    #####:  191:      : _M_manager(&_Mgr::_S_manage)
+    %%%%%:  191-block  0
+        -:  192:      {
+        -:  193:	_Mgr::_S_create(_M_storage, std::forward<_Tp>(__value));
+        -:  194:      }
+        -:  195:
+        -:  196:    /// Construct with an object created from @p __args as the contained object.
+        -:  197:    template <typename _Tp, typename... _Args, typename _VTp = decay_t<_Tp>,
+        -:  198:	      typename _Mgr = _Manager<_VTp>,
+        -:  199:	      __any_constructible_t<_VTp, _Args&&...> = false>
+        -:  200:      explicit
+        -:  201:      any(in_place_type_t<_Tp>, _Args&&... __args)
+        -:  202:      : _M_manager(&_Mgr::_S_manage)
+        -:  203:      {
+        -:  204:	_Mgr::_S_create(_M_storage, std::forward<_Args>(__args)...);
+        -:  205:      }
+        -:  206:
+        -:  207:    /// Construct with an object created from @p __il and @p __args as
+        -:  208:    /// the contained object.
+        -:  209:    template <typename _Tp, typename _Up, typename... _Args,
+        -:  210:	      typename _VTp = decay_t<_Tp>, typename _Mgr = _Manager<_VTp>,
+        -:  211:	      __any_constructible_t<_VTp, initializer_list<_Up>&,
+        -:  212:				    _Args&&...> = false>
+        -:  213:      explicit
+        -:  214:      any(in_place_type_t<_Tp>, initializer_list<_Up> __il, _Args&&... __args)
+        -:  215:      : _M_manager(&_Mgr::_S_manage)
+        -:  216:      {
+        -:  217:	_Mgr::_S_create(_M_storage, __il, std::forward<_Args>(__args)...);
+        -:  218:      }
+        -:  219:
+        -:  220:    /// Destructor, calls @c reset()
+       1*:  221:    ~any() { reset(); }
+    %%%%%:  221-block  0
+        1:  221-block  1
+        -:  222:
+        -:  223:    // assignments
+        -:  224:
+        -:  225:    /// Copy the state of another object.
+        -:  226:    any&
+        -:  227:    operator=(const any& __rhs)
+        -:  228:    {
+        -:  229:      *this = any(__rhs);
+        -:  230:      return *this;
+        -:  231:    }
+        -:  232:
+        -:  233:    /**
+        -:  234:     * @brief Move assignment operator
+        -:  235:     *
+        -:  236:     * @post @c !__rhs.has_value() (not guaranteed for other implementations)
+        -:  237:     */
+        -:  238:    any&
+        -:  239:    operator=(any&& __rhs) noexcept
+        -:  240:    {
+        -:  241:      if (!__rhs.has_value())
+        -:  242:	reset();
+        -:  243:      else if (this != &__rhs)
+        -:  244:	{
+        -:  245:	  reset();
+        -:  246:	  _Arg __arg;
+        -:  247:	  __arg._M_any = this;
+        -:  248:	  __rhs._M_manager(_Op_xfer, &__rhs, &__arg);
+        -:  249:	}
+        -:  250:      return *this;
+        -:  251:    }
+        -:  252:
+        -:  253:    /// Store a copy of @p __rhs as the contained object.
+        -:  254:    template<typename _Tp>
+        -:  255:      enable_if_t<is_copy_constructible<_Decay_if_not_any<_Tp>>::value, any&>
+        -:  256:      operator=(_Tp&& __rhs)
+        -:  257:      {
+        -:  258:	*this = any(std::forward<_Tp>(__rhs));
+        -:  259:	return *this;
+        -:  260:      }
+        -:  261:
+        -:  262:    /// Emplace with an object created from @p __args as the contained object.
+        -:  263:    template <typename _Tp, typename... _Args>
+        -:  264:      __emplace_t<decay_t<_Tp>, _Args...>
+        -:  265:      emplace(_Args&&... __args)
+        -:  266:      {
+        -:  267:	using _VTp = decay_t<_Tp>;
+        -:  268:	__do_emplace<_VTp>(std::forward<_Args>(__args)...);
+        -:  269:	return *any::_Manager<_VTp>::_S_access(_M_storage);
+        -:  270:      }
+        -:  271:
+        -:  272:    /// Emplace with an object created from @p __il and @p __args as
+        -:  273:    /// the contained object.
+        -:  274:    template <typename _Tp, typename _Up, typename... _Args>
+        -:  275:      __emplace_t<decay_t<_Tp>, initializer_list<_Up>&, _Args&&...>
+        -:  276:      emplace(initializer_list<_Up> __il, _Args&&... __args)
+        -:  277:      {
+        -:  278:	using _VTp = decay_t<_Tp>;
+        -:  279:	__do_emplace<_VTp, _Up>(__il, std::forward<_Args>(__args)...);
+        -:  280:	return *any::_Manager<_VTp>::_S_access(_M_storage);
+        -:  281:      }
+        -:  282:
+        -:  283:    // modifiers
+        -:  284:
+        -:  285:    /// If not empty, destroy the contained object.
+        -:  286:    void reset() noexcept
+        -:  287:    {
+       1*:  288:      if (has_value())
+        -:  289:      {
+       1*:  290:	_M_manager(_Op_destroy, this, nullptr);
+    %%%%%:  290-block  0
+call    0 never executed
+        1:  290-block  1
+call    1 returned 1
+        -:  291:	_M_manager = nullptr;
+        -:  292:      }
+        -:  293:    }
+        -:  294:
+        -:  295:    /// Exchange state with another object.
+        -:  296:    void swap(any& __rhs) noexcept
+        -:  297:    {
+        -:  298:      if (!has_value() && !__rhs.has_value())
+        -:  299:	return;
+        -:  300:
+        -:  301:      if (has_value() && __rhs.has_value())
+        -:  302:	{
+        -:  303:	  if (this == &__rhs)
+        -:  304:	    return;
+        -:  305:
+        -:  306:	  any __tmp;
+        -:  307:	  _Arg __arg;
+        -:  308:	  __arg._M_any = &__tmp;
+        -:  309:	  __rhs._M_manager(_Op_xfer, &__rhs, &__arg);
+        -:  310:	  __arg._M_any = &__rhs;
+        -:  311:	  _M_manager(_Op_xfer, this, &__arg);
+        -:  312:	  __arg._M_any = this;
+        -:  313:	  __tmp._M_manager(_Op_xfer, &__tmp, &__arg);
+        -:  314:	}
+        -:  315:      else
+        -:  316:	{
+        -:  317:	  any* __empty = !has_value() ? this : &__rhs;
+        -:  318:	  any* __full = !has_value() ? &__rhs : this;
+        -:  319:	  _Arg __arg;
+        -:  320:	  __arg._M_any = __empty;
+        -:  321:	  __full->_M_manager(_Op_xfer, __full, &__arg);
+        -:  322:	}
+        -:  323:    }
+        -:  324:
+        -:  325:    // observers
+        -:  326:
+        -:  327:    /// Reports whether there is a contained object or not.
+       1*:  328:    bool has_value() const noexcept { return _M_manager != nullptr; }
+    %%%%%:  328-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        1:  328-block  1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0
+        -:  329:
+        -:  330:#if __cpp_rtti
+        -:  331:    /// The @c typeid of the contained object, or @c typeid(void) if empty.
+        -:  332:    const type_info& type() const noexcept
+        -:  333:    {
+        1:  334:      if (!has_value())
+        1:  334-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        -:  335:	return typeid(void);
+        -:  336:      _Arg __arg;
+        1:  337:      _M_manager(_Op_get_type_info, this, &__arg);
+        1:  337-block  0
+call    0 returned 1
+        1:  338:      return *__arg._M_typeinfo;
+        -:  339:    }
+        -:  340:#endif
+        -:  341:
+        -:  342:    /// @cond undocumented
+        -:  343:    template<typename _Tp>
+        -:  344:      static constexpr bool __is_valid_cast()
+        -:  345:      { return __or_<is_reference<_Tp>, is_copy_constructible<_Tp>>::value; }
+        -:  346:    /// @endcond
+        -:  347:
+        -:  348:  private:
+        -:  349:    enum _Op {
+        -:  350:	_Op_access, _Op_get_type_info, _Op_clone, _Op_destroy, _Op_xfer
+        -:  351:    };
+        -:  352:
+        -:  353:    union _Arg
+        -:  354:    {
+        -:  355:	void* _M_obj;
+        -:  356:	const std::type_info* _M_typeinfo;
+        -:  357:	any* _M_any;
+        -:  358:    };
+        -:  359:
+        -:  360:    void (*_M_manager)(_Op, const any*, _Arg*);
+        -:  361:    _Storage _M_storage;
+        -:  362:
+        -:  363:    /// @cond undocumented
+        -:  364:    template<typename _Tp>
+        -:  365:      friend void* __any_caster(const any* __any);
+        -:  366:    /// @endcond
+        -:  367:
+        -:  368:    // Manage in-place contained object.
+        -:  369:    template<typename _Tp>
+        -:  370:      struct _Manager_internal
+        -:  371:      {
+        -:  372:	static void
+        -:  373:	_S_manage(_Op __which, const any* __anyp, _Arg* __arg);
+        -:  374:
+        -:  375:	template<typename _Up>
+        -:  376:	  static void
+        -:  377:	  _S_create(_Storage& __storage, _Up&& __value)
+        -:  378:	  {
+        -:  379:	    void* __addr = &__storage._M_buffer;
+       1*:  380:	    ::new (__addr) _Tp(std::forward<_Up>(__value));
+        1:  380-block  0
+    %%%%%:  380-block  1
+    %%%%%:  380-block  2
+    %%%%%:  380-block  3
+    %%%%%:  380-block  4
+    %%%%%:  380-block  5
+    %%%%%:  380-block  6
+        -:  381:	  }
+        -:  382:
+        -:  383:	template<typename... _Args>
+        -:  384:	  static void
+        -:  385:	  _S_create(_Storage& __storage, _Args&&... __args)
+        -:  386:	  {
+        -:  387:	    void* __addr = &__storage._M_buffer;
+        -:  388:	    ::new (__addr) _Tp(std::forward<_Args>(__args)...);
+        -:  389:	  }
+        -:  390:
+        -:  391:	static _Tp*
+        -:  392:	_S_access(const _Storage& __storage)
+        -:  393:	{
+        -:  394:	  // The contained object is in __storage._M_buffer
+    #####:  395:	  const void* __addr = &__storage._M_buffer;
+        -:  396:	  return static_cast<_Tp*>(const_cast<void*>(__addr));
+        -:  397:	}
+        -:  398:      };
+        -:  399:
+        -:  400:    // Manage external contained object.
+        -:  401:    template<typename _Tp>
+        -:  402:      struct _Manager_external
+        -:  403:      {
+        -:  404:	static void
+        -:  405:	_S_manage(_Op __which, const any* __anyp, _Arg* __arg);
+        -:  406:
+        -:  407:	template<typename _Up>
+        -:  408:	  static void
+        -:  409:	  _S_create(_Storage& __storage, _Up&& __value)
+        -:  410:	  {
+    #####:  411:	    __storage._M_ptr = new _Tp(std::forward<_Up>(__value));
+    %%%%%:  411-block  0
+call    0 never executed
+        -:  412:	  }
+        -:  413:	template<typename... _Args>
+        -:  414:	  static void
+        -:  415:	  _S_create(_Storage& __storage, _Args&&... __args)
+        -:  416:	  {
+        -:  417:	    __storage._M_ptr = new _Tp(std::forward<_Args>(__args)...);
+        -:  418:	  }
+        -:  419:	static _Tp*
+        -:  420:	_S_access(const _Storage& __storage)
+        -:  421:	{
+        -:  422:	  // The contained object is in *__storage._M_ptr
+        -:  423:	  return static_cast<_Tp*>(__storage._M_ptr);
+        -:  424:	}
+        -:  425:      };
+        -:  426:  };
+        -:  427:
+        -:  428:  /// Exchange the states of two @c any objects.
+        -:  429:  inline void swap(any& __x, any& __y) noexcept { __x.swap(__y); }
+        -:  430:
+        -:  431:  /// Create an `any` holding a `_Tp` constructed from `__args...`.
+        -:  432:  template <typename _Tp, typename... _Args>
+        -:  433:    inline
+        -:  434:    enable_if_t<is_constructible_v<any, in_place_type_t<_Tp>, _Args...>, any>
+        -:  435:    make_any(_Args&&... __args)
+        -:  436:    {
+        -:  437:      return any(in_place_type<_Tp>, std::forward<_Args>(__args)...);
+        -:  438:    }
+        -:  439:
+        -:  440:  /// Create an `any` holding a `_Tp` constructed from `__il` and `__args...`.
+        -:  441:  template <typename _Tp, typename _Up, typename... _Args>
+        -:  442:    inline
+        -:  443:    enable_if_t<is_constructible_v<any, in_place_type_t<_Tp>,
+        -:  444:				   initializer_list<_Up>&, _Args...>, any>
+        -:  445:    make_any(initializer_list<_Up> __il, _Args&&... __args)
+        -:  446:    {
+        -:  447:      return any(in_place_type<_Tp>, __il, std::forward<_Args>(__args)...);
+        -:  448:    }
+        -:  449:
+        -:  450:  /**
+        -:  451:   * @brief Access the contained object.
+        -:  452:   *
+        -:  453:   * @tparam  _ValueType  A const-reference or CopyConstructible type.
+        -:  454:   * @param   __any       The object to access.
+        -:  455:   * @return  The contained object.
+        -:  456:   * @throw   bad_any_cast If <code>
+        -:  457:   *          __any.type() != typeid(remove_reference_t<_ValueType>)
+        -:  458:   *          </code>
+        -:  459:   */
+        -:  460:  template<typename _ValueType>
+        -:  461:    inline _ValueType any_cast(const any& __any)
+        -:  462:    {
+        -:  463:      using _Up = __remove_cvref_t<_ValueType>;
+        -:  464:      static_assert(any::__is_valid_cast<_ValueType>(),
+        -:  465:	  "Template argument must be a reference or CopyConstructible type");
+        -:  466:      static_assert(is_constructible_v<_ValueType, const _Up&>,
+        -:  467:	  "Template argument must be constructible from a const value.");
+        -:  468:      auto __p = any_cast<_Up>(&__any);
+        -:  469:      if (__p)
+        -:  470:	return static_cast<_ValueType>(*__p);
+        -:  471:      __throw_bad_any_cast();
+        -:  472:    }
+        -:  473:
+        -:  474:  /**
+        -:  475:   * @brief Access the contained object.
+        -:  476:   *
+        -:  477:   * @tparam  _ValueType  A reference or CopyConstructible type.
+        -:  478:   * @param   __any       The object to access.
+        -:  479:   * @return  The contained object.
+        -:  480:   * @throw   bad_any_cast If <code>
+        -:  481:   *          __any.type() != typeid(remove_reference_t<_ValueType>)
+        -:  482:   *          </code>
+        -:  483:   *
+        -:  484:   * @{
+        -:  485:   */
+        -:  486:  template<typename _ValueType>
+        -:  487:    inline _ValueType any_cast(any& __any)
+        -:  488:    {
+        -:  489:      using _Up = __remove_cvref_t<_ValueType>;
+        -:  490:      static_assert(any::__is_valid_cast<_ValueType>(),
+        -:  491:	  "Template argument must be a reference or CopyConstructible type");
+        -:  492:      static_assert(is_constructible_v<_ValueType, _Up&>,
+        -:  493:	  "Template argument must be constructible from an lvalue.");
+        -:  494:      auto __p = any_cast<_Up>(&__any);
+        -:  495:      if (__p)
+        -:  496:	return static_cast<_ValueType>(*__p);
+        -:  497:      __throw_bad_any_cast();
+        -:  498:    }
+        -:  499:
+        -:  500:  template<typename _ValueType>
+function _ZSt8any_castIiET_OSt3any called 1 returned 0% blocks executed 75%
+        1:  501:    inline _ValueType any_cast(any&& __any)
+        -:  502:    {
+        -:  503:      using _Up = __remove_cvref_t<_ValueType>;
+        -:  504:      static_assert(any::__is_valid_cast<_ValueType>(),
+        -:  505:	  "Template argument must be a reference or CopyConstructible type");
+        -:  506:      static_assert(is_constructible_v<_ValueType, _Up>,
+        -:  507:	  "Template argument must be constructible from an rvalue.");
+        -:  508:      auto __p = any_cast<_Up>(&__any);
+        1:  509:      if (__p)
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    #####:  510:	return static_cast<_ValueType>(std::move(*__p));
+    %%%%%:  510-block  0
+        1:  511:      __throw_bad_any_cast();
+        -:  512:    }
+        -:  513:  /// @}
+        -:  514:
+        -:  515:  /// @cond undocumented
+        -:  516:  template<typename _Tp>
+function _ZSt12__any_casterIiEPvPKSt3any called 1 returned 100% blocks executed 88%
+        1:  517:    void* __any_caster(const any* __any)
+        -:  518:    {
+        -:  519:      // any_cast<T> returns non-null if __any->type() == typeid(T) and
+        -:  520:      // typeid(T) ignores cv-qualifiers so remove them:
+        -:  521:      using _Up = remove_cv_t<_Tp>;
+        -:  522:      // The contained value has a decayed type, so if decay_t<U> is not U,
+        -:  523:      // then it's not possible to have a contained value of type U:
+        -:  524:      if constexpr (!is_same_v<decay_t<_Up>, _Up>)
+        -:  525:	return nullptr;
+        -:  526:      // Only copy constructible types can be used for contained values:
+        -:  527:      else if constexpr (!is_copy_constructible_v<_Up>)
+        -:  528:	return nullptr;
+        -:  529:      // First try comparing function addresses, which works without RTTI
+        1:  530:      else if (__any->_M_manager == &any::_Manager<_Up>::_S_manage
+        -:  531:#if __cpp_rtti
+        2:  532:	  || __any->type() == typeid(_Tp)
+        1:  532-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  532-block  1
+call    2 returned 1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+        -:  533:#endif
+        -:  534:	  )
+        -:  535:	{
+    #####:  536:	  return any::_Manager<_Up>::_S_access(__any->_M_storage);
+    %%%%%:  536-block  0
+        -:  537:	}
+        -:  538:      return nullptr;
+        -:  539:    }
+        -:  540:  /// @endcond
+        -:  541:
+        -:  542:  /**
+        -:  543:   * @brief Access the contained object.
+        -:  544:   *
+        -:  545:   * @tparam  _ValueType  The type of the contained object.
+        -:  546:   * @param   __any       A pointer to the object to access.
+        -:  547:   * @return  The address of the contained object if <code>
+        -:  548:   *          __any != nullptr && __any.type() == typeid(_ValueType)
+        -:  549:   *          </code>, otherwise a null pointer.
+        -:  550:   *
+        -:  551:   * @{
+        -:  552:   */
+        -:  553:  template<typename _ValueType>
+        -:  554:    inline const _ValueType* any_cast(const any* __any) noexcept
+        -:  555:    {
+        -:  556:      if constexpr (is_object_v<_ValueType>)
+        -:  557:	if (__any)
+        -:  558:	  return static_cast<_ValueType*>(__any_caster<_ValueType>(__any));
+        -:  559:      return nullptr;
+        -:  560:    }
+        -:  561:
+        -:  562:  template<typename _ValueType>
+        -:  563:    inline _ValueType* any_cast(any* __any) noexcept
+        -:  564:    {
+        -:  565:      if constexpr (is_object_v<_ValueType>)
+        -:  566:	if (__any)
+        1:  567:	  return static_cast<_ValueType*>(__any_caster<_ValueType>(__any));
+        1:  567-block  0
+call    0 returned 1
+        -:  568:      return nullptr;
+        -:  569:    }
+        -:  570:  /// @}
+        -:  571:
+        -:  572:  template<typename _Tp>
+        -:  573:    void
+       2*:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+       2*:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+       2*:  579:      switch (__which)
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+       1*:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+       1*:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+       1*:  588:	break;
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+       1*:  593:      case _Op_destroy:
+       1*:  594:	__ptr->~_Tp();
+       1*:  595:	break;
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+        -:  603:      }
+       2*:  604:    }
+------------------
+_ZNSt3any17_Manager_internalIdE9_S_manageENS_3_OpEPKS_PNS_4_ArgE:
+function _ZNSt3any17_Manager_internalIdE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 0 returned 0% blocks executed 0%
+    #####:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+    #####:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+    #####:  579:      switch (__which)
+    %%%%%:  579-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+    %%%%%:  583-block  0
+    #####:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+    #####:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+    #####:  588:	break;
+    %%%%%:  588-block  0
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+    %%%%%:  592-block  0
+    #####:  593:      case _Op_destroy:
+    #####:  594:	__ptr->~_Tp();
+    #####:  595:	break;
+    %%%%%:  595-block  0
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+    %%%%%:  602-block  0
+        -:  603:      }
+    #####:  604:    }
+------------------
+_ZNSt3any17_Manager_internalIfE9_S_manageENS_3_OpEPKS_PNS_4_ArgE:
+function _ZNSt3any17_Manager_internalIfE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 0 returned 0% blocks executed 0%
+    #####:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+    #####:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+    #####:  579:      switch (__which)
+    %%%%%:  579-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+    %%%%%:  583-block  0
+    #####:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+    #####:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+    #####:  588:	break;
+    %%%%%:  588-block  0
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+    %%%%%:  592-block  0
+    #####:  593:      case _Op_destroy:
+    #####:  594:	__ptr->~_Tp();
+    #####:  595:	break;
+    %%%%%:  595-block  0
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+    %%%%%:  602-block  0
+        -:  603:      }
+    #####:  604:    }
+------------------
+_ZNSt3any17_Manager_internalIxE9_S_manageENS_3_OpEPKS_PNS_4_ArgE:
+function _ZNSt3any17_Manager_internalIxE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 0 returned 0% blocks executed 0%
+    #####:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+    #####:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+    #####:  579:      switch (__which)
+    %%%%%:  579-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+    %%%%%:  583-block  0
+    #####:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+    #####:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+    #####:  588:	break;
+    %%%%%:  588-block  0
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+    %%%%%:  592-block  0
+    #####:  593:      case _Op_destroy:
+    #####:  594:	__ptr->~_Tp();
+    #####:  595:	break;
+    %%%%%:  595-block  0
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+    %%%%%:  602-block  0
+        -:  603:      }
+    #####:  604:    }
+------------------
+_ZNSt3any17_Manager_internalIlE9_S_manageENS_3_OpEPKS_PNS_4_ArgE:
+function _ZNSt3any17_Manager_internalIlE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 0 returned 0% blocks executed 0%
+    #####:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+    #####:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+    #####:  579:      switch (__which)
+    %%%%%:  579-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+    %%%%%:  583-block  0
+    #####:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+    #####:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+    #####:  588:	break;
+    %%%%%:  588-block  0
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+    %%%%%:  592-block  0
+    #####:  593:      case _Op_destroy:
+    #####:  594:	__ptr->~_Tp();
+    #####:  595:	break;
+    %%%%%:  595-block  0
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+    %%%%%:  602-block  0
+        -:  603:      }
+    #####:  604:    }
+------------------
+_ZNSt3any17_Manager_internalIcE9_S_manageENS_3_OpEPKS_PNS_4_ArgE:
+function _ZNSt3any17_Manager_internalIcE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 0 returned 0% blocks executed 0%
+    #####:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+    #####:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+    #####:  579:      switch (__which)
+    %%%%%:  579-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+    %%%%%:  583-block  0
+    #####:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+    #####:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+    #####:  588:	break;
+    %%%%%:  588-block  0
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+    %%%%%:  592-block  0
+    #####:  593:      case _Op_destroy:
+    #####:  594:	__ptr->~_Tp();
+    #####:  595:	break;
+    %%%%%:  595-block  0
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+    %%%%%:  602-block  0
+        -:  603:      }
+    #####:  604:    }
+------------------
+_ZNSt3any17_Manager_internalIbE9_S_manageENS_3_OpEPKS_PNS_4_ArgE:
+function _ZNSt3any17_Manager_internalIbE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 2 returned 100% blocks executed 57%
+        2:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+        2:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+        2:  579:      switch (__which)
+        2:  579-block  0
+branch  0 taken 0
+branch  1 taken 1
+branch  2 taken 0
+branch  3 taken 1
+branch  4 taken 0
+branch  5 taken 0
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+    %%%%%:  583-block  0
+        1:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+        1:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+        1:  588:	break;
+        1:  588-block  0
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+    %%%%%:  592-block  0
+        1:  593:      case _Op_destroy:
+        1:  594:	__ptr->~_Tp();
+        1:  595:	break;
+        1:  595-block  0
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+    %%%%%:  602-block  0
+        -:  603:      }
+        2:  604:    }
+------------------
+_ZNSt3any17_Manager_internalISt9monostateE9_S_manageENS_3_OpEPKS_PNS_4_ArgE:
+function _ZNSt3any17_Manager_internalISt9monostateE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 0 returned 0% blocks executed 0%
+    #####:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+    #####:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+    #####:  579:      switch (__which)
+    %%%%%:  579-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+    %%%%%:  583-block  0
+    #####:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+    #####:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+    #####:  588:	break;
+    %%%%%:  588-block  0
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+    %%%%%:  592-block  0
+    #####:  593:      case _Op_destroy:
+    #####:  594:	__ptr->~_Tp();
+    #####:  595:	break;
+    %%%%%:  595-block  0
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+    %%%%%:  602-block  0
+        -:  603:      }
+    #####:  604:    }
+------------------
+_ZNSt3any17_Manager_internalIiE9_S_manageENS_3_OpEPKS_PNS_4_ArgE:
+function _ZNSt3any17_Manager_internalIiE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 0 returned 0% blocks executed 0%
+    #####:  574:    any::_Manager_internal<_Tp>::
+        -:  575:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  576:    {
+        -:  577:      // The contained object is in _M_storage._M_buffer
+    #####:  578:      auto __ptr = reinterpret_cast<const _Tp*>(&__any->_M_storage._M_buffer);
+    #####:  579:      switch (__which)
+    %%%%%:  579-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  580:      {
+    #####:  581:      case _Op_access:
+    #####:  582:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  583:	break;
+    %%%%%:  583-block  0
+    #####:  584:      case _Op_get_type_info:
+        -:  585:#if __cpp_rtti
+    #####:  586:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  587:#endif
+    #####:  588:	break;
+    %%%%%:  588-block  0
+    #####:  589:      case _Op_clone:
+    #####:  590:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp(*__ptr);
+    #####:  591:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  592:	break;
+    %%%%%:  592-block  0
+    #####:  593:      case _Op_destroy:
+    #####:  594:	__ptr->~_Tp();
+    #####:  595:	break;
+    %%%%%:  595-block  0
+    #####:  596:      case _Op_xfer:
+    #####:  597:	::new(&__arg->_M_any->_M_storage._M_buffer) _Tp
+        -:  598:	  (std::move(*const_cast<_Tp*>(__ptr)));
+    #####:  599:	__ptr->~_Tp();
+    #####:  600:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  601:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  602:	break;
+    %%%%%:  602-block  0
+        -:  603:      }
+    #####:  604:    }
+------------------
+        -:  605:
+        -:  606:  template<typename _Tp>
+        -:  607:    void
+function _ZNSt3any17_Manager_externalIeE9_S_manageENS_3_OpEPKS_PNS_4_ArgE called 0 returned 0% blocks executed 0%
+    #####:  608:    any::_Manager_external<_Tp>::
+        -:  609:    _S_manage(_Op __which, const any* __any, _Arg* __arg)
+        -:  610:    {
+        -:  611:      // The contained object is *_M_storage._M_ptr
+    #####:  612:      auto __ptr = static_cast<const _Tp*>(__any->_M_storage._M_ptr);
+    #####:  613:      switch (__which)
+    %%%%%:  613-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  614:      {
+    #####:  615:      case _Op_access:
+    #####:  616:	__arg->_M_obj = const_cast<_Tp*>(__ptr);
+    #####:  617:	break;
+    %%%%%:  617-block  0
+    #####:  618:      case _Op_get_type_info:
+        -:  619:#if __cpp_rtti
+    #####:  620:	__arg->_M_typeinfo = &typeid(_Tp);
+        -:  621:#endif
+    #####:  622:	break;
+    %%%%%:  622-block  0
+    #####:  623:      case _Op_clone:
+    #####:  624:	__arg->_M_any->_M_storage._M_ptr = new _Tp(*__ptr);
+    %%%%%:  624-block  0
+call    0 never executed
+    #####:  625:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  626:	break;
+    #####:  627:      case _Op_destroy:
+    #####:  628:	delete __ptr;
+    %%%%%:  628-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  628-block  1
+call    2 never executed
+        -:  629:	break;
+    #####:  630:      case _Op_xfer:
+    #####:  631:	__arg->_M_any->_M_storage._M_ptr = __any->_M_storage._M_ptr;
+    #####:  632:	__arg->_M_any->_M_manager = __any->_M_manager;
+    #####:  633:	const_cast<any*>(__any)->_M_manager = nullptr;
+    #####:  634:	break;
+    %%%%%:  634-block  0
+        -:  635:      }
+    #####:  636:    }
+        -:  637:
+        -:  638:  /// @}
+        -:  639:
+        -:  640:  namespace __detail::__variant
+        -:  641:  {
+        -:  642:    template<typename> struct _Never_valueless_alt; // see <variant>
+        -:  643:
+        -:  644:    // Provide the strong exception-safety guarantee when emplacing an
+        -:  645:    // any into a variant.
+        -:  646:    template<>
+        -:  647:      struct _Never_valueless_alt<std::any>
+        -:  648:      : std::true_type
+        -:  649:      { };
+        -:  650:  }  // namespace __detail::__variant
+        -:  651:
+        -:  652:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  653:} // namespace std
+        -:  654:
+        -:  655:#endif // C++17
+        -:  656:#endif // _GLIBCXX_ANY

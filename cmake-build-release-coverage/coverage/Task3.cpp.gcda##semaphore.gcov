@@ -1,0 +1,105 @@
+        -:    0:Source:C:/Program Files/JetBrains/CLion 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/semaphore
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task3\Task3.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task3\Task3.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// <semaphore> -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2020-2023 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file include/semaphore
+        -:   26: *  This is a Standard C++ Library header.
+        -:   27: */
+        -:   28:
+        -:   29:#ifndef _GLIBCXX_SEMAPHORE
+        -:   30:#define _GLIBCXX_SEMAPHORE 1
+        -:   31:
+        -:   32:#pragma GCC system_header
+        -:   33:
+        -:   34:#include <bits/requires_hosted.h> // concurrency
+        -:   35:
+        -:   36:#if __cplusplus > 201703L
+        -:   37:#include <bits/semaphore_base.h>
+        -:   38:
+        -:   39:#if __cpp_lib_atomic_wait || _GLIBCXX_HAVE_POSIX_SEMAPHORE
+        -:   40:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   41:{
+        -:   42:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   43:
+        -:   44:#define __cpp_lib_semaphore 201907L
+        -:   45:
+        -:   46:  template<ptrdiff_t __least_max_value = __semaphore_impl::_S_max>
+        -:   47:    class counting_semaphore
+        -:   48:    {
+        -:   49:      static_assert(__least_max_value >= 0);
+        -:   50:      static_assert(__least_max_value <= __semaphore_impl::_S_max);
+        -:   51:
+        -:   52:      __semaphore_impl _M_sem;
+        -:   53:
+        -:   54:    public:
+        -:   55:      explicit counting_semaphore(ptrdiff_t __desired) noexcept
+        -:   56:	: _M_sem(__desired)
+        -:   57:      { }
+        -:   58:
+        -:   59:      ~counting_semaphore() = default;
+        -:   60:
+        -:   61:      counting_semaphore(const counting_semaphore&) = delete;
+        -:   62:      counting_semaphore& operator=(const counting_semaphore&) = delete;
+        -:   63:
+        -:   64:      static constexpr ptrdiff_t
+        -:   65:      max() noexcept
+        -:   66:      { return __least_max_value; }
+        -:   67:
+        -:   68:      void
+function _ZNSt18counting_semaphoreILx1EE7releaseEx called 0 returned 0% blocks executed 0%
+    #####:   69:      release(ptrdiff_t __update = 1) noexcept(noexcept(_M_sem._M_release(1)))
+    %%%%%:   69-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   70:      { _M_sem._M_release(__update); }
+        -:   71:
+        -:   72:      void
+        -:   73:      acquire() noexcept(noexcept(_M_sem._M_acquire()))
+        -:   74:      { _M_sem._M_acquire(); }
+        -:   75:
+        -:   76:      bool
+        -:   77:      try_acquire() noexcept(noexcept(_M_sem._M_try_acquire()))
+        -:   78:      { return _M_sem._M_try_acquire(); }
+        -:   79:
+        -:   80:      template<typename _Rep, typename _Period>
+        -:   81:	bool
+        -:   82:	try_acquire_for(const std::chrono::duration<_Rep, _Period>& __rtime)
+        -:   83:	{ return _M_sem._M_try_acquire_for(__rtime); }
+        -:   84:
+        -:   85:      template<typename _Clock, typename _Dur>
+        -:   86:	bool
+        -:   87:	try_acquire_until(const std::chrono::time_point<_Clock, _Dur>& __atime)
+        -:   88:	{ return _M_sem._M_try_acquire_until(__atime); }
+        -:   89:    };
+        -:   90:
+        -:   91:  using binary_semaphore = std::counting_semaphore<1>;
+        -:   92:
+        -:   93:_GLIBCXX_END_NAMESPACE_VERSION
+        -:   94:} // namespace
+        -:   95:#endif // cpp_lib_atomic_wait || _GLIBCXX_HAVE_POSIX_SEMAPHORE
+        -:   96:#endif // C++20
+        -:   97:#endif // _GLIBCXX_SEMAPHORE

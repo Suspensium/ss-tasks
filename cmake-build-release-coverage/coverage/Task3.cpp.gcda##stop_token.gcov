@@ -1,0 +1,737 @@
+        -:    0:Source:C:/Program Files/JetBrains/CLion 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stop_token
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task3\Task3.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task3\Task3.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// <stop_token> -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2019-2023 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file include/stop_token
+        -:   26: *  This is a Standard C++ Library header.
+        -:   27: */
+        -:   28:
+        -:   29:#ifndef _GLIBCXX_STOP_TOKEN
+        -:   30:#define _GLIBCXX_STOP_TOKEN
+        -:   31:
+        -:   32:#include <bits/requires_hosted.h> // concurrency
+        -:   33:
+        -:   34:#if __cplusplus > 201703L
+        -:   35:
+        -:   36:#include <atomic>
+        -:   37:#include <bits/std_thread.h>
+        -:   38:
+        -:   39:#include <semaphore>
+        -:   40:
+        -:   41:#define __cpp_lib_jthread 201911L
+        -:   42:
+        -:   43:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   44:{
+        -:   45:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   46:
+        -:   47:  /// Tag type indicating a stop_source should have no shared-stop-state.
+        -:   48:  struct nostopstate_t { explicit nostopstate_t() = default; };
+        -:   49:  inline constexpr nostopstate_t nostopstate{};
+        -:   50:
+        -:   51:  class stop_source;
+        -:   52:
+        -:   53:  /// Allow testing whether a stop request has been made on a `stop_source`.
+        -:   54:  class stop_token
+        -:   55:  {
+        -:   56:  public:
+        -:   57:    stop_token() noexcept = default;
+        -:   58:
+        -:   59:    stop_token(const stop_token&) noexcept = default;
+        -:   60:    stop_token(stop_token&&) noexcept = default;
+        -:   61:
+        -:   62:    ~stop_token() = default;
+        -:   63:
+        -:   64:    stop_token&
+        -:   65:    operator=(const stop_token&) noexcept = default;
+        -:   66:
+        -:   67:    stop_token&
+        -:   68:    operator=(stop_token&&) noexcept = default;
+        -:   69:
+        -:   70:    [[nodiscard]]
+        -:   71:    bool
+        -:   72:    stop_possible() const noexcept
+        -:   73:    {
+        -:   74:      return static_cast<bool>(_M_state) && _M_state->_M_stop_possible();
+        -:   75:    }
+        -:   76:
+        -:   77:    [[nodiscard]]
+        -:   78:    bool
+        -:   79:    stop_requested() const noexcept
+        -:   80:    {
+        -:   81:      return static_cast<bool>(_M_state) && _M_state->_M_stop_requested();
+        -:   82:    }
+        -:   83:
+        -:   84:    void
+        -:   85:    swap(stop_token& __rhs) noexcept
+        -:   86:    { _M_state.swap(__rhs._M_state); }
+        -:   87:
+        -:   88:    [[nodiscard]]
+        -:   89:    friend bool
+        -:   90:    operator==(const stop_token& __a, const stop_token& __b)
+        -:   91:    { return __a._M_state == __b._M_state; }
+        -:   92:
+        -:   93:    friend void
+        -:   94:    swap(stop_token& __lhs, stop_token& __rhs) noexcept
+        -:   95:    { __lhs.swap(__rhs); }
+        -:   96:
+        -:   97:  private:
+        -:   98:    friend class stop_source;
+        -:   99:    template<typename _Callback>
+        -:  100:      friend class stop_callback;
+        -:  101:
+        -:  102:    static void
+        -:  103:    _S_yield() noexcept
+        -:  104:    {
+        -:  105:#if defined __i386__ || defined __x86_64__
+    #####:  106:      __builtin_ia32_pause();
+    %%%%%:  106-block  0
+call    0 never executed
+        -:  107:#endif
+        -:  108:      this_thread::yield();
+        -:  109:    }
+        -:  110:
+        -:  111:#ifndef __cpp_lib_semaphore
+        -:  112:    struct binary_semaphore
+        -:  113:    {
+        -:  114:      explicit binary_semaphore(int __d) : _M_counter(__d > 0) { }
+        -:  115:
+        -:  116:      void release() { _M_counter.fetch_add(1, memory_order::release); }
+        -:  117:
+        -:  118:      void acquire()
+        -:  119:      {
+        -:  120:	int __old = 1;
+        -:  121:	while (!_M_counter.compare_exchange_weak(__old, 0,
+        -:  122:						 memory_order::acquire,
+        -:  123:						 memory_order::relaxed))
+        -:  124:	  {
+        -:  125:	    __old = 1;
+        -:  126:	    _S_yield();
+        -:  127:	  }
+        -:  128:      }
+        -:  129:
+        -:  130:      atomic<int> _M_counter;
+        -:  131:    };
+        -:  132:#endif
+        -:  133:
+        -:  134:    struct _Stop_cb
+        -:  135:    {
+        -:  136:      using __cb_type = void(_Stop_cb*) noexcept;
+        -:  137:      __cb_type* _M_callback;
+        -:  138:      _Stop_cb* _M_prev = nullptr;
+        -:  139:      _Stop_cb* _M_next = nullptr;
+        -:  140:      bool* _M_destroyed = nullptr;
+        -:  141:      binary_semaphore _M_done{0};
+        -:  142:
+        -:  143:      [[__gnu__::__nonnull__]]
+        -:  144:      explicit
+        -:  145:      _Stop_cb(__cb_type* __cb)
+        -:  146:      : _M_callback(__cb)
+        -:  147:      { }
+        -:  148:
+    #####:  149:      void _M_run() noexcept { _M_callback(this); }
+        -:  150:    };
+        -:  151:
+        -:  152:    struct _Stop_state_t
+        -:  153:    {
+        -:  154:      using value_type = uint32_t;
+        -:  155:      static constexpr value_type _S_stop_requested_bit = 1;
+        -:  156:      static constexpr value_type _S_locked_bit = 2;
+        -:  157:      static constexpr value_type _S_ssrc_counter_inc = 4;
+        -:  158:
+        -:  159:      std::atomic<value_type> _M_owners{1};
+        -:  160:      std::atomic<value_type> _M_value{_S_ssrc_counter_inc};
+        -:  161:      _Stop_cb* _M_head = nullptr;
+        -:  162:      std::thread::id _M_requester;
+        -:  163:
+        -:  164:      _Stop_state_t() = default;
+        -:  165:
+        -:  166:      bool
+        -:  167:      _M_stop_possible() noexcept
+        -:  168:      {
+        -:  169:	// true if a stop request has already been made or there are still
+        -:  170:	// stop_source objects that would allow one to be made.
+        -:  171:	return _M_value.load(memory_order::acquire) & ~_S_locked_bit;
+        -:  172:      }
+        -:  173:
+        -:  174:      bool
+        -:  175:      _M_stop_requested() noexcept
+        -:  176:      {
+        -:  177:	return _M_value.load(memory_order::acquire) & _S_stop_requested_bit;
+        -:  178:      }
+        -:  179:
+        -:  180:      void
+        -:  181:      _M_add_owner() noexcept
+        -:  182:      {
+        -:  183:	_M_owners.fetch_add(1, memory_order::relaxed);
+        -:  184:      }
+        -:  185:
+        -:  186:      void
+function _ZNSt10stop_token13_Stop_state_t20_M_release_ownershipEv called 0 returned 0% blocks executed 0%
+    #####:  187:      _M_release_ownership() noexcept
+    %%%%%:  187-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        -:  188:      {
+    #####:  189:	if (_M_owners.fetch_sub(1, memory_order::acq_rel) == 1)
+    %%%%%:  189-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  190:	  delete this;
+    %%%%%:  190-block  0
+call    0 never executed
+    #####:  191:      }
+        -:  192:
+        -:  193:      void
+        -:  194:      _M_add_ssrc() noexcept
+        -:  195:      {
+        -:  196:	_M_value.fetch_add(_S_ssrc_counter_inc, memory_order::relaxed);
+        -:  197:      }
+        -:  198:
+        -:  199:      void
+        -:  200:      _M_sub_ssrc() noexcept
+        -:  201:      {
+        -:  202:	_M_value.fetch_sub(_S_ssrc_counter_inc, memory_order::release);
+    #####:  203:      }
+    %%%%%:  203-block  0
+        -:  204:
+        -:  205:      // Obtain lock.
+        -:  206:      void
+function _ZNSt10stop_token13_Stop_state_t7_M_lockEv called 0 returned 0% blocks executed 0%
+    #####:  207:      _M_lock() noexcept
+    %%%%%:  207-block  0
+        -:  208:      {
+        -:  209:	// Can use relaxed loads to get the current value.
+        -:  210:	// The successful call to _M_try_lock is an acquire operation.
+    #####:  211:	auto __old = _M_value.load(memory_order::relaxed);
+    #####:  212:	while (!_M_try_lock(__old, memory_order::relaxed))
+    %%%%%:  212-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        -:  213:	  { }
+    #####:  214:      }
+        -:  215:
+        -:  216:      // Precondition: calling thread holds the lock.
+        -:  217:      void
+        -:  218:      _M_unlock() noexcept
+        -:  219:      {
+        -:  220:	_M_value.fetch_sub(_S_locked_bit, memory_order::release);
+        -:  221:      }
+        -:  222:
+        -:  223:      bool
+function _ZNSt10stop_token13_Stop_state_t15_M_request_stopEv called 0 returned 0% blocks executed 0%
+    #####:  224:      _M_request_stop() noexcept
+    %%%%%:  224-block  0
+        -:  225:      {
+        -:  226:	// obtain lock and set stop_requested bit
+    #####:  227:	auto __old = _M_value.load(memory_order::acquire);
+    %%%%%:  227-block  0
+        -:  228:	do
+        -:  229:	  {
+    #####:  230:	    if (__old & _S_stop_requested_bit) // stop request already made
+    %%%%%:  230-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        -:  231:	      return false;
+        -:  232:	  }
+    #####:  233:	while (!_M_try_lock_and_stop(__old));
+branch  0 never executed
+branch  1 never executed (fallthrough)
+        -:  234:
+    #####:  235:	_M_requester = this_thread::get_id();
+        -:  236:
+    #####:  237:	while (_M_head)
+    %%%%%:  237-block  0
+branch  0 never executed
+branch  1 never executed (fallthrough)
+        -:  238:	  {
+        -:  239:	    bool __last_cb;
+        -:  240:	    _Stop_cb* __cb = _M_head;
+    #####:  241:	    _M_head = _M_head->_M_next;
+    #####:  242:	    if (_M_head)
+    %%%%%:  242-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        -:  243:	      {
+    #####:  244:		_M_head->_M_prev = nullptr;
+    %%%%%:  244-block  0
+        -:  245:		__last_cb = false;
+        -:  246:	      }
+        -:  247:	    else
+        -:  248:	      __last_cb = true;
+        -:  249:
+        -:  250:	    // Allow other callbacks to be unregistered while __cb runs.
+        -:  251:	    _M_unlock();
+        -:  252:
+    #####:  253:	    bool __destroyed = false;
+    #####:  254:	    __cb->_M_destroyed = &__destroyed;
+    %%%%%:  254-block  0
+call    0 never executed
+        -:  255:
+        -:  256:	    // run callback
+        -:  257:	    __cb->_M_run();
+        -:  258:
+    #####:  259:	    if (!__destroyed)
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        -:  260:	      {
+    #####:  261:		__cb->_M_destroyed = nullptr;
+        -:  262:
+        -:  263:		// synchronize with destructor of stop_callback that owns *__cb
+        -:  264:		if (!__gnu_cxx::__is_single_threaded())
+    #####:  265:		  __cb->_M_done.release();
+    %%%%%:  265-block  0
+call    0 never executed
+        -:  266:	      }
+        -:  267:
+        -:  268:	    // Avoid relocking if we already know there are no more callbacks.
+    #####:  269:	    if (__last_cb)
+    %%%%%:  269-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  270:	      return true;
+    %%%%%:  270-block  0
+        -:  271:
+    #####:  272:	    _M_lock();
+    %%%%%:  272-block  0
+call    0 never executed
+        -:  273:	  }
+        -:  274:
+        -:  275:	_M_unlock();
+    #####:  276:	return true;
+    %%%%%:  276-block  0
+        -:  277:      }
+        -:  278:
+        -:  279:      [[__gnu__::__nonnull__]]
+        -:  280:      bool
+        -:  281:      _M_register_callback(_Stop_cb* __cb) noexcept
+        -:  282:      {
+        -:  283:	auto __old = _M_value.load(memory_order::acquire);
+        -:  284:	do
+        -:  285:	  {
+        -:  286:	    if (__old & _S_stop_requested_bit) // stop request already made
+        -:  287:	      {
+        -:  288:		__cb->_M_run(); // run synchronously
+        -:  289:		return false;
+        -:  290:	      }
+        -:  291:
+        -:  292:	    if (__old < _S_ssrc_counter_inc) // no stop_source owns *this
+        -:  293:	      // No need to register callback if no stop request can be made.
+        -:  294:	      // Returning false also means the stop_callback does not share
+        -:  295:	      // ownership of this state, but that's not observable.
+        -:  296:	      return false;
+        -:  297:	  }
+        -:  298:	while (!_M_try_lock(__old));
+        -:  299:
+        -:  300:        __cb->_M_next = _M_head;
+        -:  301:        if (_M_head)
+        -:  302:          {
+        -:  303:            _M_head->_M_prev = __cb;
+        -:  304:          }
+        -:  305:        _M_head = __cb;
+        -:  306:	_M_unlock();
+        -:  307:        return true;
+        -:  308:      }
+        -:  309:
+        -:  310:      // Called by ~stop_callback just before destroying *__cb.
+        -:  311:      [[__gnu__::__nonnull__]]
+        -:  312:      void
+        -:  313:      _M_remove_callback(_Stop_cb* __cb)
+        -:  314:      {
+        -:  315:	_M_lock();
+        -:  316:
+        -:  317:        if (__cb == _M_head)
+        -:  318:          {
+        -:  319:            _M_head = _M_head->_M_next;
+        -:  320:            if (_M_head)
+        -:  321:	      _M_head->_M_prev = nullptr;
+        -:  322:	    _M_unlock();
+        -:  323:	    return;
+        -:  324:          }
+        -:  325:	else if (__cb->_M_prev)
+        -:  326:          {
+        -:  327:            __cb->_M_prev->_M_next = __cb->_M_next;
+        -:  328:            if (__cb->_M_next)
+        -:  329:	      __cb->_M_next->_M_prev = __cb->_M_prev;
+        -:  330:	    _M_unlock();
+        -:  331:	    return;
+        -:  332:          }
+        -:  333:
+        -:  334:	_M_unlock();
+        -:  335:
+        -:  336:	// Callback is not in the list, so must have been removed by a call to
+        -:  337:	// _M_request_stop.
+        -:  338:
+        -:  339:	// Despite appearances there is no data race on _M_requester. The only
+        -:  340:	// write to it happens before the callback is removed from the list,
+        -:  341:	// and removing it from the list happens before this read.
+        -:  342:	if (!(_M_requester == this_thread::get_id()))
+        -:  343:	  {
+        -:  344:	    // Synchronize with completion of callback.
+        -:  345:	    __cb->_M_done.acquire();
+        -:  346:	    // Safe for ~stop_callback to destroy *__cb now.
+        -:  347:	    return;
+        -:  348:	  }
+        -:  349:
+        -:  350:	if (__cb->_M_destroyed)
+        -:  351:	  *__cb->_M_destroyed = true;
+        -:  352:      }
+        -:  353:
+        -:  354:      // Try to obtain the lock.
+        -:  355:      // Returns true if the lock is acquired (with memory order acquire).
+        -:  356:      // Otherwise, sets __curval = _M_value.load(__failure) and returns false.
+        -:  357:      // Might fail spuriously, so must be called in a loop.
+        -:  358:      bool
+        -:  359:      _M_try_lock(value_type& __curval,
+        -:  360:		  memory_order __failure = memory_order::acquire) noexcept
+        -:  361:      {
+    #####:  362:	return _M_do_try_lock(__curval, 0, memory_order::acquire, __failure);
+    %%%%%:  362-block  0
+call    0 never executed
+        -:  363:      }
+        -:  364:
+        -:  365:      // Try to obtain the lock to make a stop request.
+        -:  366:      // Returns true if the lock is acquired and the _S_stop_requested_bit is
+        -:  367:      // set (with memory order acq_rel so that other threads see the request).
+        -:  368:      // Otherwise, sets __curval = _M_value.load(memory_order::acquire) and
+        -:  369:      // returns false.
+        -:  370:      // Might fail spuriously, so must be called in a loop.
+        -:  371:      bool
+        -:  372:      _M_try_lock_and_stop(value_type& __curval) noexcept
+        -:  373:      {
+    #####:  374:	return _M_do_try_lock(__curval, _S_stop_requested_bit,
+    %%%%%:  374-block  0
+call    0 never executed
+        -:  375:			      memory_order::acq_rel, memory_order::acquire);
+        -:  376:      }
+        -:  377:
+        -:  378:      bool
+function _ZNSt10stop_token13_Stop_state_t14_M_do_try_lockERjjSt12memory_orderS2_ called 0 returned 0% blocks executed 0%
+    #####:  379:      _M_do_try_lock(value_type& __curval, value_type __newbits,
+        -:  380:		     memory_order __success, memory_order __failure) noexcept
+        -:  381:      {
+    #####:  382:	if (__curval & _S_locked_bit)
+    %%%%%:  382-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        -:  383:	  {
+        -:  384:	    _S_yield();
+    #####:  385:	    __curval = _M_value.load(__failure);
+    #####:  386:	    return false;
+        -:  387:	  }
+    #####:  388:	__newbits |= _S_locked_bit;
+    #####:  389:	return _M_value.compare_exchange_weak(__curval, __curval | __newbits,
+    %%%%%:  389-block  0
+    #####:  390:					      __success, __failure);
+    %%%%%:  390-block  0
+        -:  391:      }
+        -:  392:    };
+        -:  393:
+        -:  394:    struct _Stop_state_ref
+        -:  395:    {
+        -:  396:      _Stop_state_ref() = default;
+        -:  397:
+        -:  398:      [[__gnu__::__access__(__none__, 2)]]
+        -:  399:      explicit
+        -:  400:      _Stop_state_ref(const stop_source&)
+        3:  401:      : _M_ptr(new _Stop_state_t())
+        1:  401-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        2:  401-block  1
+call    4 returned 2
+call    5 returned 2
+branch  6 taken 2 (fallthrough)
+branch  7 taken 0 (throw)
+        -:  402:      { }
+        -:  403:
+        -:  404:      _Stop_state_ref(const _Stop_state_ref& __other) noexcept
+        -:  405:      : _M_ptr(__other._M_ptr)
+        -:  406:      {
+        -:  407:	if (_M_ptr)
+        -:  408:	  _M_ptr->_M_add_owner();
+        -:  409:      }
+        -:  410:
+        -:  411:      _Stop_state_ref(_Stop_state_ref&& __other) noexcept
+        -:  412:      : _M_ptr(__other._M_ptr)
+        -:  413:      {
+        -:  414:	__other._M_ptr = nullptr;
+        -:  415:      }
+        -:  416:
+        -:  417:      _Stop_state_ref&
+        -:  418:      operator=(const _Stop_state_ref& __other) noexcept
+        -:  419:      {
+        -:  420:	if (auto __ptr = __other._M_ptr; __ptr != _M_ptr)
+        -:  421:	  {
+        -:  422:	    if (__ptr)
+        -:  423:	      __ptr->_M_add_owner();
+        -:  424:	    if (_M_ptr)
+        -:  425:	      _M_ptr->_M_release_ownership();
+        -:  426:	    _M_ptr = __ptr;
+        -:  427:	  }
+        -:  428:	return *this;
+        -:  429:      }
+        -:  430:
+        -:  431:      _Stop_state_ref&
+        -:  432:      operator=(_Stop_state_ref&& __other) noexcept
+        -:  433:      {
+        -:  434:	_Stop_state_ref(std::move(__other)).swap(*this);
+        -:  435:	return *this;
+        -:  436:      }
+        -:  437:
+        -:  438:      ~_Stop_state_ref()
+        -:  439:      {
+    #####:  440:	if (_M_ptr)
+    %%%%%:  440-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  441:	  _M_ptr->_M_release_ownership();
+    %%%%%:  441-block  0
+call    0 never executed
+        -:  442:      }
+        -:  443:
+        -:  444:      void
+        -:  445:      swap(_Stop_state_ref& __other) noexcept
+        -:  446:      { std::swap(_M_ptr, __other._M_ptr); }
+        -:  447:
+    #####:  448:      explicit operator bool() const noexcept { return _M_ptr != nullptr; }
+        -:  449:
+        -:  450:      _Stop_state_t* operator->() const noexcept { return _M_ptr; }
+        -:  451:
+        -:  452:#if __cpp_impl_three_way_comparison >= 201907L
+        -:  453:      friend bool
+        -:  454:      operator==(const _Stop_state_ref&, const _Stop_state_ref&) = default;
+        -:  455:#else
+        -:  456:      friend bool
+        -:  457:      operator==(const _Stop_state_ref& __lhs, const _Stop_state_ref& __rhs)
+        -:  458:      noexcept
+        -:  459:      { return __lhs._M_ptr == __rhs._M_ptr; }
+        -:  460:
+        -:  461:      friend bool
+        -:  462:      operator!=(const _Stop_state_ref& __lhs, const _Stop_state_ref& __rhs)
+        -:  463:      noexcept
+        -:  464:      { return __lhs._M_ptr != __rhs._M_ptr; }
+        -:  465:#endif
+        -:  466:
+        -:  467:    private:
+        -:  468:      _Stop_state_t* _M_ptr = nullptr;
+        -:  469:    };
+        -:  470:
+        -:  471:    _Stop_state_ref _M_state;
+        -:  472:
+        -:  473:    explicit
+        -:  474:    stop_token(const _Stop_state_ref& __state) noexcept
+        -:  475:    : _M_state{__state}
+        -:  476:    { }
+        -:  477:  };
+        -:  478:
+        -:  479:  /// A type that allows a stop request to be made.
+        -:  480:  class stop_source
+        -:  481:  {
+        -:  482:  public:
+        -:  483:    stop_source() : _M_state(*this)
+        -:  484:    { }
+        -:  485:
+        -:  486:    explicit stop_source(std::nostopstate_t) noexcept
+        -:  487:    { }
+        -:  488:
+        -:  489:    stop_source(const stop_source& __other) noexcept
+        -:  490:    : _M_state(__other._M_state)
+        -:  491:    {
+        -:  492:      if (_M_state)
+        -:  493:	_M_state->_M_add_ssrc();
+        -:  494:    }
+        -:  495:
+        -:  496:    stop_source(stop_source&&) noexcept = default;
+        -:  497:
+        -:  498:    stop_source&
+        -:  499:    operator=(const stop_source& __other) noexcept
+        -:  500:    {
+        -:  501:      if (_M_state != __other._M_state)
+        -:  502:	{
+        -:  503:	  stop_source __sink(std::move(*this));
+        -:  504:	  _M_state = __other._M_state;
+        -:  505:	  if (_M_state)
+        -:  506:	    _M_state->_M_add_ssrc();
+        -:  507:	}
+        -:  508:      return *this;
+        -:  509:    }
+        -:  510:
+        -:  511:    stop_source&
+        -:  512:    operator=(stop_source&&) noexcept = default;
+        -:  513:
+function _ZNSt11stop_sourceD1Ev called 0 returned 0% blocks executed 0%
+    #####:  514:    ~stop_source()
+        -:  515:    {
+    #####:  516:      if (_M_state)
+    %%%%%:  516-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        -:  517:	_M_state->_M_sub_ssrc();
+    #####:  518:    }
+        -:  519:
+        -:  520:    [[nodiscard]]
+        -:  521:    bool
+        -:  522:    stop_possible() const noexcept
+        -:  523:    {
+        -:  524:      return static_cast<bool>(_M_state);
+        -:  525:    }
+        -:  526:
+        -:  527:    [[nodiscard]]
+        -:  528:    bool
+        -:  529:    stop_requested() const noexcept
+        -:  530:    {
+        -:  531:      return static_cast<bool>(_M_state) && _M_state->_M_stop_requested();
+        -:  532:    }
+        -:  533:
+        -:  534:    bool
+        -:  535:    request_stop() const noexcept
+        -:  536:    {
+    #####:  537:      if (stop_possible())
+    %%%%%:  537-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  538:        return _M_state->_M_request_stop();
+    %%%%%:  538-block  0
+call    0 never executed
+        -:  539:      return false;
+        -:  540:    }
+        -:  541:
+        -:  542:    [[nodiscard]]
+        -:  543:    stop_token
+        -:  544:    get_token() const noexcept
+        -:  545:    {
+        -:  546:      return stop_token{_M_state};
+        -:  547:    }
+        -:  548:
+        -:  549:    void
+        -:  550:    swap(stop_source& __other) noexcept
+        -:  551:    {
+        -:  552:      _M_state.swap(__other._M_state);
+        -:  553:    }
+        -:  554:
+        -:  555:    [[nodiscard]]
+        -:  556:    friend bool
+        -:  557:    operator==(const stop_source& __a, const stop_source& __b) noexcept
+        -:  558:    {
+        -:  559:      return __a._M_state == __b._M_state;
+        -:  560:    }
+        -:  561:
+        -:  562:    friend void
+        -:  563:    swap(stop_source& __lhs, stop_source& __rhs) noexcept
+        -:  564:    {
+        -:  565:      __lhs.swap(__rhs);
+        -:  566:    }
+        -:  567:
+        -:  568:  private:
+        -:  569:    stop_token::_Stop_state_ref _M_state;
+        -:  570:  };
+        -:  571:
+        -:  572:  /// A wrapper for callbacks to be run when a stop request is made.
+        -:  573:  template<typename _Callback>
+        -:  574:    class [[nodiscard]] stop_callback
+        -:  575:    {
+        -:  576:      static_assert(is_nothrow_destructible_v<_Callback>);
+        -:  577:      static_assert(is_invocable_v<_Callback>);
+        -:  578:
+        -:  579:    public:
+        -:  580:      using callback_type = _Callback;
+        -:  581:
+        -:  582:      template<typename _Cb,
+        -:  583:               enable_if_t<is_constructible_v<_Callback, _Cb>, int> = 0>
+        -:  584:        explicit
+        -:  585:	stop_callback(const stop_token& __token, _Cb&& __cb)
+        -:  586:        noexcept(is_nothrow_constructible_v<_Callback, _Cb>)
+        -:  587:	: _M_cb(std::forward<_Cb>(__cb))
+        -:  588:        {
+        -:  589:	  if (auto __state = __token._M_state)
+        -:  590:	    {
+        -:  591:	      if (__state->_M_register_callback(&_M_cb))
+        -:  592:		_M_state.swap(__state);
+        -:  593:	    }
+        -:  594:        }
+        -:  595:
+        -:  596:      template<typename _Cb,
+        -:  597:               enable_if_t<is_constructible_v<_Callback, _Cb>, int> = 0>
+        -:  598:        explicit
+        -:  599:	stop_callback(stop_token&& __token, _Cb&& __cb)
+        -:  600:        noexcept(is_nothrow_constructible_v<_Callback, _Cb>)
+        -:  601:	: _M_cb(std::forward<_Cb>(__cb))
+        -:  602:	{
+        -:  603:	  if (auto& __state = __token._M_state)
+        -:  604:	    {
+        -:  605:	      if (__state->_M_register_callback(&_M_cb))
+        -:  606:		_M_state.swap(__state);
+        -:  607:	    }
+        -:  608:	}
+        -:  609:
+        -:  610:      ~stop_callback()
+        -:  611:      {
+        -:  612:	if (_M_state)
+        -:  613:	  {
+        -:  614:	    _M_state->_M_remove_callback(&_M_cb);
+        -:  615:	  }
+        -:  616:      }
+        -:  617:
+        -:  618:      stop_callback(const stop_callback&) = delete;
+        -:  619:      stop_callback& operator=(const stop_callback&) = delete;
+        -:  620:      stop_callback(stop_callback&&) = delete;
+        -:  621:      stop_callback& operator=(stop_callback&&) = delete;
+        -:  622:
+        -:  623:    private:
+        -:  624:      struct _Cb_impl : stop_token::_Stop_cb
+        -:  625:      {
+        -:  626:	template<typename _Cb>
+        -:  627:	  explicit
+        -:  628:	  _Cb_impl(_Cb&& __cb)
+        -:  629:	  : _Stop_cb(&_S_execute),
+        -:  630:	    _M_cb(std::forward<_Cb>(__cb))
+        -:  631:	  { }
+        -:  632:
+        -:  633:	_Callback _M_cb;
+        -:  634:
+        -:  635:	[[__gnu__::__nonnull__]]
+        -:  636:	static void
+        -:  637:	_S_execute(_Stop_cb* __that) noexcept
+        -:  638:	{
+        -:  639:	  _Callback& __cb = static_cast<_Cb_impl*>(__that)->_M_cb;
+        -:  640:	  std::forward<_Callback>(__cb)();
+        -:  641:	}
+        -:  642:      };
+        -:  643:
+        -:  644:      _Cb_impl _M_cb;
+        -:  645:      stop_token::_Stop_state_ref _M_state;
+        -:  646:    };
+        -:  647:
+        -:  648:  template<typename _Callback>
+        -:  649:    stop_callback(stop_token, _Callback) -> stop_callback<_Callback>;
+        -:  650:
+        -:  651:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  652:} // namespace
+        -:  653:#endif // __cplusplus > 201703L
+        -:  654:#endif // _GLIBCXX_STOP_TOKEN

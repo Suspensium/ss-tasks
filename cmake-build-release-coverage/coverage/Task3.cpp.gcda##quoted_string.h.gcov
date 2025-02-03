@@ -1,0 +1,220 @@
+        -:    0:Source:C:/Program Files/JetBrains/CLion 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/quoted_string.h
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task3\Task3.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task3\Task3.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// Helpers for quoted stream manipulators -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2013-2023 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file bits/quoted_string.h
+        -:   26: *  This is an internal header file, included by other library headers.
+        -:   27: *  Do not attempt to use it directly. @headername{iomanip}
+        -:   28: */
+        -:   29:
+        -:   30:#ifndef _GLIBCXX_QUOTED_STRING_H
+        -:   31:#define _GLIBCXX_QUOTED_STRING_H 1
+        -:   32:
+        -:   33:#pragma GCC system_header
+        -:   34:
+        -:   35:#if __cplusplus < 201103L
+        -:   36:# include <bits/c++0x_warning.h>
+        -:   37:#else
+        -:   38:#include <sstream>
+        -:   39:
+        -:   40:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   41:{
+        -:   42:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   43:
+        -:   44:  namespace __detail {
+        -:   45:    /**
+        -:   46:     * @brief Struct for delimited strings.
+        -:   47:     */
+        -:   48:    template<typename _String, typename _CharT>
+        -:   49:      struct _Quoted_string
+        -:   50:      {
+        -:   51:	static_assert(is_reference<_String>::value
+        -:   52:		   || is_pointer<_String>::value,
+        -:   53:		      "String type must be pointer or reference");
+        -:   54:
+    #####:   55:	_Quoted_string(_String __str, _CharT __del, _CharT __esc)
+    #####:   56:	: _M_string(__str), _M_delim{__del}, _M_escape{__esc}
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   57:	{ }
+        -:   58:
+        -:   59:	_Quoted_string&
+        -:   60:	operator=(_Quoted_string&) = delete;
+        -:   61:
+        -:   62:	_String _M_string;
+        -:   63:	_CharT _M_delim;
+        -:   64:	_CharT _M_escape;
+        -:   65:      };
+        -:   66:
+        -:   67:#if __cplusplus >= 201703L
+        -:   68:    template<typename _CharT, typename _Traits>
+        -:   69:      struct _Quoted_string<basic_string_view<_CharT, _Traits>, _CharT>
+        -:   70:      {
+        -:   71:	_Quoted_string(basic_string_view<_CharT, _Traits> __str,
+        -:   72:		       _CharT __del, _CharT __esc)
+        -:   73:	: _M_string(__str), _M_delim{__del}, _M_escape{__esc}
+        -:   74:	{ }
+        -:   75:
+        -:   76:	_Quoted_string&
+        -:   77:	operator=(_Quoted_string&) = delete;
+        -:   78:
+        -:   79:	basic_string_view<_CharT, _Traits> _M_string;
+        -:   80:	_CharT _M_delim;
+        -:   81:	_CharT _M_escape;
+        -:   82:      };
+        -:   83:#endif // C++17
+        -:   84:
+        -:   85:    /**
+        -:   86:     * @brief Inserter for quoted strings.
+        -:   87:     *
+        -:   88:     *  _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:   89:     *  DR 2344 quoted()'s interaction with padding is unclear
+        -:   90:     */
+        -:   91:    template<typename _CharT, typename _Traits>
+        -:   92:      std::basic_ostream<_CharT, _Traits>&
+        -:   93:      operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+        -:   94:		 const _Quoted_string<const _CharT*, _CharT>& __str)
+        -:   95:      {
+        -:   96:	std::basic_ostringstream<_CharT, _Traits> __ostr;
+        -:   97:	__ostr << __str._M_delim;
+        -:   98:	for (const _CharT* __c = __str._M_string; *__c; ++__c)
+        -:   99:	  {
+        -:  100:	    if (*__c == __str._M_delim || *__c == __str._M_escape)
+        -:  101:	      __ostr << __str._M_escape;
+        -:  102:	    __ostr << *__c;
+        -:  103:	  }
+        -:  104:	__ostr << __str._M_delim;
+        -:  105:
+        -:  106:	return __os << __ostr.str();
+        -:  107:      }
+        -:  108:
+        -:  109:    /**
+        -:  110:     * @brief Inserter for quoted strings.
+        -:  111:     *
+        -:  112:     *  _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  113:     *  DR 2344 quoted()'s interaction with padding is unclear
+        -:  114:     */
+        -:  115:    template<typename _CharT, typename _Traits, typename _String>
+        -:  116:      std::basic_ostream<_CharT, _Traits>&
+function _ZNSt8__detaillsIcSt11char_traitsIcERKNSt7__cxx1112basic_stringIcS2_SaIcEEEEERSt13basic_ostreamIT_T0_ESD_RKNS_14_Quoted_stringIT1_SA_EE called 0 returned 0% blocks executed 0%
+    #####:  117:      operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+        -:  118:		 const _Quoted_string<_String, _CharT>& __str)
+        -:  119:      {
+    #####:  120:	std::basic_ostringstream<_CharT, _Traits> __ostr;
+    %%%%%:  120-block  0
+call    0 never executed
+    #####:  121:	__ostr << __str._M_delim;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  122:	for (auto __c : __str._M_string)
+    %%%%%:  122-block  0
+    %%%%%:  122-block  1
+branch  0 never executed
+branch  1 never executed (fallthrough)
+        -:  123:	  {
+    #####:  124:	    if (__c == __str._M_delim || __c == __str._M_escape)
+    %%%%%:  124-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  124-block  1
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    #####:  125:	      __ostr << __str._M_escape;
+    %%%%%:  125-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  126:	    __ostr << __c;
+    %%%%%:  126-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  127:	  }
+    #####:  128:	__ostr << __str._M_delim;
+    %%%%%:  128-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  129:
+    #####:  130:	return __os << __ostr.str();
+    #####:  131:      }
+call    0 never executed
+    $$$$$:  131-block  0
+call    1 never executed
+        -:  132:
+        -:  133:    /**
+        -:  134:     * @brief Extractor for delimited strings.
+        -:  135:     *        The left and right delimiters can be different.
+        -:  136:     */
+        -:  137:    template<typename _CharT, typename _Traits, typename _Alloc>
+        -:  138:      std::basic_istream<_CharT, _Traits>&
+        -:  139:      operator>>(std::basic_istream<_CharT, _Traits>& __is,
+        -:  140:		 const _Quoted_string<basic_string<_CharT, _Traits, _Alloc>&,
+        -:  141:				      _CharT>& __str)
+        -:  142:      {
+        -:  143:	_CharT __c;
+        -:  144:	__is >> __c;
+        -:  145:	if (!__is.good())
+        -:  146:	  return __is;
+        -:  147:	if (__c != __str._M_delim)
+        -:  148:	  {
+        -:  149:	    __is.unget();
+        -:  150:	    __is >> __str._M_string;
+        -:  151:	    return __is;
+        -:  152:	  }
+        -:  153:	__str._M_string.clear();
+        -:  154:	std::ios_base::fmtflags __flags
+        -:  155:	  = __is.flags(__is.flags() & ~std::ios_base::skipws);
+        -:  156:	do
+        -:  157:	  {
+        -:  158:	    __is >> __c;
+        -:  159:	    if (!__is.good())
+        -:  160:	      break;
+        -:  161:	    if (__c == __str._M_escape)
+        -:  162:	      {
+        -:  163:		__is >> __c;
+        -:  164:		if (!__is.good())
+        -:  165:		  break;
+        -:  166:	      }
+        -:  167:	    else if (__c == __str._M_delim)
+        -:  168:	      break;
+        -:  169:	    __str._M_string += __c;
+        -:  170:	  }
+        -:  171:	while (true);
+        -:  172:	__is.setf(__flags);
+        -:  173:
+        -:  174:	return __is;
+        -:  175:      }
+        -:  176:  } // namespace __detail
+        -:  177:
+        -:  178:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  179:} // namespace std
+        -:  180:
+        -:  181:#endif // C++11
+        -:  182:#endif /* _GLIBCXX_QUOTED_STRING_H */

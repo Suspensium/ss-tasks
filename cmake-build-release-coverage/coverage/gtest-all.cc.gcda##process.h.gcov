@@ -1,0 +1,214 @@
+        -:    0:Source:C:/Program Files/JetBrains/CLion 2024.3.2/bin/mingw/x86_64-w64-mingw32/include/process.h
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\googletest\googletest\CMakeFiles\gtest.dir\src\gtest-all.cc.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\googletest\googletest\CMakeFiles\gtest.dir\src\gtest-all.cc.gcda
+        -:    0:Runs:1
+        -:    1:/**
+        -:    2: * This file has no copyright assigned and is placed in the Public Domain.
+        -:    3: * This file is part of the mingw-w64 runtime package.
+        -:    4: * No warranty is given; refer to the file DISCLAIMER.PD within this package.
+        -:    5: */
+        -:    6:#ifndef _INC_PROCESS
+        -:    7:#define _INC_PROCESS
+        -:    8:
+        -:    9:#include <crtdefs.h>
+        -:   10:#include <corecrt_startup.h>
+        -:   11:
+        -:   12:/* Includes a definition of _pid_t and pid_t */
+        -:   13:#include <sys/types.h>
+        -:   14:
+        -:   15:#ifndef _POSIX_
+        -:   16:#ifdef __cplusplus
+        -:   17:extern "C" {
+        -:   18:#endif
+        -:   19:
+        -:   20:#ifndef _P_WAIT
+        -:   21:#define _P_WAIT 0
+        -:   22:#define _P_NOWAIT 1
+        -:   23:#define _OLD_P_OVERLAY 2
+        -:   24:#define _P_NOWAITO 3
+        -:   25:#define _P_DETACH 4
+        -:   26:#define _P_OVERLAY 2
+        -:   27:
+        -:   28:#define _WAIT_CHILD 0
+        -:   29:#define _WAIT_GRANDCHILD 1
+        -:   30:#endif
+        -:   31:
+        -:   32:  typedef void (__cdecl *_beginthread_proc_type)(void *);
+        -:   33:  typedef unsigned (__stdcall *_beginthreadex_proc_type)(void *);
+        -:   34:
+        -:   35:  _CRTIMP uintptr_t __cdecl _beginthread(_beginthread_proc_type _StartAddress,unsigned _StackSize,void *_ArgList);
+        -:   36:  _CRTIMP void __cdecl _endthread(void) __MINGW_ATTRIB_NORETURN;
+        -:   37:  _CRTIMP uintptr_t __cdecl _beginthreadex(void *_Security,unsigned _StackSize,_beginthreadex_proc_type _StartAddress,void *_ArgList,unsigned _InitFlag,unsigned *_ThrdAddr);
+        -:   38:  _CRTIMP void __cdecl _endthreadex(unsigned _Retval) __MINGW_ATTRIB_NORETURN;
+        -:   39:
+        -:   40:#ifndef _CRT_TERMINATE_DEFINED
+        -:   41:#define _CRT_TERMINATE_DEFINED
+        -:   42:  void __cdecl __MINGW_NOTHROW exit(int _Code) __MINGW_ATTRIB_NORETURN;
+        -:   43:  void __cdecl __MINGW_NOTHROW _exit(int _Code) __MINGW_ATTRIB_NORETURN;
+        -:   44:#ifdef _UCRT
+        -:   45:  void __cdecl __MINGW_NOTHROW quick_exit(int _Code) __MINGW_ATTRIB_NORETURN;
+        -:   46:#endif
+        -:   47:
+        -:   48:#if !defined __NO_ISOCEXT /* extern stub in static libmingwex.a */
+        -:   49:  /* C99 function name */
+        -:   50:  void __cdecl _Exit(int) __MINGW_ATTRIB_NORETURN;
+        -:   51:#ifndef __CRT__NO_INLINE
+        -:   52:  __CRT_INLINE __MINGW_ATTRIB_NORETURN void  __cdecl _Exit(int status)
+    #####:   53:  {  _exit(status); }
+    %%%%%:   53-block  0
+call    0 never executed
+call    1 never executed
+        -:   54:#endif /* !__CRT__NO_INLINE */
+        -:   55:#endif /* Not  __NO_ISOCEXT */
+        -:   56:
+        -:   57:#pragma push_macro("abort")
+        -:   58:#undef abort
+        -:   59:  void __cdecl __MINGW_ATTRIB_NORETURN abort(void);
+        -:   60:#pragma pop_macro("abort")
+        -:   61:
+        -:   62:#endif /* _CRT_TERMINATE_DEFINED */
+        -:   63:
+        -:   64:  typedef void (__stdcall *_tls_callback_type)(void*,unsigned long,void*);
+        -:   65:  _CRTIMP void __cdecl _register_thread_local_exe_atexit_callback(_tls_callback_type callback);
+        -:   66:
+        -:   67:  void __cdecl __MINGW_NOTHROW _cexit(void);
+        -:   68:  void __cdecl __MINGW_NOTHROW _c_exit(void);
+        -:   69:#ifdef _CRT_USE_WINAPI_FAMILY_DESKTOP_APP
+        -:   70:  _CRTIMP int __cdecl _getpid(void);
+        -:   71:  _CRTIMP intptr_t __cdecl _cwait(int *_TermStat,intptr_t _ProcHandle,int _Action);
+        -:   72:  _CRTIMP intptr_t __cdecl _execl(const char *_Filename,const char *_ArgList,...);
+        -:   73:  _CRTIMP intptr_t __cdecl _execle(const char *_Filename,const char *_ArgList,...);
+        -:   74:  _CRTIMP intptr_t __cdecl _execlp(const char *_Filename,const char *_ArgList,...);
+        -:   75:  _CRTIMP intptr_t __cdecl _execlpe(const char *_Filename,const char *_ArgList,...);
+        -:   76:  _CRTIMP intptr_t __cdecl _execv(const char *_Filename,const char *const *_ArgList);
+        -:   77:  _CRTIMP intptr_t __cdecl _execve(const char *_Filename,const char *const *_ArgList,const char *const *_Env);
+        -:   78:  _CRTIMP intptr_t __cdecl _execvp(const char *_Filename,const char *const *_ArgList);
+        -:   79:  _CRTIMP intptr_t __cdecl _execvpe(const char *_Filename,const char *const *_ArgList,const char *const *_Env);
+        -:   80:  _CRTIMP intptr_t __cdecl _spawnl(int _Mode,const char *_Filename,const char *_ArgList,...);
+        -:   81:  _CRTIMP intptr_t __cdecl _spawnle(int _Mode,const char *_Filename,const char *_ArgList,...);
+        -:   82:  _CRTIMP intptr_t __cdecl _spawnlp(int _Mode,const char *_Filename,const char *_ArgList,...);
+        -:   83:  _CRTIMP intptr_t __cdecl _spawnlpe(int _Mode,const char *_Filename,const char *_ArgList,...);
+        -:   84:
+        -:   85:#ifndef _SPAWNV_DEFINED
+        -:   86:#define _SPAWNV_DEFINED
+        -:   87:  _CRTIMP intptr_t __cdecl _spawnv(int _Mode,const char *_Filename,const char *const *_ArgList);
+        -:   88:  _CRTIMP intptr_t __cdecl _spawnve(int _Mode,const char *_Filename,const char *const *_ArgList,const char *const *_Env);
+        -:   89:  _CRTIMP intptr_t __cdecl _spawnvp(int _Mode,const char *_Filename,const char *const *_ArgList);
+        -:   90:  _CRTIMP intptr_t __cdecl _spawnvpe(int _Mode,const char *_Filename,const char *const *_ArgList,const char *const *_Env);
+        -:   91:#endif
+        -:   92:
+        -:   93:#ifndef _CRT_SYSTEM_DEFINED
+        -:   94:#define _CRT_SYSTEM_DEFINED
+        -:   95:  int __cdecl system(const char *_Command);
+        -:   96:#endif
+        -:   97:
+        -:   98:#ifndef _WEXEC_DEFINED
+        -:   99:#define _WEXEC_DEFINED
+        -:  100:  _CRTIMP intptr_t __cdecl _wexecl(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+        -:  101:  _CRTIMP intptr_t __cdecl _wexecle(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+        -:  102:  _CRTIMP intptr_t __cdecl _wexeclp(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+        -:  103:  _CRTIMP intptr_t __cdecl _wexeclpe(const wchar_t *_Filename,const wchar_t *_ArgList,...);
+        -:  104:  _CRTIMP intptr_t __cdecl _wexecv(const wchar_t *_Filename,const wchar_t *const *_ArgList);
+        -:  105:  _CRTIMP intptr_t __cdecl _wexecve(const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+        -:  106:  _CRTIMP intptr_t __cdecl _wexecvp(const wchar_t *_Filename,const wchar_t *const *_ArgList);
+        -:  107:  _CRTIMP intptr_t __cdecl _wexecvpe(const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+        -:  108:#endif
+        -:  109:
+        -:  110:#ifndef _WSPAWN_DEFINED
+        -:  111:#define _WSPAWN_DEFINED
+        -:  112:  _CRTIMP intptr_t __cdecl _wspawnl(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+        -:  113:  _CRTIMP intptr_t __cdecl _wspawnle(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+        -:  114:  _CRTIMP intptr_t __cdecl _wspawnlp(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+        -:  115:  _CRTIMP intptr_t __cdecl _wspawnlpe(int _Mode,const wchar_t *_Filename,const wchar_t *_ArgList,...);
+        -:  116:  _CRTIMP intptr_t __cdecl _wspawnv(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList);
+        -:  117:  _CRTIMP intptr_t __cdecl _wspawnve(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+        -:  118:  _CRTIMP intptr_t __cdecl _wspawnvp(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList);
+        -:  119:  _CRTIMP intptr_t __cdecl _wspawnvpe(int _Mode,const wchar_t *_Filename,const wchar_t *const *_ArgList,const wchar_t *const *_Env);
+        -:  120:#endif
+        -:  121:
+        -:  122:#ifndef _CRT_WSYSTEM_DEFINED
+        -:  123:#define _CRT_WSYSTEM_DEFINED
+        -:  124:  _CRTIMP int __cdecl _wsystem(const wchar_t *_Command);
+        -:  125:#endif
+        -:  126:#endif /* _CRT_USE_WINAPI_FAMILY_DESKTOP_APP */
+        -:  127:
+        -:  128:#ifdef _CRT_USE_WINAPI_FAMILY_DESKTOP_APP
+        -:  129:  intptr_t __cdecl _loaddll(char *_Filename);
+        -:  130:  int __cdecl _unloaddll(intptr_t _Handle);
+        -:  131:  int (__cdecl *__cdecl _getdllprocaddr(intptr_t _Handle,char *_ProcedureName,intptr_t _Ordinal))(void);
+        -:  132:#endif /* _CRT_USE_WINAPI_FAMILY_DESKTOP_APP */
+        -:  133:
+        -:  134:#ifdef _DECL_DLLMAIN
+        -:  135:#ifdef _WINDOWS_
+        -:  136:  WINBOOL WINAPI DllMain(HANDLE _HDllHandle,DWORD _Reason,LPVOID _Reserved);
+        -:  137:  WINBOOL WINAPI _CRT_INIT(HANDLE _HDllHandle,DWORD _Reason,LPVOID _Reserved);
+        -:  138:  WINBOOL WINAPI _wCRT_INIT(HANDLE _HDllHandle,DWORD _Reason,LPVOID _Reserved);
+        -:  139:  extern WINBOOL (WINAPI *const _pRawDllMain)(HANDLE,DWORD,LPVOID);
+        -:  140:#else
+        -:  141:  int __stdcall DllMain(void *_HDllHandle,unsigned _Reason,void *_Reserved);
+        -:  142:  int __stdcall _CRT_INIT(void *_HDllHandle,unsigned _Reason,void *_Reserved);
+        -:  143:  int __stdcall _wCRT_INIT(void *_HDllHandle,unsigned _Reason,void *_Reserved);
+        -:  144:  extern int (__stdcall *const _pRawDllMain)(void *,unsigned,void *);
+        -:  145:#endif
+        -:  146:#endif
+        -:  147:
+        -:  148:#ifndef	NO_OLDNAMES
+        -:  149:#define P_WAIT _P_WAIT
+        -:  150:#define P_NOWAIT _P_NOWAIT
+        -:  151:#define P_OVERLAY _P_OVERLAY
+        -:  152:#define OLD_P_OVERLAY _OLD_P_OVERLAY
+        -:  153:#define P_NOWAITO _P_NOWAITO
+        -:  154:#define P_DETACH _P_DETACH
+        -:  155:#define WAIT_CHILD _WAIT_CHILD
+        -:  156:#define WAIT_GRANDCHILD _WAIT_GRANDCHILD
+        -:  157:
+        -:  158:#if defined(_CRT_USE_WINAPI_FAMILY_DESKTOP_APP) || defined(WINSTORECOMPAT)
+        -:  159:#ifndef _CRT_GETPID_DEFINED
+        -:  160:#define _CRT_GETPID_DEFINED  /* Also in unistd.h */
+        -:  161:  int __cdecl getpid(void) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  162:#endif
+        -:  163:#endif /* _CRT_USE_WINAPI_FAMILY_DESKTOP_APP || WINSTORECOMPAT */
+        -:  164:#ifdef _CRT_USE_WINAPI_FAMILY_DESKTOP_APP
+        -:  165:  intptr_t __cdecl cwait(int *_TermStat,intptr_t _ProcHandle,int _Action) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  166:#ifdef __GNUC__
+        -:  167:  int __cdecl execl(const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  168:  int __cdecl execle(const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  169:  int __cdecl execlp(const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  170:  int __cdecl execlpe(const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  171:#else
+        -:  172:  intptr_t __cdecl execl(const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  173:  intptr_t __cdecl execle(const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  174:  intptr_t __cdecl execlp(const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  175:  intptr_t __cdecl execlpe(const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  176:#endif
+        -:  177:  intptr_t __cdecl spawnl(int,const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  178:  intptr_t __cdecl spawnle(int,const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  179:  intptr_t __cdecl spawnlp(int,const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  180:  intptr_t __cdecl spawnlpe(int,const char *_Filename,const char *_ArgList,...) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  181:#ifdef __GNUC__
+        -:  182:  /* Those methods are predefined by gcc builtins to return int. So to prevent
+        -:  183:     stupid warnings, define them in POSIX way.  This is save, because those
+        -:  184:     methods do not return in success case, so that the return value is not
+        -:  185:     really dependent to its scalar width.  */
+        -:  186:  _CRTIMP int __cdecl execv(const char *_Filename,char *const _ArgList[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  187:  _CRTIMP int __cdecl execve(const char *_Filename,char *const _ArgList[],char *const _Env[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  188:  _CRTIMP int __cdecl execvp(const char *_Filename,char *const _ArgList[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  189:  _CRTIMP int __cdecl execvpe(const char *_Filename,char *const _ArgList[],char *const _Env[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  190:#else
+        -:  191:  _CRTIMP intptr_t __cdecl execv(const char *_Filename,char *const _ArgList[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  192:  _CRTIMP intptr_t __cdecl execve(const char *_Filename,char *const _ArgList[],char *const _Env[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  193:  _CRTIMP intptr_t __cdecl execvp(const char *_Filename,char *const _ArgList[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  194:  _CRTIMP intptr_t __cdecl execvpe(const char *_Filename,char *const _ArgList[],char *const _Env[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  195:#endif
+        -:  196:  _CRTIMP intptr_t __cdecl spawnv(int,const char *_Filename,char *const _ArgList[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  197:  _CRTIMP intptr_t __cdecl spawnve(int,const char *_Filename,char *const _ArgList[],char *const _Env[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  198:  _CRTIMP intptr_t __cdecl spawnvp(int,const char *_Filename,char *const _ArgList[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  199:  _CRTIMP intptr_t __cdecl spawnvpe(int,const char *_Filename,char *const _ArgList[],char *const _Env[]) __MINGW_ATTRIB_DEPRECATED_MSVC2005;
+        -:  200:#endif
+        -:  201:#endif /* _CRT_USE_WINAPI_FAMILY_DESKTOP_APP */
+        -:  202:
+        -:  203:#ifdef __cplusplus
+        -:  204:}
+        -:  205:#endif
+        -:  206:#endif
+        -:  207:#endif

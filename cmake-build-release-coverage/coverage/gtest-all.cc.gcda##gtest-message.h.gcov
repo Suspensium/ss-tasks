@@ -1,0 +1,1338 @@
+        -:    0:Source:D:/Projects/SoftAcademy/Tasks/googletest/googletest/include/gtest/gtest-message.h
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\googletest\googletest\CMakeFiles\gtest.dir\src\gtest-all.cc.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\googletest\googletest\CMakeFiles\gtest.dir\src\gtest-all.cc.gcda
+        -:    0:Runs:1
+        -:    1:// Copyright 2005, Google Inc.
+        -:    2:// All rights reserved.
+        -:    3://
+        -:    4:// Redistribution and use in source and binary forms, with or without
+        -:    5:// modification, are permitted provided that the following conditions are
+        -:    6:// met:
+        -:    7://
+        -:    8://     * Redistributions of source code must retain the above copyright
+        -:    9:// notice, this list of conditions and the following disclaimer.
+        -:   10://     * Redistributions in binary form must reproduce the above
+        -:   11:// copyright notice, this list of conditions and the following disclaimer
+        -:   12:// in the documentation and/or other materials provided with the
+        -:   13:// distribution.
+        -:   14://     * Neither the name of Google Inc. nor the names of its
+        -:   15:// contributors may be used to endorse or promote products derived from
+        -:   16:// this software without specific prior written permission.
+        -:   17://
+        -:   18:// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+        -:   19:// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+        -:   20:// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+        -:   21:// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+        -:   22:// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        -:   23:// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+        -:   24:// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+        -:   25:// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+        -:   26:// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+        -:   27:// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        -:   28:// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        -:   29:
+        -:   30:// The Google C++ Testing and Mocking Framework (Google Test)
+        -:   31://
+        -:   32:// This header file defines the Message class.
+        -:   33://
+        -:   34:// IMPORTANT NOTE: Due to limitation of the C++ language, we have to
+        -:   35:// leave some internal implementation details in this header file.
+        -:   36:// They are clearly marked by comments like this:
+        -:   37://
+        -:   38://   // INTERNAL IMPLEMENTATION - DO NOT USE IN A USER PROGRAM.
+        -:   39://
+        -:   40:// Such code is NOT meant to be used by a user directly, and is subject
+        -:   41:// to CHANGE WITHOUT NOTICE.  Therefore DO NOT DEPEND ON IT in a user
+        -:   42:// program!
+        -:   43:
+        -:   44:// IWYU pragma: private, include "gtest/gtest.h"
+        -:   45:// IWYU pragma: friend gtest/.*
+        -:   46:// IWYU pragma: friend gmock/.*
+        -:   47:
+        -:   48:#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_MESSAGE_H_
+        -:   49:#define GOOGLETEST_INCLUDE_GTEST_GTEST_MESSAGE_H_
+        -:   50:
+        -:   51:#include <limits>
+        -:   52:#include <memory>
+        -:   53:#include <ostream>
+        -:   54:#include <sstream>
+        -:   55:#include <string>
+        -:   56:
+        -:   57:#include "gtest/internal/gtest-port.h"
+        -:   58:
+        -:   59:#ifdef GTEST_HAS_ABSL
+        -:   60:#include <type_traits>
+        -:   61:
+        -:   62:#include "absl/strings/has_absl_stringify.h"
+        -:   63:#include "absl/strings/str_cat.h"
+        -:   64:#endif  // GTEST_HAS_ABSL
+        -:   65:
+        -:   66:GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
+        -:   67:/* class A needs to have dll-interface to be used by clients of class B */)
+        -:   68:
+        -:   69:// Ensures that there is at least one operator<< in the global namespace.
+        -:   70:// See Message& operator<<(...) below for why.
+        -:   71:void operator<<(const testing::internal::Secret&, int);
+        -:   72:
+        -:   73:namespace testing {
+        -:   74:
+        -:   75:// The Message class works like an ostream repeater.
+        -:   76://
+        -:   77:// Typical usage:
+        -:   78://
+        -:   79://   1. You stream a bunch of values to a Message object.
+        -:   80://      It will remember the text in a stringstream.
+        -:   81://   2. Then you stream the Message object to an ostream.
+        -:   82://      This causes the text in the Message to be streamed
+        -:   83://      to the ostream.
+        -:   84://
+        -:   85:// For example;
+        -:   86://
+        -:   87://   testing::Message foo;
+        -:   88://   foo << 1 << " != " << 2;
+        -:   89://   std::cout << foo;
+        -:   90://
+        -:   91:// will print "1 != 2".
+        -:   92://
+        -:   93:// Message is not intended to be inherited from.  In particular, its
+        -:   94:// destructor is not virtual.
+        -:   95://
+        -:   96:// Note that stringstream behaves differently in gcc and in MSVC.  You
+        -:   97:// can stream a NULL char pointer to it in the former, but not in the
+        -:   98:// latter (it causes an access violation if you do).  The Message
+        -:   99:// class hides this difference by treating a NULL char pointer as
+        -:  100:// "(null)".
+      42*:  101:class GTEST_API_ Message {
+    %%%%%:  101-block  0
+    %%%%%:  101-block  1
+    %%%%%:  101-block  2
+    %%%%%:  101-block  3
+    %%%%%:  101-block  4
+    %%%%%:  101-block  5
+    %%%%%:  101-block  6
+    %%%%%:  101-block  7
+    %%%%%:  101-block  8
+    %%%%%:  101-block  9
+    %%%%%:  101-block 10
+    %%%%%:  101-block 11
+    %%%%%:  101-block 12
+    %%%%%:  101-block 13
+    %%%%%:  101-block 14
+    %%%%%:  101-block 15
+    %%%%%:  101-block 16
+    %%%%%:  101-block 17
+    %%%%%:  101-block 18
+    %%%%%:  101-block 19
+    %%%%%:  101-block 20
+    %%%%%:  101-block 21
+    %%%%%:  101-block 22
+    %%%%%:  101-block 23
+    %%%%%:  101-block 24
+    %%%%%:  101-block 25
+    %%%%%:  101-block 26
+    %%%%%:  101-block 27
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  101-block 28
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed (throw)
+    %%%%%:  101-block 29
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    %%%%%:  101-block 30
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:  101-block 31
+    $$$$$:  101-block 32
+    $$$$$:  101-block 33
+    $$$$$:  101-block 34
+    $$$$$:  101-block 35
+    $$$$$:  101-block 36
+    %%%%%:  101-block 37
+    %%%%%:  101-block 38
+    %%%%%:  101-block 39
+    %%%%%:  101-block 40
+    %%%%%:  101-block 41
+    %%%%%:  101-block 42
+    %%%%%:  101-block 43
+    %%%%%:  101-block 44
+    %%%%%:  101-block 45
+    %%%%%:  101-block 46
+    $$$$$:  101-block 47
+call   11 never executed
+    %%%%%:  101-block 48
+    %%%%%:  101-block 49
+    %%%%%:  101-block 50
+    %%%%%:  101-block 51
+    %%%%%:  101-block 52
+    %%%%%:  101-block 53
+call   12 never executed
+    $$$$$:  101-block 54
+    %%%%%:  101-block 55
+    %%%%%:  101-block 56
+call   13 never executed
+    $$$$$:  101-block 57
+    %%%%%:  101-block 58
+branch 14 never executed (fallthrough)
+branch 15 never executed
+    %%%%%:  101-block 59
+call   16 never executed
+branch 17 never executed (fallthrough)
+branch 18 never executed (throw)
+    $$$$$:  101-block 60
+    $$$$$:  101-block 61
+    %%%%%:  101-block 62
+    %%%%%:  101-block 63
+    $$$$$:  101-block 64
+call   19 never executed
+       21:  101-block 65
+call   20 returned 21
+branch 21 taken 21 (fallthrough)
+branch 22 taken 0 (throw)
+       21:  101-block 66
+call   23 returned 21
+    $$$$$:  101-block 67
+call   24 never executed
+    $$$$$:  101-block 68
+    %%%%%:  101-block 69
+    %%%%%:  101-block 70
+    %%%%%:  101-block 71
+    %%%%%:  101-block 72
+    %%%%%:  101-block 73
+    %%%%%:  101-block 74
+    %%%%%:  101-block 75
+    $$$$$:  101-block 76
+call   25 never executed
+    $$$$$:  101-block 77
+call   26 never executed
+    $$$$$:  101-block 78
+call   27 never executed
+    $$$$$:  101-block 79
+call   28 never executed
+    $$$$$:  101-block 80
+    $$$$$:  101-block 81
+    $$$$$:  101-block 82
+    %%%%%:  101-block 83
+    %%%%%:  101-block 84
+call   29 never executed
+    $$$$$:  101-block 85
+    %%%%%:  101-block 86
+    %%%%%:  101-block 87
+        -:  102: private:
+        -:  103:  // The type of basic IO manipulators (endl, ends, and flush) for
+        -:  104:  // narrow streams.
+        -:  105:  typedef std::ostream& (*BasicNarrowIoManip)(std::ostream&);
+        -:  106:
+        -:  107: public:
+        -:  108:  // Constructs an empty Message.
+        -:  109:  Message();
+        -:  110:
+        -:  111:  // Copy constructor.
+function _ZN7testing7MessageC1ERKS0_ called 0 returned 0% blocks executed 0%
+    #####:  112:  Message(const Message& msg) : ss_(new ::std::stringstream) {  // NOLINT
+    %%%%%:  112-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    $$$$$:  112-block  1
+call    4 never executed
+    #####:  113:    *ss_ << msg.GetString();
+    %%%%%:  113-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  113-block  1
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:  114:  }
+        -:  115:
+        -:  116:  // Constructs a Message from a C-string.
+        -:  117:  explicit Message(const char* str) : ss_(new ::std::stringstream) {
+        -:  118:    *ss_ << str;
+        -:  119:  }
+        -:  120:
+        -:  121:  // Streams a non-pointer value to this object. If building a version of
+        -:  122:  // GoogleTest with ABSL, this overload is only enabled if the value does not
+        -:  123:  // have an AbslStringify definition.
+        -:  124:  template <
+        -:  125:      typename T
+        -:  126:#ifdef GTEST_HAS_ABSL
+        -:  127:      ,
+        -:  128:      typename std::enable_if<!absl::HasAbslStringify<T>::value,  // NOLINT
+        -:  129:                              int>::type = 0
+        -:  130:#endif  // GTEST_HAS_ABSL
+        -:  131:      >
+        -:  132:  inline Message& operator<<(const T& val) {
+        -:  133:        // Some libraries overload << for STL containers.  These
+        -:  134:    // overloads are defined in the global namespace instead of ::std.
+        -:  135:    //
+        -:  136:    // C++'s symbol lookup rule (i.e. Koenig lookup) says that these
+        -:  137:    // overloads are visible in either the std namespace or the global
+        -:  138:    // namespace, but not other namespaces, including the testing
+        -:  139:    // namespace which Google Test's Message class is in.
+        -:  140:    //
+        -:  141:    // To allow STL containers (and other types that has a << operator
+        -:  142:    // defined in the global namespace) to be used in Google Test
+        -:  143:    // assertions, testing::Message must access the custom << operator
+        -:  144:    // from the global namespace.  With this using declaration,
+        -:  145:    // overloads of << defined in the global namespace and those
+        -:  146:    // visible via Koenig lookup are both exposed in this function.
+        -:  147:    using ::operator<<;
+     457*:  148:    *ss_ << val;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+call    3 returned 9
+branch  4 taken 9 (fallthrough)
+branch  5 taken 0 (throw)
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed (throw)
+call   18 never executed
+branch 19 never executed (fallthrough)
+branch 20 never executed (throw)
+call   21 never executed
+branch 22 never executed (fallthrough)
+branch 23 never executed (throw)
+call   24 never executed
+branch 25 never executed (fallthrough)
+branch 26 never executed (throw)
+call   27 never executed
+branch 28 never executed (fallthrough)
+branch 29 never executed (throw)
+call   30 never executed
+branch 31 never executed (fallthrough)
+branch 32 never executed (throw)
+call   33 never executed
+branch 34 never executed (fallthrough)
+branch 35 never executed (throw)
+call   36 never executed
+branch 37 never executed (fallthrough)
+branch 38 never executed (throw)
+call   39 never executed
+branch 40 never executed (fallthrough)
+branch 41 never executed (throw)
+call   42 never executed
+branch 43 never executed (fallthrough)
+branch 44 never executed (throw)
+call   45 never executed
+branch 46 never executed (fallthrough)
+branch 47 never executed (throw)
+call   48 never executed
+branch 49 never executed (fallthrough)
+branch 50 never executed (throw)
+call   51 never executed
+branch 52 never executed (fallthrough)
+branch 53 never executed (throw)
+call   54 never executed
+branch 55 never executed (fallthrough)
+branch 56 never executed (throw)
+call   57 never executed
+branch 58 never executed (fallthrough)
+branch 59 never executed (throw)
+call   60 never executed
+branch 61 never executed (fallthrough)
+branch 62 never executed (throw)
+call   63 never executed
+branch 64 never executed (fallthrough)
+branch 65 never executed (throw)
+call   66 never executed
+branch 67 never executed (fallthrough)
+branch 68 never executed (throw)
+call   69 never executed
+branch 70 never executed (fallthrough)
+branch 71 never executed (throw)
+call   72 returned 13
+branch 73 taken 13 (fallthrough)
+branch 74 taken 0 (throw)
+call   75 never executed
+branch 76 never executed (fallthrough)
+branch 77 never executed (throw)
+call   78 never executed
+branch 79 never executed (fallthrough)
+branch 80 never executed (throw)
+call   81 never executed
+branch 82 never executed (fallthrough)
+branch 83 never executed (throw)
+call   84 never executed
+branch 85 never executed (fallthrough)
+branch 86 never executed (throw)
+    %%%%%:  148-block  0
+call   87 never executed
+branch 88 never executed (fallthrough)
+branch 89 never executed (throw)
+    %%%%%:  148-block  1
+call   90 never executed
+branch 91 never executed (fallthrough)
+branch 92 never executed (throw)
+    %%%%%:  148-block  2
+call   93 never executed
+branch 94 never executed (fallthrough)
+branch 95 never executed (throw)
+    %%%%%:  148-block  3
+call   96 never executed
+branch 97 never executed (fallthrough)
+branch 98 never executed (throw)
+    %%%%%:  148-block  4
+call   99 never executed
+branch 100 never executed (fallthrough)
+branch 101 never executed (throw)
+    %%%%%:  148-block  5
+call   102 never executed
+branch 103 never executed (fallthrough)
+branch 104 never executed (throw)
+    %%%%%:  148-block  6
+call   105 never executed
+branch 106 never executed (fallthrough)
+branch 107 never executed (throw)
+    %%%%%:  148-block  7
+call   108 never executed
+branch 109 never executed (fallthrough)
+branch 110 never executed (throw)
+    %%%%%:  148-block  8
+call   111 never executed
+branch 112 never executed (fallthrough)
+branch 113 never executed (throw)
+    %%%%%:  148-block  9
+call   114 never executed
+branch 115 never executed (fallthrough)
+branch 116 never executed (throw)
+    %%%%%:  148-block 10
+call   117 never executed
+branch 118 never executed (fallthrough)
+branch 119 never executed (throw)
+    %%%%%:  148-block 11
+call   120 never executed
+branch 121 never executed (fallthrough)
+branch 122 never executed (throw)
+    %%%%%:  148-block 12
+call   123 never executed
+branch 124 never executed (fallthrough)
+branch 125 never executed (throw)
+    %%%%%:  148-block 13
+call   126 never executed
+branch 127 never executed (fallthrough)
+branch 128 never executed (throw)
+    %%%%%:  148-block 14
+call   129 never executed
+branch 130 never executed (fallthrough)
+branch 131 never executed (throw)
+    %%%%%:  148-block 15
+call   132 never executed
+branch 133 never executed (fallthrough)
+branch 134 never executed (throw)
+    %%%%%:  148-block 16
+call   135 never executed
+branch 136 never executed (fallthrough)
+branch 137 never executed (throw)
+    %%%%%:  148-block 17
+call   138 never executed
+branch 139 never executed (fallthrough)
+branch 140 never executed (throw)
+    %%%%%:  148-block 18
+call   141 never executed
+branch 142 never executed (fallthrough)
+branch 143 never executed (throw)
+    %%%%%:  148-block 19
+call   144 never executed
+branch 145 never executed (fallthrough)
+branch 146 never executed (throw)
+    %%%%%:  148-block 20
+call   147 never executed
+branch 148 never executed (fallthrough)
+branch 149 never executed (throw)
+    %%%%%:  148-block 21
+call   150 never executed
+branch 151 never executed (fallthrough)
+branch 152 never executed (throw)
+    %%%%%:  148-block 22
+call   153 never executed
+branch 154 never executed (fallthrough)
+branch 155 never executed (throw)
+    %%%%%:  148-block 23
+call   156 never executed
+branch 157 never executed (fallthrough)
+branch 158 never executed (throw)
+    %%%%%:  148-block 24
+call   159 never executed
+branch 160 never executed (fallthrough)
+branch 161 never executed (throw)
+    %%%%%:  148-block 25
+call   162 never executed
+branch 163 never executed (fallthrough)
+branch 164 never executed (throw)
+    %%%%%:  148-block 26
+call   165 never executed
+branch 166 never executed (fallthrough)
+branch 167 never executed (throw)
+call   168 never executed
+branch 169 never executed (fallthrough)
+branch 170 never executed (throw)
+    %%%%%:  148-block 27
+call   171 never executed
+branch 172 never executed (fallthrough)
+branch 173 never executed (throw)
+    %%%%%:  148-block 28
+call   174 never executed
+branch 175 never executed (fallthrough)
+branch 176 never executed (throw)
+    %%%%%:  148-block 29
+call   177 never executed
+branch 178 never executed (fallthrough)
+branch 179 never executed (throw)
+    %%%%%:  148-block 30
+call   180 never executed
+branch 181 never executed (fallthrough)
+branch 182 never executed (throw)
+    %%%%%:  148-block 31
+call   183 never executed
+branch 184 never executed (fallthrough)
+branch 185 never executed (throw)
+    %%%%%:  148-block 32
+call   186 never executed
+branch 187 never executed (fallthrough)
+branch 188 never executed (throw)
+    %%%%%:  148-block 33
+call   189 never executed
+branch 190 never executed (fallthrough)
+branch 191 never executed (throw)
+    %%%%%:  148-block 34
+call   192 never executed
+branch 193 never executed (fallthrough)
+branch 194 never executed (throw)
+    %%%%%:  148-block 35
+call   195 never executed
+branch 196 never executed (fallthrough)
+branch 197 never executed (throw)
+    %%%%%:  148-block 36
+call   198 never executed
+branch 199 never executed (fallthrough)
+branch 200 never executed (throw)
+    %%%%%:  148-block 37
+call   201 never executed
+branch 202 never executed (fallthrough)
+branch 203 never executed (throw)
+    %%%%%:  148-block 38
+call   204 never executed
+branch 205 never executed (fallthrough)
+branch 206 never executed (throw)
+    %%%%%:  148-block 39
+call   207 never executed
+branch 208 never executed (fallthrough)
+branch 209 never executed (throw)
+    %%%%%:  148-block 40
+call   210 never executed
+branch 211 never executed (fallthrough)
+branch 212 never executed (throw)
+    %%%%%:  148-block 41
+call   213 never executed
+branch 214 never executed (fallthrough)
+branch 215 never executed (throw)
+    %%%%%:  148-block 42
+call   216 never executed
+branch 217 never executed (fallthrough)
+branch 218 never executed (throw)
+    %%%%%:  148-block 43
+call   219 never executed
+branch 220 never executed (fallthrough)
+branch 221 never executed (throw)
+    %%%%%:  148-block 44
+call   222 never executed
+branch 223 never executed (fallthrough)
+branch 224 never executed (throw)
+    %%%%%:  148-block 45
+call   225 never executed
+branch 226 never executed (fallthrough)
+branch 227 never executed (throw)
+    %%%%%:  148-block 46
+call   228 never executed
+branch 229 never executed (fallthrough)
+branch 230 never executed (throw)
+    %%%%%:  148-block 47
+call   231 never executed
+branch 232 never executed (fallthrough)
+branch 233 never executed (throw)
+    %%%%%:  148-block 48
+call   234 never executed
+branch 235 never executed (fallthrough)
+branch 236 never executed (throw)
+    %%%%%:  148-block 49
+call   237 never executed
+branch 238 never executed (fallthrough)
+branch 239 never executed (throw)
+    %%%%%:  148-block 50
+call   240 never executed
+branch 241 never executed (fallthrough)
+branch 242 never executed (throw)
+    %%%%%:  148-block 51
+call   243 never executed
+branch 244 never executed (fallthrough)
+branch 245 never executed (throw)
+    %%%%%:  148-block 52
+call   246 never executed
+branch 247 never executed (fallthrough)
+branch 248 never executed (throw)
+    %%%%%:  148-block 53
+call   249 never executed
+branch 250 never executed (fallthrough)
+branch 251 never executed (throw)
+    %%%%%:  148-block 54
+call   252 never executed
+branch 253 never executed (fallthrough)
+branch 254 never executed (throw)
+    %%%%%:  148-block 55
+call   255 never executed
+branch 256 never executed (fallthrough)
+branch 257 never executed (throw)
+    %%%%%:  148-block 56
+call   258 never executed
+branch 259 never executed (fallthrough)
+branch 260 never executed (throw)
+    %%%%%:  148-block 57
+call   261 never executed
+branch 262 never executed (fallthrough)
+branch 263 never executed (throw)
+    %%%%%:  148-block 58
+call   264 never executed
+branch 265 never executed (fallthrough)
+branch 266 never executed (throw)
+    %%%%%:  148-block 59
+call   267 never executed
+branch 268 never executed (fallthrough)
+branch 269 never executed (throw)
+    %%%%%:  148-block 60
+call   270 never executed
+branch 271 never executed (fallthrough)
+branch 272 never executed (throw)
+    %%%%%:  148-block 61
+call   273 never executed
+branch 274 never executed (fallthrough)
+branch 275 never executed (throw)
+    %%%%%:  148-block 62
+call   276 never executed
+branch 277 never executed (fallthrough)
+branch 278 never executed (throw)
+    %%%%%:  148-block 63
+call   279 never executed
+branch 280 never executed (fallthrough)
+branch 281 never executed (throw)
+    %%%%%:  148-block 64
+call   282 never executed
+branch 283 never executed (fallthrough)
+branch 284 never executed (throw)
+    %%%%%:  148-block 65
+call   285 never executed
+branch 286 never executed (fallthrough)
+branch 287 never executed (throw)
+call   288 never executed
+branch 289 never executed (fallthrough)
+branch 290 never executed (throw)
+    %%%%%:  148-block 66
+call   291 never executed
+branch 292 never executed (fallthrough)
+branch 293 never executed (throw)
+    %%%%%:  148-block 67
+call   294 never executed
+branch 295 never executed (fallthrough)
+branch 296 never executed (throw)
+    %%%%%:  148-block 68
+call   297 never executed
+branch 298 never executed (fallthrough)
+branch 299 never executed (throw)
+    %%%%%:  148-block 69
+call   300 never executed
+branch 301 never executed (fallthrough)
+branch 302 never executed (throw)
+    %%%%%:  148-block 70
+call   303 never executed
+branch 304 never executed (fallthrough)
+branch 305 never executed (throw)
+    %%%%%:  148-block 71
+call   306 never executed
+branch 307 never executed (fallthrough)
+branch 308 never executed (throw)
+    %%%%%:  148-block 72
+call   309 never executed
+branch 310 never executed (fallthrough)
+branch 311 never executed (throw)
+    %%%%%:  148-block 73
+call   312 never executed
+branch 313 never executed (fallthrough)
+branch 314 never executed (throw)
+    %%%%%:  148-block 74
+call   315 never executed
+branch 316 never executed (fallthrough)
+branch 317 never executed (throw)
+    %%%%%:  148-block 75
+call   318 never executed
+branch 319 never executed (fallthrough)
+branch 320 never executed (throw)
+    %%%%%:  148-block 76
+call   321 never executed
+branch 322 never executed (fallthrough)
+branch 323 never executed (throw)
+    %%%%%:  148-block 77
+call   324 never executed
+branch 325 never executed (fallthrough)
+branch 326 never executed (throw)
+    %%%%%:  148-block 78
+call   327 never executed
+branch 328 never executed (fallthrough)
+branch 329 never executed (throw)
+    %%%%%:  148-block 79
+call   330 never executed
+branch 331 never executed (fallthrough)
+branch 332 never executed (throw)
+call   333 never executed
+branch 334 never executed (fallthrough)
+branch 335 never executed (throw)
+    %%%%%:  148-block 80
+call   336 never executed
+branch 337 never executed (fallthrough)
+branch 338 never executed (throw)
+    %%%%%:  148-block 81
+call   339 never executed
+branch 340 never executed (fallthrough)
+branch 341 never executed (throw)
+    %%%%%:  148-block 82
+call   342 never executed
+branch 343 never executed (fallthrough)
+branch 344 never executed (throw)
+    %%%%%:  148-block 83
+call   345 never executed
+branch 346 never executed (fallthrough)
+branch 347 never executed (throw)
+    %%%%%:  148-block 84
+call   348 never executed
+branch 349 never executed (fallthrough)
+branch 350 never executed (throw)
+    %%%%%:  148-block 85
+call   351 never executed
+branch 352 never executed (fallthrough)
+branch 353 never executed (throw)
+    %%%%%:  148-block 86
+call   354 never executed
+branch 355 never executed (fallthrough)
+branch 356 never executed (throw)
+    %%%%%:  148-block 87
+call   357 never executed
+branch 358 never executed (fallthrough)
+branch 359 never executed (throw)
+    %%%%%:  148-block 88
+call   360 never executed
+branch 361 never executed (fallthrough)
+branch 362 never executed (throw)
+call   363 never executed
+branch 364 never executed (fallthrough)
+branch 365 never executed (throw)
+    %%%%%:  148-block 89
+call   366 never executed
+branch 367 never executed (fallthrough)
+branch 368 never executed (throw)
+    %%%%%:  148-block 90
+call   369 never executed
+branch 370 never executed (fallthrough)
+branch 371 never executed (throw)
+    %%%%%:  148-block 91
+call   372 never executed
+branch 373 never executed (fallthrough)
+branch 374 never executed (throw)
+    %%%%%:  148-block 92
+call   375 never executed
+branch 376 never executed (fallthrough)
+branch 377 never executed (throw)
+    %%%%%:  148-block 93
+call   378 never executed
+branch 379 never executed (fallthrough)
+branch 380 never executed (throw)
+    %%%%%:  148-block 94
+call   381 never executed
+branch 382 never executed (fallthrough)
+branch 383 never executed (throw)
+    %%%%%:  148-block 95
+call   384 never executed
+branch 385 never executed (fallthrough)
+branch 386 never executed (throw)
+    %%%%%:  148-block 96
+call   387 never executed
+branch 388 never executed (fallthrough)
+branch 389 never executed (throw)
+    %%%%%:  148-block 97
+call   390 never executed
+branch 391 never executed (fallthrough)
+branch 392 never executed (throw)
+call   393 never executed
+branch 394 never executed (fallthrough)
+branch 395 never executed (throw)
+    %%%%%:  148-block 98
+call   396 never executed
+branch 397 never executed (fallthrough)
+branch 398 never executed (throw)
+    %%%%%:  148-block 99
+call   399 never executed
+branch 400 never executed (fallthrough)
+branch 401 never executed (throw)
+    %%%%%:  148-block 100
+call   402 never executed
+branch 403 never executed (fallthrough)
+branch 404 never executed (throw)
+    %%%%%:  148-block 101
+call   405 never executed
+branch 406 never executed (fallthrough)
+branch 407 never executed (throw)
+    %%%%%:  148-block 102
+call   408 never executed
+branch 409 never executed (fallthrough)
+branch 410 never executed (throw)
+    %%%%%:  148-block 103
+call   411 never executed
+branch 412 never executed (fallthrough)
+branch 413 never executed (throw)
+    %%%%%:  148-block 104
+call   414 never executed
+branch 415 never executed (fallthrough)
+branch 416 never executed (throw)
+    %%%%%:  148-block 105
+call   417 never executed
+branch 418 never executed (fallthrough)
+branch 419 never executed (throw)
+call   420 never executed
+branch 421 never executed (fallthrough)
+branch 422 never executed (throw)
+    %%%%%:  148-block 106
+call   423 never executed
+branch 424 never executed (fallthrough)
+branch 425 never executed (throw)
+    %%%%%:  148-block 107
+call   426 never executed
+branch 427 never executed (fallthrough)
+branch 428 never executed (throw)
+    %%%%%:  148-block 108
+call   429 never executed
+branch 430 never executed (fallthrough)
+branch 431 never executed (throw)
+    %%%%%:  148-block 109
+call   432 never executed
+branch 433 never executed (fallthrough)
+branch 434 never executed (throw)
+call   435 never executed
+branch 436 never executed (fallthrough)
+branch 437 never executed (throw)
+    %%%%%:  148-block 110
+call   438 never executed
+branch 439 never executed (fallthrough)
+branch 440 never executed (throw)
+    %%%%%:  148-block 111
+call   441 never executed
+branch 442 never executed (fallthrough)
+branch 443 never executed (throw)
+    %%%%%:  148-block 112
+call   444 never executed
+branch 445 never executed (fallthrough)
+branch 446 never executed (throw)
+    %%%%%:  148-block 113
+call   447 never executed
+branch 448 never executed (fallthrough)
+branch 449 never executed (throw)
+    %%%%%:  148-block 114
+call   450 never executed
+branch 451 never executed (fallthrough)
+branch 452 never executed (throw)
+    %%%%%:  148-block 115
+call   453 never executed
+branch 454 never executed (fallthrough)
+branch 455 never executed (throw)
+call   456 never executed
+branch 457 never executed (fallthrough)
+branch 458 never executed (throw)
+call   459 never executed
+branch 460 never executed (fallthrough)
+branch 461 never executed (throw)
+call   462 never executed
+branch 463 never executed (fallthrough)
+branch 464 never executed (throw)
+    %%%%%:  148-block 116
+call   465 never executed
+    %%%%%:  148-block 117
+call   466 never executed
+branch 467 never executed (fallthrough)
+branch 468 never executed (throw)
+    %%%%%:  148-block 118
+call   469 never executed
+branch 470 never executed (fallthrough)
+branch 471 never executed (throw)
+    %%%%%:  148-block 119
+call   472 never executed
+branch 473 never executed (fallthrough)
+branch 474 never executed (throw)
+    %%%%%:  148-block 120
+call   475 never executed
+branch 476 never executed (fallthrough)
+branch 477 never executed (throw)
+    %%%%%:  148-block 121
+call   478 never executed
+branch 479 never executed (fallthrough)
+branch 480 never executed (throw)
+    %%%%%:  148-block 122
+call   481 never executed
+branch 482 never executed (fallthrough)
+branch 483 never executed (throw)
+    %%%%%:  148-block 123
+call   484 never executed
+branch 485 never executed (fallthrough)
+branch 486 never executed (throw)
+call   487 never executed
+branch 488 never executed (fallthrough)
+branch 489 never executed (throw)
+    %%%%%:  148-block 124
+call   490 never executed
+branch 491 never executed (fallthrough)
+branch 492 never executed (throw)
+    %%%%%:  148-block 125
+call   493 never executed
+branch 494 never executed (fallthrough)
+branch 495 never executed (throw)
+    %%%%%:  148-block 126
+call   496 never executed
+branch 497 never executed (fallthrough)
+branch 498 never executed (throw)
+    %%%%%:  148-block 127
+call   499 never executed
+branch 500 never executed (fallthrough)
+branch 501 never executed (throw)
+    %%%%%:  148-block 128
+call   502 never executed
+branch 503 never executed (fallthrough)
+branch 504 never executed (throw)
+    %%%%%:  148-block 129
+call   505 never executed
+branch 506 never executed (fallthrough)
+branch 507 never executed (throw)
+    %%%%%:  148-block 130
+call   508 never executed
+branch 509 never executed (fallthrough)
+branch 510 never executed (throw)
+    %%%%%:  148-block 131
+call   511 never executed
+branch 512 never executed (fallthrough)
+branch 513 never executed (throw)
+call   514 never executed
+branch 515 never executed (fallthrough)
+branch 516 never executed (throw)
+    %%%%%:  148-block 132
+call   517 never executed
+branch 518 never executed (fallthrough)
+branch 519 never executed (throw)
+    %%%%%:  148-block 133
+call   520 never executed
+branch 521 never executed (fallthrough)
+branch 522 never executed (throw)
+    %%%%%:  148-block 134
+call   523 never executed
+branch 524 never executed (fallthrough)
+branch 525 never executed (throw)
+    %%%%%:  148-block 135
+call   526 never executed
+branch 527 never executed (fallthrough)
+branch 528 never executed (throw)
+call   529 never executed
+branch 530 never executed (fallthrough)
+branch 531 never executed (throw)
+    %%%%%:  148-block 136
+call   532 never executed
+branch 533 never executed (fallthrough)
+branch 534 never executed (throw)
+    %%%%%:  148-block 137
+call   535 never executed
+branch 536 never executed (fallthrough)
+branch 537 never executed (throw)
+    %%%%%:  148-block 138
+call   538 never executed
+branch 539 never executed (fallthrough)
+branch 540 never executed (throw)
+    %%%%%:  148-block 139
+call   541 never executed
+branch 542 never executed (fallthrough)
+branch 543 never executed (throw)
+call   544 returned 21
+branch 545 taken 21 (fallthrough)
+branch 546 taken 0 (throw)
+      414:  148-block 140
+call   547 returned 414
+branch 548 taken 414 (fallthrough)
+branch 549 taken 0 (throw)
+call   550 never executed
+branch 551 never executed (fallthrough)
+branch 552 never executed (throw)
+    %%%%%:  148-block 141
+call   553 never executed
+branch 554 never executed (fallthrough)
+branch 555 never executed (throw)
+    %%%%%:  148-block 142
+call   556 never executed
+branch 557 never executed (fallthrough)
+branch 558 never executed (throw)
+    %%%%%:  148-block 143
+call   559 never executed
+branch 560 never executed (fallthrough)
+branch 561 never executed (throw)
+    %%%%%:  148-block 144
+call   562 never executed
+branch 563 never executed (fallthrough)
+branch 564 never executed (throw)
+    %%%%%:  148-block 145
+call   565 never executed
+branch 566 never executed (fallthrough)
+branch 567 never executed (throw)
+    %%%%%:  148-block 146
+call   568 never executed
+branch 569 never executed (fallthrough)
+branch 570 never executed (throw)
+    %%%%%:  148-block 147
+call   571 never executed
+branch 572 never executed (fallthrough)
+branch 573 never executed (throw)
+    %%%%%:  148-block 148
+call   574 never executed
+branch 575 never executed (fallthrough)
+branch 576 never executed (throw)
+    %%%%%:  148-block 149
+call   577 never executed
+branch 578 never executed (fallthrough)
+branch 579 never executed (throw)
+    %%%%%:  148-block 150
+call   580 never executed
+branch 581 never executed (fallthrough)
+branch 582 never executed (throw)
+    %%%%%:  148-block 151
+call   583 never executed
+branch 584 never executed (fallthrough)
+branch 585 never executed (throw)
+    %%%%%:  148-block 152
+call   586 never executed
+branch 587 never executed (fallthrough)
+branch 588 never executed (throw)
+    %%%%%:  148-block 153
+call   589 never executed
+branch 590 never executed (fallthrough)
+branch 591 never executed (throw)
+    %%%%%:  148-block 154
+call   592 never executed
+branch 593 never executed (fallthrough)
+branch 594 never executed (throw)
+    %%%%%:  148-block 155
+call   595 never executed
+branch 596 never executed (fallthrough)
+branch 597 never executed (throw)
+    %%%%%:  148-block 156
+call   598 never executed
+branch 599 never executed (fallthrough)
+branch 600 never executed (throw)
+    %%%%%:  148-block 157
+call   601 never executed
+branch 602 never executed (fallthrough)
+branch 603 never executed (throw)
+    %%%%%:  148-block 158
+call   604 never executed
+branch 605 never executed (fallthrough)
+branch 606 never executed (throw)
+call   607 never executed
+branch 608 never executed (fallthrough)
+branch 609 never executed (throw)
+    %%%%%:  148-block 159
+call   610 never executed
+branch 611 never executed (fallthrough)
+branch 612 never executed (throw)
+    %%%%%:  148-block 160
+call   613 never executed
+branch 614 never executed (fallthrough)
+branch 615 never executed (throw)
+    %%%%%:  148-block 161
+call   616 never executed
+branch 617 never executed (fallthrough)
+branch 618 never executed (throw)
+    %%%%%:  148-block 162
+call   619 never executed
+branch 620 never executed (fallthrough)
+branch 621 never executed (throw)
+    %%%%%:  148-block 163
+call   622 never executed
+branch 623 never executed (fallthrough)
+branch 624 never executed (throw)
+    %%%%%:  148-block 164
+call   625 never executed
+branch 626 never executed (fallthrough)
+branch 627 never executed (throw)
+    %%%%%:  148-block 165
+call   628 never executed
+branch 629 never executed (fallthrough)
+branch 630 never executed (throw)
+    %%%%%:  148-block 166
+call   631 never executed
+branch 632 never executed (fallthrough)
+branch 633 never executed (throw)
+    %%%%%:  148-block 167
+call   634 never executed
+branch 635 never executed (fallthrough)
+branch 636 never executed (throw)
+    %%%%%:  148-block 168
+call   637 never executed
+branch 638 never executed (fallthrough)
+branch 639 never executed (throw)
+    %%%%%:  148-block 169
+call   640 never executed
+branch 641 never executed (fallthrough)
+branch 642 never executed (throw)
+    %%%%%:  148-block 170
+call   643 never executed
+branch 644 never executed (fallthrough)
+branch 645 never executed (throw)
+    %%%%%:  148-block 171
+call   646 never executed
+branch 647 never executed (fallthrough)
+branch 648 never executed (throw)
+    %%%%%:  148-block 172
+call   649 never executed
+branch 650 never executed (fallthrough)
+branch 651 never executed (throw)
+    %%%%%:  148-block 173
+call   652 never executed
+branch 653 never executed (fallthrough)
+branch 654 never executed (throw)
+    %%%%%:  148-block 174
+call   655 never executed
+branch 656 never executed (fallthrough)
+branch 657 never executed (throw)
+    %%%%%:  148-block 175
+call   658 never executed
+branch 659 never executed (fallthrough)
+branch 660 never executed (throw)
+    %%%%%:  148-block 176
+call   661 never executed
+branch 662 never executed (fallthrough)
+branch 663 never executed (throw)
+    %%%%%:  148-block 177
+call   664 never executed
+branch 665 never executed (fallthrough)
+branch 666 never executed (throw)
+    %%%%%:  148-block 178
+call   667 never executed
+branch 668 never executed (fallthrough)
+branch 669 never executed (throw)
+call   670 never executed
+branch 671 never executed (fallthrough)
+branch 672 never executed (throw)
+    %%%%%:  148-block 179
+call   673 never executed
+branch 674 never executed (fallthrough)
+branch 675 never executed (throw)
+     414*:  149:    return *this;
+    %%%%%:  149-block  0
+    %%%%%:  149-block  1
+    %%%%%:  149-block  2
+    %%%%%:  149-block  3
+    %%%%%:  149-block  4
+    %%%%%:  149-block  5
+    %%%%%:  149-block  6
+    %%%%%:  149-block  7
+    %%%%%:  149-block  8
+    %%%%%:  149-block  9
+    %%%%%:  149-block 10
+    %%%%%:  149-block 11
+    %%%%%:  149-block 12
+    %%%%%:  149-block 13
+    %%%%%:  149-block 14
+    %%%%%:  149-block 15
+    %%%%%:  149-block 16
+    %%%%%:  149-block 17
+    %%%%%:  149-block 18
+    %%%%%:  149-block 19
+    %%%%%:  149-block 20
+    %%%%%:  149-block 21
+    %%%%%:  149-block 22
+    %%%%%:  149-block 23
+    %%%%%:  149-block 24
+    %%%%%:  149-block 25
+    %%%%%:  149-block 26
+    %%%%%:  149-block 27
+    %%%%%:  149-block 28
+    %%%%%:  149-block 29
+    %%%%%:  149-block 30
+    %%%%%:  149-block 31
+    %%%%%:  149-block 32
+    %%%%%:  149-block 33
+    %%%%%:  149-block 34
+    %%%%%:  149-block 35
+    %%%%%:  149-block 36
+    %%%%%:  149-block 37
+    %%%%%:  149-block 38
+    %%%%%:  149-block 39
+    %%%%%:  149-block 40
+    %%%%%:  149-block 41
+    %%%%%:  149-block 42
+    %%%%%:  149-block 43
+    %%%%%:  149-block 44
+      414:  149-block 45
+    %%%%%:  149-block 46
+    %%%%%:  149-block 47
+    %%%%%:  149-block 48
+    %%%%%:  149-block 49
+    %%%%%:  149-block 50
+    %%%%%:  149-block 51
+    %%%%%:  149-block 52
+    %%%%%:  149-block 53
+        -:  150:  }
+        -:  151:
+        -:  152:#ifdef GTEST_HAS_ABSL
+        -:  153:  // Streams a non-pointer value with an AbslStringify definition to this
+        -:  154:  // object.
+        -:  155:  template <typename T,
+        -:  156:            typename std::enable_if<absl::HasAbslStringify<T>::value,  // NOLINT
+        -:  157:                                    int>::type = 0>
+        -:  158:  inline Message& operator<<(const T& val) {
+        -:  159:    // ::operator<< is needed here for a similar reason as with the non-Abseil
+        -:  160:    // version above
+        -:  161:    using ::operator<<;
+        -:  162:    *ss_ << absl::StrCat(val);
+        -:  163:    return *this;
+        -:  164:  }
+        -:  165:#endif  // GTEST_HAS_ABSL
+        -:  166:
+        -:  167:  // Streams a pointer value to this object.
+        -:  168:  //
+        -:  169:  // This function is an overload of the previous one.  When you
+        -:  170:  // stream a pointer to a Message, this definition will be used as it
+        -:  171:  // is more specialized.  (The C++ Standard, section
+        -:  172:  // [temp.func.order].)  If you stream a non-pointer, then the
+        -:  173:  // previous definition will be used.
+        -:  174:  //
+        -:  175:  // The reason for this overload is that streaming a NULL pointer to
+        -:  176:  // ostream is undefined behavior.  Depending on the compiler, you
+        -:  177:  // may get "0", "(nil)", "(null)", or an access violation.  To
+        -:  178:  // ensure consistent result across compilers, we always treat NULL
+        -:  179:  // as "(null)".
+        -:  180:  template <typename T>
+       22:  181:  inline Message& operator<<(T* const& pointer) {  // NOLINT
+       22:  182:    if (pointer == nullptr) {
+    #####:  183:      *ss_ << "(null)";
+        -:  184:    } else {
+       22:  185:      *ss_ << pointer;
+        -:  186:    }
+       22:  187:    return *this;
+        -:  188:  }
+------------------
+_ZN7testing7MessagelsIcEERS0_RKPT_:
+function _ZN7testing7MessagelsIcEERS0_RKPT_ called 1 returned 100% blocks executed 75%
+        1:  181:  inline Message& operator<<(T* const& pointer) {  // NOLINT
+        1:  182:    if (pointer == nullptr) {
+        1:  182-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    #####:  183:      *ss_ << "(null)";
+    %%%%%:  183-block  0
+call    0 never executed
+        -:  184:    } else {
+        1:  185:      *ss_ << pointer;
+        1:  185-block  0
+call    0 returned 1
+        -:  186:    }
+        1:  187:    return *this;
+        -:  188:  }
+------------------
+_ZN7testing7MessagelsIKcEERS0_RKPT_:
+function _ZN7testing7MessagelsIKcEERS0_RKPT_ called 21 returned 100% blocks executed 75%
+       21:  181:  inline Message& operator<<(T* const& pointer) {  // NOLINT
+       21:  182:    if (pointer == nullptr) {
+       21:  182-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 21
+    #####:  183:      *ss_ << "(null)";
+    %%%%%:  183-block  0
+call    0 never executed
+        -:  184:    } else {
+       21:  185:      *ss_ << pointer;
+       21:  185-block  0
+call    0 returned 21
+        -:  186:    }
+       21:  187:    return *this;
+        -:  188:  }
+------------------
+        -:  189:
+        -:  190:  // Since the basic IO manipulators are overloaded for both narrow
+        -:  191:  // and wide streams, we have to provide this specialized definition
+        -:  192:  // of operator <<, even though its body is the same as the
+        -:  193:  // templatized version above.  Without this definition, streaming
+        -:  194:  // endl or other basic IO manipulators to Message will confuse the
+        -:  195:  // compiler.
+        -:  196:  Message& operator<<(BasicNarrowIoManip val) {
+        -:  197:    *ss_ << val;
+        -:  198:    return *this;
+        -:  199:  }
+        -:  200:
+        -:  201:  // Instead of 1/0, we want to see true/false for bool values.
+        -:  202:  Message& operator<<(bool b) { return *this << (b ? "true" : "false"); }
+        -:  203:
+        -:  204:  // These two overloads allow streaming a wide C string to a Message
+        -:  205:  // using the UTF-8 encoding.
+        -:  206:  Message& operator<<(const wchar_t* wide_c_str);
+        -:  207:  Message& operator<<(wchar_t* wide_c_str);
+        -:  208:
+        -:  209:#if GTEST_HAS_STD_WSTRING
+        -:  210:  // Converts the given wide string to a narrow string using the UTF-8
+        -:  211:  // encoding, and streams the result to this Message object.
+        -:  212:  Message& operator<<(const ::std::wstring& wstr);
+        -:  213:#endif  // GTEST_HAS_STD_WSTRING
+        -:  214:
+        -:  215:  // Gets the text streamed to this object so far as an std::string.
+        -:  216:  // Each '\0' character in the buffer is replaced with "\\0".
+        -:  217:  //
+        -:  218:  // INTERNAL IMPLEMENTATION - DO NOT USE IN A USER PROGRAM.
+        -:  219:  std::string GetString() const;
+        -:  220:
+        -:  221: private:
+        -:  222:  // We'll hold the text streamed to this object here.
+        -:  223:  const std::unique_ptr< ::std::stringstream> ss_;
+        -:  224:
+        -:  225:  // We declare (but don't implement) this to prevent the compiler
+        -:  226:  // from implementing the assignment operator.
+        -:  227:  void operator=(const Message&);
+        -:  228:};
+        -:  229:
+        -:  230:// Streams a Message to an ostream.
+function _ZN7testinglsERSoRKNS_7MessageE called 0 returned 0% blocks executed 0%
+    #####:  231:inline std::ostream& operator<<(std::ostream& os, const Message& sb) {
+    %%%%%:  231-block  0
+call    0 never executed
+    #####:  232:  return os << sb.GetString();
+        -:  233:}
+        -:  234:
+        -:  235:namespace internal {
+        -:  236:
+        -:  237:// Converts a streamable value to an std::string.  A NULL pointer is
+        -:  238:// converted to "(null)".  When the input value is a ::string,
+        -:  239:// ::std::string, ::wstring, or ::std::wstring object, each NUL
+        -:  240:// character in it is replaced with "\\0".
+        -:  241:template <typename T>
+      23*:  242:std::string StreamableToString(const T& streamable) {
+      46*:  243:  return (Message() << streamable).GetString();
+        -:  244:}
+        -:  245:
+        -:  246:}  // namespace internal
+        -:  247:}  // namespace testing
+        -:  248:
+        -:  249:GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
+        -:  250:
+        -:  251:#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_MESSAGE_H_

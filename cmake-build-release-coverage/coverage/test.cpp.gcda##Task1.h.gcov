@@ -1,0 +1,111 @@
+        -:    0:Source:D:/Projects/SoftAcademy/Tasks/Task1/Task1.h
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcda
+        -:    0:Runs:1
+        -:    1:﻿#pragma once
+        -:    2:
+        -:    3:#include <cstdio>
+        -:    4:
+        -:    5:namespace str_list {
+        -:    6:    // Adds string to list
+        -:    7:    void add_string(char ***list, const char *str);
+        -:    8:
+        -:    9:    // Removes string from list. Returns true if string was removed
+        -:   10:    bool remove_string(char ***list, const char *str);
+        -:   11:
+        -:   12:    void clear(char ***list);
+        -:   13:
+        -:   14:    // Returns true if index found, false otherwise
+        -:   15:    bool match_index(char ***list, const char *str, unsigned int &found_index);
+        -:   16:
+        -:   17:    // Returns number of strings in list
+        -:   18:    size_t num_items(char ***list);
+        -:   19:
+        -:   20:    // Remove all duplicates in list
+        -:   21:    void remove_duplicates(char ***list);
+        -:   22:
+        -:   23:    // Replace string with different string. Returns true if replaced successfully
+        -:   24:    bool replace_str(char ***list, const char *str_to_replace, const char *str_to_insert);
+        -:   25:
+        -:   26:    // Sorts list with bubble sort
+        -:   27:    void sort(char ***list);
+        -:   28:
+        -:   29:    // Prints list to the console
+function _ZN8str_list5printEPPPc called 1 returned 100% blocks executed 100%
+        1:   30:    inline void print(char ***list) {
+        1:   31:        if (list == nullptr || *list == nullptr) return;
+        1:   31-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:   31-block  1
+branch  2 taken 1
+branch  3 taken 0
+        -:   32:
+        2:   33:        for (int i = 0; (*list)[i] != nullptr; ++i) {
+        2:   33-block  0
+branch  0 taken 1
+branch  1 taken 1 (fallthrough)
+        1:   34:            printf("%s ", (*list)[i]);
+        1:   34-block  0
+call    0 returned 1
+        -:   35:        }
+        -:   36:
+        1:   37:        printf("\n");
+        1:   37-block  0
+call    0 returned 1
+        -:   38:    }
+        -:   39:
+        -:   40:    inline void run_task1() {
+        -:   41:        char **list = nullptr;
+        -:   42:
+        -:   43:        add_string(&list, "Dynamically");
+        -:   44:        add_string(&list, "sized");
+        -:   45:        add_string(&list, "sized");
+        -:   46:        add_string(&list, "C");
+        -:   47:        add_string(&list, "list");
+        -:   48:        add_string(&list, "list");
+        -:   49:        add_string(&list, "Dynamically");
+        -:   50:        add_string(&list, "of");
+        -:   51:        add_string(&list, "sized");
+        -:   52:        add_string(&list, "C");
+        -:   53:        add_string(&list, "strings");
+        -:   54:        add_string(&list, "list");
+        -:   55:        add_string(&list, "sized");
+        -:   56:        add_string(&list, "C");
+        -:   57:        add_string(&list, "A");
+        -:   58:        add_string(&list, "B");
+        -:   59:        add_string(&list, "E");
+        -:   60:        add_string(&list, "G");
+        -:   61:
+        -:   62:        printf("Initial list: \n");
+        -:   63:        print(&list);
+        -:   64:        printf("Size: %llu\n", num_items(&list));
+        -:   65:        printf("\n");
+        -:   66:
+        -:   67:        if (unsigned int index; match_index(&list, "of", index)) {
+        -:   68:            printf("'of': Matched index at: %d\n", index);
+        -:   69:        }
+        -:   70:
+        -:   71:        remove_string(&list, "sized");
+        -:   72:
+        -:   73:        print(&list);
+        -:   74:        printf("Size: %llu\n", num_items(&list));
+        -:   75:
+        -:   76:        remove_duplicates(&list);
+        -:   77:
+        -:   78:        print(&list);
+        -:   79:        printf("Size: %llu\n", num_items(&list));
+        -:   80:
+        -:   81:        replace_str(&list, "list", "LIST");
+        -:   82:        replace_str(&list, "G", "C++");
+        -:   83:        print(&list);
+        -:   84:
+        -:   85:        sort(&list);
+        -:   86:        print(&list);
+        -:   87:        printf("Size: %llu\n", num_items(&list));
+        -:   88:
+        -:   89:        clear(&list);
+        -:   90:        print(&list);
+        -:   91:        printf("Size: %llu\n", num_items(&list));
+        -:   92:    }
+        -:   93:}

@@ -1,0 +1,560 @@
+        -:    0:Source:D:/Projects/SoftAcademy/Tasks/Task2/Task2.cpp
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task2\Task2.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task2\Task2.cpp.gcda
+        -:    0:Runs:1
+        -:    1:﻿#include "Task2.h"
+        -:    2:
+        -:    3:#include <iostream>
+        -:    4:#include <stdexcept>
+        -:    5:#include <typeinfo>
+        -:    6:#include <gtest/gtest-matchers.h>
+        -:    7:
+        -:    8:// AnyType
+        -:    9:
+function _ZN7AnyTypeC2ERKS_ called 1 returned 100% blocks executed 60%
+       2*:   10:AnyType::AnyType(const AnyType &other) {
+       2*:   11:    currentType = other.currentType;
+        -:   12:
+        1:   13:    switch (currentType) {
+        1:   13-block  0
+branch  0 taken 0
+branch  1 taken 0
+branch  2 taken 1
+branch  3 taken 0
+       1*:   14:        case Int:
+       1*:   15:            intValue = other.intValue;
+       1*:   16:            break;
+        1:   16-block  0
+    %%%%%:   16-block  1
+    #####:   17:        case Double:
+    #####:   18:            doubleValue = other.doubleValue;
+    #####:   19:            break;
+    %%%%%:   19-block  0
+    %%%%%:   19-block  1
+       1*:   20:        case Bool:
+       1*:   21:            boolValue = other.boolValue;
+       1*:   22:            break;
+    %%%%%:   22-block  0
+        1:   22-block  1
+        -:   23:        case None:
+        -:   24:            break;
+        -:   25:    }
+        1:   26:}
+        -:   27:
+function _ZN7AnyTypeC2EOS_ called 1 returned 100% blocks executed 60%
+        1:   28:AnyType::AnyType(AnyType &&other) noexcept {
+        1:   29:    currentType = other.currentType;
+        -:   30:
+        1:   31:    switch (currentType) {
+        1:   31-block  0
+branch  0 taken 0
+branch  1 taken 0
+branch  2 taken 1
+branch  3 taken 0
+    #####:   32:        case Int:
+    #####:   33:            intValue = other.intValue;
+    #####:   34:            break;
+    %%%%%:   34-block  0
+    #####:   35:        case Double:
+    #####:   36:            doubleValue = other.doubleValue;
+    #####:   37:            break;
+    %%%%%:   37-block  0
+        1:   38:        case Bool:
+        1:   39:            boolValue = other.boolValue;
+        1:   40:            break;
+        1:   40-block  0
+        -:   41:        case None:
+        -:   42:            break;
+        -:   43:    }
+        -:   44:
+        -:   45:    other.reset();
+        1:   46:}
+        -:   47:
+function _ZN7AnyType4swapERS_ called 1 returned 100% blocks executed 47%
+        1:   48:void AnyType::swap(AnyType &other) noexcept {
+        1:   48-block  0
+branch  0 taken 1
+branch  1 taken 0
+branch  2 taken 0
+branch  3 taken 0
+        -:   49:    const AnyType temp = *this;
+        -:   50:
+        1:   51:    switch (other.currentType) {
+        1:   51-block  0
+branch  0 taken 0
+branch  1 taken 0
+branch  2 taken 1
+branch  3 taken 0
+branch  4 taken 0
+    #####:   52:        case Int:
+    #####:   53:            intValue = other.intValue;
+    #####:   54:            currentType = Int;
+    #####:   55:            break;
+    %%%%%:   55-block  0
+    #####:   56:        case Double:
+    #####:   57:            doubleValue = other.doubleValue;
+    #####:   58:            currentType = Double;
+    #####:   59:            break;
+    %%%%%:   59-block  0
+        1:   60:        case Bool:
+        1:   61:            boolValue = other.boolValue;
+        1:   62:            currentType = Bool;
+        1:   63:            break;
+        1:   63-block  0
+    #####:   64:        case None:
+    #####:   65:            intValue = 0;
+    #####:   66:            currentType = None;
+    #####:   67:            break;
+    %%%%%:   67-block  0
+        -:   68:    }
+        -:   69:
+        1:   70:    switch (temp.currentType) {
+        1:   70-block  0
+branch  0 taken 1
+branch  1 taken 0
+branch  2 taken 0
+branch  3 taken 0
+branch  4 taken 0
+        1:   71:        case Int:
+        1:   72:            other.intValue = temp.intValue;
+        1:   73:            other.currentType = Int;
+        1:   74:            break;
+        1:   74-block  0
+    #####:   75:        case Double:
+    #####:   76:            other.doubleValue = temp.doubleValue;
+    #####:   77:            other.currentType = Double;
+    #####:   78:            break;
+    %%%%%:   78-block  0
+    #####:   79:        case Bool:
+    #####:   80:            other.boolValue = temp.boolValue;
+    #####:   81:            other.currentType = Bool;
+    #####:   82:            break;
+    %%%%%:   82-block  0
+    #####:   83:        case None:
+    #####:   84:            other.intValue = 0;
+    #####:   85:            other.currentType = None;
+    #####:   86:            break;
+    %%%%%:   86-block  0
+        -:   87:    }
+        1:   88:}
+        -:   89:
+function _ZN7AnyTypeaSEi called 1 returned 100% blocks executed 100%
+        1:   90:AnyType &AnyType::operator=(int value) {
+       1*:   91:    intValue = value;
+       1*:   92:    currentType = Int;
+        1:   93:    return *this;
+        -:   94:}
+        -:   95:
+function _ZN7AnyTypeaSEd called 1 returned 100% blocks executed 100%
+        1:   96:AnyType &AnyType::operator=(double value) {
+       1*:   97:    doubleValue = value;
+       1*:   98:    currentType = Double;
+        1:   99:    return *this;
+        -:  100:}
+        -:  101:
+function _ZN7AnyTypeaSEb called 1 returned 100% blocks executed 100%
+        1:  102:AnyType &AnyType::operator=(bool value) {
+       1*:  103:    boolValue = value;
+       1*:  104:    currentType = Bool;
+        1:  105:    return *this;
+        -:  106:}
+        -:  107:
+function _ZNK7AnyType3getEv called 0 returned 0% blocks executed 0%
+    #####:  108:std::variant<int, double, bool> AnyType::get() const {
+    #####:  109:    switch (currentType) {
+    %%%%%:  109-block  0
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  110:        case Int:
+    %%%%%:  110-block  0
+        -:  111:            return intValue;
+    #####:  112:        case Double:
+    %%%%%:  112-block  0
+        -:  113:            return doubleValue;
+    #####:  114:        case Bool:
+    %%%%%:  114-block  0
+        -:  115:            return boolValue;
+    #####:  116:        default:
+    #####:  117:            throw std::runtime_error("No value is set.");
+    %%%%%:  117-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  117-block  1
+call    4 never executed
+    $$$$$:  117-block  2
+call    5 never executed
+        -:  118:    }
+        -:  119:}
+        -:  120:
+function _ZNK7AnyType6getIntEv called 5 returned 40% blocks executed 100%
+        5:  121:int AnyType::getInt() const {
+        5:  122:    if (currentType == Int) {
+        5:  122-block  0
+branch  0 taken 2 (fallthrough)
+branch  1 taken 3
+        2:  123:        return intValue;
+        2:  123-block  0
+        -:  124:    }
+        3:  125:    throw std::bad_cast();
+        3:  125-block  0
+call    0 returned 3
+        -:  126:}
+        -:  127:
+function _ZNK7AnyType9getDoubleEv called 1 returned 100% blocks executed 75%
+        1:  128:double AnyType::getDouble() const {
+        1:  129:    if (currentType == Double) {
+        1:  129-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  130:        return doubleValue;
+        1:  130-block  0
+        -:  131:    }
+    #####:  132:    throw std::bad_cast();
+    %%%%%:  132-block  0
+call    0 never executed
+        -:  133:}
+        -:  134:
+function _ZNK7AnyType7getBoolEv called 4 returned 100% blocks executed 75%
+        4:  135:bool AnyType::getBool() const {
+        4:  136:    if (currentType == Bool) {
+        4:  136-block  0
+branch  0 taken 4 (fallthrough)
+branch  1 taken 0
+        4:  137:        return boolValue;
+        4:  137-block  0
+        -:  138:    }
+    #####:  139:    throw std::bad_cast();
+    %%%%%:  139-block  0
+call    0 never executed
+        -:  140:}
+        -:  141:
+function _ZN7AnyType5resetEv called 0 returned 0% blocks executed 0%
+    #####:  142:void AnyType::reset() {
+       1*:  143:    intValue = 0;
+       1*:  144:    currentType = None;
+    #####:  145:}
+        -:  146:
+        -:  147:// VariadicType
+        -:  148:
+function _ZN12VariadicTypeC2ERKS_ called 1 returned 100% blocks executed 100%
+    #####:  149:VariadicType::VariadicType(const VariadicType &other) {
+    %%%%%:  149-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  150:    variantValue = other.variantValue;
+    %%%%%:  150-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        1:  151:}
+        -:  152:
+function _ZN12VariadicTypeC2EOS_ called 1 returned 100% blocks executed 100%
+        1:  153:VariadicType::VariadicType(VariadicType &&other) noexcept {
+        1:  153-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  154:    variantValue = other.variantValue;
+        1:  154-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        -:  155:    other.reset();
+        1:  156:}
+        -:  157:
+function _ZN12VariadicType4swapERS_ called 1 returned 100% blocks executed 100%
+        1:  158:void VariadicType::swap(VariadicType &other) noexcept {
+        1:  159:    variantValue.swap(other.variantValue);
+        1:  159-block  0
+call    0 returned 1
+        1:  160:}
+        -:  161:
+function _ZN12VariadicType5resetEv called 0 returned 0% blocks executed 0%
+    #####:  162:void VariadicType::reset() {
+    %%%%%:  162-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+        -:  163:    variantValue = std::monostate{};
+    #####:  164:}
+        -:  165:
+function _Z15run_task2_unionv called 0 returned 0% blocks executed 0%
+    #####:  166:void run_task2_union() {
+    %%%%%:  166-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  167:    auto visitor = [](const auto value) {
+    #####:  168:        std::cout << value;
+    %%%%%:  168-block  0
+call    0 never executed
+        -:  169:    };
+        -:  170:
+        -:  171:    try {
+        -:  172:        AnyType anyType1 = 1;
+        -:  173:
+    #####:  174:        std::printf("anyType1 getInt(): %d\n", anyType1.getInt());
+    %%%%%:  174-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  174-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:  175:
+        -:  176:        anyType1 = 2.621515;
+    #####:  177:        std::printf("anyType1 getDouble(): %f\n", anyType1.getDouble());
+    %%%%%:  177-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  177-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:  178:
+    #####:  179:        std::printf("anyType1 get(): ");
+    %%%%%:  179-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  180:        std::visit(visitor, anyType1.get());
+    %%%%%:  180-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  181:        std::printf("\n");
+    %%%%%:  181-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  182:
+        -:  183:        AnyType anyType2 = anyType1;
+    #####:  184:        std::printf("anyType2 getDouble(): %f\n", anyType2.getDouble());
+    %%%%%:  184-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  184-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:  185:
+        -:  186:        anyType1 = 1567;
+        -:  187:        anyType2 = true;
+        -:  188:
+    #####:  189:        anyType1.swap(anyType2);
+    %%%%%:  189-block  0
+call    0 never executed
+        -:  190:
+    #####:  191:        std::printf("anyType1 get(): ");
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  192:        std::visit(visitor, anyType1.get());
+    %%%%%:  192-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  193:        std::printf("\n");
+    %%%%%:  193-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  194:        std::printf("anyType2 get(): ");
+    %%%%%:  194-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  195:        std::visit(visitor, anyType2.get());
+    %%%%%:  195-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  196:        std::printf("\n");
+    %%%%%:  196-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  197:
+    #####:  198:        std::printf("anyType1 getInt(): %d\n", anyType1.getInt());
+    %%%%%:  198-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  198-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    =====:  199:    } catch (std::bad_cast &e) {
+    $$$$$:  199-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+branch  2 never executed
+    $$$$$:  199-block  1
+call    3 never executed
+    =====:  200:        std::cerr << e.what() << std::endl;
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    =====:  201:    }
+    $$$$$:  201-block  0
+call    0 never executed
+    $$$$$:  201-block  1
+call    1 never executed
+    =====:  202:    catch (const std::runtime_error &e) {
+    $$$$$:  202-block  0
+call    0 never executed
+    =====:  203:        std::cerr << e.what() << std::endl;
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    =====:  204:    }
+    $$$$$:  204-block  0
+call    0 never executed
+    $$$$$:  204-block  1
+call    1 never executed
+    #####:  205:}
+    %%%%%:  205-block  0
+        -:  206:
+function _ZlsRSoRKSt9monostate called 0 returned 0% blocks executed 0%
+    #####:  207:std::ostream &operator<<(std::ostream &os, const std::monostate &) {
+    %%%%%:  207-block  0
+call    0 never executed
+    #####:  208:    return os << "not set";
+        -:  209:}
+        -:  210:
+function _Z18run_task2_variadicv called 0 returned 0% blocks executed 0%
+    #####:  211:void run_task2_variadic() {
+    %%%%%:  211-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  212:    try {
+        -:  213:        VariadicType variadicType1 = 1;
+        -:  214:
+    #####:  215:        std::printf("variadicType1 getInt(): %d\n", variadicType1.get<int>());
+    %%%%%:  215-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  216:
+        -:  217:        variadicType1 = 2.621515;
+    #####:  218:        std::printf("variadicType1 getDouble(): %f\n", variadicType1.get<double>());
+    %%%%%:  218-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  219:
+        -:  220:        std::any value1 = variadicType1.get();
+    #####:  221:        std::printf("variadicType1 get(): %f\n", std::any_cast<double>(value1));
+    %%%%%:  221-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  222:
+        -:  223:        VariadicType variadicType2 = variadicType1;
+    #####:  224:        std::printf("variadicType2 getDouble(): %f\n", variadicType2.get<double>());
+    %%%%%:  224-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  225:
+        -:  226:        variadicType1 = 1567;
+        -:  227:        variadicType2 = true;
+        -:  228:
+    #####:  229:        std::printf("variadicType1 getInt(): %d\n", variadicType1.get<int>());
+    %%%%%:  229-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  230:        std::printf("variadicType2 getBool(): %d\n", variadicType2.get<bool>());
+    %%%%%:  230-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  231:
+        -:  232:        variadicType1.swap(variadicType2);
+        -:  233:
+    #####:  234:        value1 = variadicType1.get();
+    %%%%%:  234-block  0
+call    0 never executed
+    %%%%%:  234-block  1
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    $$$$$:  234-block  2
+branch  4 never executed (fallthrough)
+branch  5 never executed
+        -:  235:        const std::any value2 = variadicType2.get();
+    #####:  236:        std::printf("variadicType1 get(): %d\n", std::any_cast<bool>(value1));
+    %%%%%:  236-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  237:        std::printf("variadicType2 get(): %d\n", std::any_cast<int>(value2));
+    %%%%%:  237-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  238:
+        -:  239:        variadicType1.reset();
+    #####:  240:        value1 = variadicType1.get();
+    %%%%%:  240-block  0
+call    0 never executed
+    %%%%%:  240-block  1
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    $$$$$:  240-block  2
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:  241:        if (value1.type() != typeid(std::monostate)) {
+    %%%%%:  241-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:  242:            std::printf("variadicType1 get(): %d\n", std::any_cast<int>(value1));
+    %%%%%:  242-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  243:        }
+    #####:  244:        std::printf("variadicType1 getDouble(): %f\n", variadicType1.get<double>());
+    %%%%%:  244-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    =====:  245:    } catch (const std::bad_variant_access &e) {
+    $$$$$:  245-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+branch  2 never executed
+    $$$$$:  245-block  1
+call    3 never executed
+    =====:  246:        std::cerr << e.what() << std::endl;
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    =====:  247:    } catch (const std::bad_any_cast &e) {
+    $$$$$:  247-block  0
+call    0 never executed
+    $$$$$:  247-block  1
+call    1 never executed
+    $$$$$:  247-block  2
+call    2 never executed
+    =====:  248:        std::cerr << e.what() << std::endl;
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    =====:  249:    }
+    $$$$$:  249-block  0
+call    0 never executed
+    $$$$$:  249-block  1
+call    1 never executed
+    #####:  250:}
+    %%%%%:  250-block  0

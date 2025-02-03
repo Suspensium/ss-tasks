@@ -1,0 +1,154 @@
+        -:    0:Source:D:/Projects/SoftAcademy/Tasks/Task3/Task3.h
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcda
+        -:    0:Runs:1
+        -:    1:﻿#pragma once
+        -:    2:
+        -:    3:#include <filesystem>
+        -:    4:#include <forward_list>
+        -:    5:#include <set>
+        -:    6:#include <thread>
+        -:    7:
+        -:    8:namespace fs = std::filesystem;
+        -:    9:
+        2:   10:class CodeReader {
+call    0 returned 2
+call    1 returned 2
+        -:   11:public:
+        -:   12:    CodeReader() {
+        -:   13:        fileType = fs::file_type::directory;
+        -:   14:        path = PROJECT_ROOT_DIR;
+        -:   15:
+        -:   16:        read();
+        -:   17:    }
+        -:   18:
+function _ZN10CodeReaderC1ERKNSt10filesystem7__cxx114pathENS0_9file_typeEb called 3 returned 67% blocks executed 71%
+        3:   19:    explicit CodeReader(const fs::path &inPath, const fs::file_type type, const bool bAbsolutePath = false) {
+        3:   20:        fileType = type;
+        -:   21:
+        3:   22:        switch (fileType) {
+branch  0 taken 1
+branch  1 taken 2
+branch  2 taken 0
+        1:   23:            case fs::file_type::regular:
+        1:   24:                if (!bAbsolutePath) {
+        1:   24-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:   25:                    path = PROJECT_ROOT_DIR;
+        1:   25-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   26:                    path += "/";
+        -:   27:                }
+        1:   28:                path += inPath;
+        1:   28-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   29:                if (!fs::exists(path) || !fs::is_regular_file(path)) {
+        1:   29-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    #####:   30:                    throw std::runtime_error("File is not valid");
+    %%%%%:   30-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   30-block  1
+call    4 never executed
+    $$$$$:   30-block  2
+call    5 never executed
+        -:   31:                }
+        -:   32:                break;
+        2:   33:            case fs::file_type::directory:
+        2:   34:                if (!bAbsolutePath) {
+        2:   34-block  0
+branch  0 taken 2 (fallthrough)
+branch  1 taken 0
+        2:   35:                    path = PROJECT_ROOT_DIR;
+        2:   35-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   36:                    path += "/";
+        -:   37:                }
+        2:   38:                path += inPath;
+        2:   38-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   39:                if (!fs::exists(path) || !fs::is_directory(path)) {
+        1:   39-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+        1:   40:                    throw std::runtime_error("Directory is not valid");
+        1:   40-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:   40-block  1
+call    4 returned 1
+    $$$$$:   40-block  2
+call    5 never executed
+        -:   41:                }
+        -:   42:                break;
+    #####:   43:            default:
+    #####:   44:                throw std::invalid_argument("File type not supported");
+    %%%%%:   44-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   44-block  1
+call    4 never executed
+    $$$$$:   44-block  2
+call    5 never executed
+        -:   45:        }
+        -:   46:
+        2:   47:        read();
+        2:   47-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   48:    }
+        2:   48-block  0
+        1:   48-block  1
+call    0 returned 1
+        -:   49:
+        -:   50:    void read();
+        -:   51:
+        -:   52:    void joinThreads() {
+        -:   53:        for (std::jthread &thread: threads) {
+        -:   54:            thread.join();
+        -:   55:        }
+        -:   56:    }
+        -:   57:
+        -:   58:    uint64_t outputInfo(std::ostream &os) const;
+        -:   59:
+        -:   60:private:
+        -:   61:    bool readFile(fs::path filePath);
+        -:   62:
+        3:   63:    struct {
+        3:   63-block  0
+call    0 returned 3
+        -:   64:        std::atomic<size_t> totalProcessedFiles{};
+        -:   65:        std::atomic<size_t> blankLines{};
+        -:   66:        std::atomic<size_t> commentLines{};
+        -:   67:        std::atomic<size_t> codeLines{};
+        -:   68:        uint64_t totalTime{};
+        -:   69:    } results;
+        -:   70:
+        -:   71:    fs::path path;
+        -:   72:
+        -:   73:    inline static std::set<fs::path> codeFileExtensions{".h", ".hpp", ".c", ".cpp"};
+        -:   74:
+        -:   75:    std::forward_list<std::jthread> threads;
+        -:   76:
+        -:   77:    fs::file_type fileType;
+        -:   78:};
+        -:   79:
+        -:   80:void run_task3();

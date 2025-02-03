@@ -1,0 +1,679 @@
+        -:    0:Source:C:/Program Files/JetBrains/CLion 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_conv.h
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// wstring_convert implementation -*- C++ -*-
+        -:    2:
+        -:    3:// Copyright (C) 2015-2023 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file bits/locale_conv.h
+        -:   26: *  This is an internal header file, included by other library headers.
+        -:   27: *  Do not attempt to use it directly. @headername{locale}
+        -:   28: */
+        -:   29:
+        -:   30:#ifndef _LOCALE_CONV_H
+        -:   31:#define _LOCALE_CONV_H 1
+        -:   32:
+        -:   33:#if __cplusplus < 201103L
+        -:   34:# include <bits/c++0x_warning.h>
+        -:   35:#else
+        -:   36:
+        -:   37:#include <streambuf>
+        -:   38:#include <bits/stringfwd.h>
+        -:   39:#include <bits/allocator.h>
+        -:   40:#include <bits/codecvt.h>
+        -:   41:
+        -:   42:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   43:{
+        -:   44:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   45:
+        -:   46:  /**
+        -:   47:   * @addtogroup locales
+        -:   48:   * @{
+        -:   49:   */
+        -:   50:
+        -:   51:  template<typename _OutStr, typename _InChar, typename _Codecvt,
+        -:   52:	   typename _State, typename _Fn>
+        -:   53:    bool
+function _ZSt16__do_str_codecvtINSt7__cxx1112basic_stringIwSt11char_traitsIwESaIwEEEcSt7codecvtIwciEiMS7_KFNSt12codecvt_base6resultERiPKcSC_RSC_PwSE_RSE_EEbPKT0_SK_RT_RKT1_RT2_RyT3_ called 13 returned 100% blocks executed 74%
+       13:   54:    __do_str_codecvt(const _InChar* __first, const _InChar* __last,
+        -:   55:		     _OutStr& __outstr, const _Codecvt& __cvt, _State& __state,
+        -:   56:		     size_t& __count, _Fn __fn)
+        -:   57:    {
+       13:   58:      if (__first == __last)
+       13:   58-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 13
+        -:   59:	{
+        -:   60:	  __outstr.clear();
+    #####:   61:	  __count = 0;
+    #####:   62:	  return true;
+    %%%%%:   62-block  0
+        -:   63:	}
+        -:   64:
+        -:   65:      size_t __outchars = 0;
+       13:   66:      auto __next = __first;
+       13:   67:      const auto __maxlen = __cvt.max_length() + 1;
+       13:   67-block  0
+call    0 returned 13
+        -:   68:
+        -:   69:      codecvt_base::result __result;
+        -:   70:      do
+        -:   71:	{
+       13:   72:	  __outstr.resize(__outstr.size() + (__last - __next) * __maxlen);
+       13:   72-block  0
+call    0 returned 13
+       13:   73:	  auto __outnext = &__outstr.front() + __outchars;
+branch  0 taken 0 (fallthrough)
+branch  1 taken 13
+       13:   74:	  auto const __outlast = &__outstr.back() + 1;
+      13*:   75:	  __result = (__cvt.*__fn)(__state, __next, __last, __next,
+branch  0 taken 0 (fallthrough)
+branch  1 taken 13
+    %%%%%:   75-block  0
+       13:   75-block  1
+call    2 returned 13
+        -:   76:					__outnext, __outlast, __outnext);
+       13:   77:	  __outchars = __outnext - &__outstr.front();
+branch  0 taken 0 (fallthrough)
+branch  1 taken 13
+        -:   78:	}
+    #####:   79:      while (__result == codecvt_base::partial && __next != __last
+    %%%%%:   79-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+      26*:   80:	     && ptrdiff_t(__outstr.size() - __outchars) < __maxlen);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 13
+    %%%%%:   80-block  0
+branch  2 never executed
+branch  3 never executed (fallthrough)
+       13:   80-block  1
+branch  4 taken 0
+branch  5 taken 13 (fallthrough)
+        -:   81:
+       13:   82:      if (__result == codecvt_base::error)
+       13:   82-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 13
+        -:   83:	{
+    #####:   84:	  __count = __next - __first;
+    #####:   85:	  return false;
+    %%%%%:   85-block  0
+        -:   86:	}
+        -:   87:
+        -:   88:      // The codecvt facet will only return noconv when the types are
+        -:   89:      // the same, so avoid instantiating basic_string::assign otherwise
+        -:   90:      if _GLIBCXX17_CONSTEXPR (is_same<typename _Codecvt::intern_type,
+        -:   91:				       typename _Codecvt::extern_type>())
+        -:   92:	if (__result == codecvt_base::noconv)
+        -:   93:	  {
+        -:   94:	    __outstr.assign(__first, __last);
+        -:   95:	    __count = __last - __first;
+        -:   96:	    return true;
+        -:   97:	  }
+        -:   98:
+        -:   99:      __outstr.resize(__outchars);
+       13:  100:      __count = __next - __first;
+       13:  101:      return true;
+        -:  102:    }
+        -:  103:
+        -:  104:  // Convert narrow character string to wide.
+        -:  105:  template<typename _CharT, typename _Traits, typename _Alloc, typename _State>
+        -:  106:    inline bool
+        -:  107:    __str_codecvt_in(const char* __first, const char* __last,
+        -:  108:		     basic_string<_CharT, _Traits, _Alloc>& __outstr,
+        -:  109:		     const codecvt<_CharT, char, _State>& __cvt,
+        -:  110:		     _State& __state, size_t& __count)
+        -:  111:    {
+        -:  112:      using _Codecvt = codecvt<_CharT, char, _State>;
+        -:  113:      using _ConvFn
+        -:  114:	= codecvt_base::result
+        -:  115:	  (_Codecvt::*)(_State&, const char*, const char*, const char*&,
+        -:  116:			_CharT*, _CharT*, _CharT*&) const;
+       13:  117:      _ConvFn __fn = &codecvt<_CharT, char, _State>::in;
+       13:  118:      return __do_str_codecvt(__first, __last, __outstr, __cvt, __state,
+        -:  119:			      __count, __fn);
+        -:  120:    }
+        -:  121:
+        -:  122:  // As above, but with no __count parameter
+        -:  123:  template<typename _CharT, typename _Traits, typename _Alloc, typename _State>
+        -:  124:    inline bool
+        -:  125:    __str_codecvt_in(const char* __first, const char* __last,
+        -:  126:		     basic_string<_CharT, _Traits, _Alloc>& __outstr,
+        -:  127:		     const codecvt<_CharT, char, _State>& __cvt)
+        -:  128:    {
+        -:  129:      _State __state = {};
+        -:  130:      size_t __n;
+        -:  131:      return __str_codecvt_in(__first, __last, __outstr, __cvt, __state, __n);
+        -:  132:    }
+        -:  133:
+        -:  134:  // As above, but returns false for partial conversion
+        -:  135:  template<typename _CharT, typename _Traits, typename _Alloc, typename _State>
+        -:  136:    inline bool
+function _ZSt20__str_codecvt_in_allIwSt11char_traitsIwESaIwEiEbPKcS4_RNSt7__cxx1112basic_stringIT_T0_T1_EERKSt7codecvtIS7_cT2_E called 13 returned 100% blocks executed 80%
+       13:  137:    __str_codecvt_in_all(const char* __first, const char* __last,
+        -:  138:			 basic_string<_CharT, _Traits, _Alloc>& __outstr,
+        -:  139:			 const codecvt<_CharT, char, _State>& __cvt)
+        -:  140:    {
+       13:  141:      _State __state = {};
+       13:  141-block  0
+call    0 returned 13
+        -:  142:      size_t __n;
+        -:  143:      return __str_codecvt_in(__first, __last, __outstr, __cvt, __state, __n)
+       13:  144:	&& (__n == size_t(__last - __first));
+branch  0 taken 13 (fallthrough)
+branch  1 taken 0
+       13:  144-block  0
+branch  2 taken 0 (fallthrough)
+branch  3 taken 13
+        -:  145:    }
+        -:  146:
+        -:  147:  // Convert wide character string to narrow.
+        -:  148:  template<typename _CharT, typename _Traits, typename _Alloc, typename _State>
+        -:  149:    inline bool
+        -:  150:    __str_codecvt_out(const _CharT* __first, const _CharT* __last,
+        -:  151:		      basic_string<char, _Traits, _Alloc>& __outstr,
+        -:  152:		      const codecvt<_CharT, char, _State>& __cvt,
+        -:  153:		      _State& __state, size_t& __count)
+        -:  154:    {
+        -:  155:      using _Codecvt = codecvt<_CharT, char, _State>;
+        -:  156:      using _ConvFn
+        -:  157:	= codecvt_base::result
+        -:  158:	  (_Codecvt::*)(_State&, const _CharT*, const _CharT*, const _CharT*&,
+        -:  159:			char*, char*, char*&) const;
+        -:  160:      _ConvFn __fn = &codecvt<_CharT, char, _State>::out;
+        -:  161:      return __do_str_codecvt(__first, __last, __outstr, __cvt, __state,
+        -:  162:			      __count, __fn);
+        -:  163:    }
+        -:  164:
+        -:  165:  // As above, but with no __count parameter
+        -:  166:  template<typename _CharT, typename _Traits, typename _Alloc, typename _State>
+        -:  167:    inline bool
+        -:  168:    __str_codecvt_out(const _CharT* __first, const _CharT* __last,
+        -:  169:		      basic_string<char, _Traits, _Alloc>& __outstr,
+        -:  170:		      const codecvt<_CharT, char, _State>& __cvt)
+        -:  171:    {
+        -:  172:      _State __state = {};
+        -:  173:      size_t __n;
+        -:  174:      return __str_codecvt_out(__first, __last, __outstr, __cvt, __state, __n);
+        -:  175:    }
+        -:  176:
+        -:  177:  // As above, but returns false for partial conversions
+        -:  178:  template<typename _CharT, typename _Traits, typename _Alloc, typename _State>
+        -:  179:    inline bool
+        -:  180:    __str_codecvt_out_all(const _CharT* __first, const _CharT* __last,
+        -:  181:			  basic_string<char, _Traits, _Alloc>& __outstr,
+        -:  182:			  const codecvt<_CharT, char, _State>& __cvt)
+        -:  183:    {
+        -:  184:      _State __state = {};
+        -:  185:      size_t __n;
+        -:  186:      return __str_codecvt_out(__first, __last, __outstr, __cvt, __state, __n)
+        -:  187:	&& (__n == size_t(__last - __first));
+        -:  188:    }
+        -:  189:
+        -:  190:#ifdef _GLIBCXX_USE_CHAR8_T
+        -:  191:
+        -:  192:  // Convert wide character string to narrow.
+        -:  193:  template<typename _CharT, typename _Traits, typename _Alloc, typename _State>
+        -:  194:    inline bool
+        -:  195:    __str_codecvt_out(const _CharT* __first, const _CharT* __last,
+        -:  196:		      basic_string<char8_t, _Traits, _Alloc>& __outstr,
+        -:  197:		      const codecvt<_CharT, char8_t, _State>& __cvt,
+        -:  198:		      _State& __state, size_t& __count)
+        -:  199:    {
+        -:  200:      using _Codecvt = codecvt<_CharT, char8_t, _State>;
+        -:  201:      using _ConvFn
+        -:  202:	= codecvt_base::result
+        -:  203:	  (_Codecvt::*)(_State&, const _CharT*, const _CharT*, const _CharT*&,
+        -:  204:			char8_t*, char8_t*, char8_t*&) const;
+        -:  205:      _ConvFn __fn = &codecvt<_CharT, char8_t, _State>::out;
+        -:  206:      return __do_str_codecvt(__first, __last, __outstr, __cvt, __state,
+        -:  207:			      __count, __fn);
+        -:  208:    }
+        -:  209:
+        -:  210:  template<typename _CharT, typename _Traits, typename _Alloc, typename _State>
+        -:  211:    inline bool
+        -:  212:    __str_codecvt_out(const _CharT* __first, const _CharT* __last,
+        -:  213:		      basic_string<char8_t, _Traits, _Alloc>& __outstr,
+        -:  214:		      const codecvt<_CharT, char8_t, _State>& __cvt)
+        -:  215:    {
+        -:  216:      _State __state = {};
+        -:  217:      size_t __n;
+        -:  218:      return __str_codecvt_out(__first, __last, __outstr, __cvt, __state, __n);
+        -:  219:    }
+        -:  220:
+        -:  221:#endif  // _GLIBCXX_USE_CHAR8_T
+        -:  222:
+        -:  223:  namespace __detail
+        -:  224:  {
+        -:  225:    template<typename _Tp>
+        -:  226:      struct _Scoped_ptr
+        -:  227:      {
+        -:  228:	__attribute__((__nonnull__(2)))
+        -:  229:	explicit
+        -:  230:	_Scoped_ptr(_Tp* __ptr) noexcept
+        -:  231:	: _M_ptr(__ptr)
+        -:  232:	{ }
+        -:  233:
+        -:  234:	_Scoped_ptr(_Tp* __ptr, const char* __msg)
+        -:  235:	: _M_ptr(__ptr)
+        -:  236:	{
+        -:  237:	  if (!__ptr)
+        -:  238:	    __throw_logic_error(__msg);
+        -:  239:	}
+        -:  240:
+        -:  241:	~_Scoped_ptr() { delete _M_ptr; }
+        -:  242:
+        -:  243:	_Scoped_ptr(const _Scoped_ptr&) = delete;
+        -:  244:	_Scoped_ptr& operator=(const _Scoped_ptr&) = delete;
+        -:  245:
+        -:  246:	__attribute__((__returns_nonnull__))
+        -:  247:	_Tp* operator->() const noexcept { return _M_ptr; }
+        -:  248:
+        -:  249:	_Tp& operator*() const noexcept { return *_M_ptr; }
+        -:  250:
+        -:  251:      private:
+        -:  252:	_Tp* _M_ptr;
+        -:  253:      };
+        -:  254:  }
+        -:  255:
+        -:  256:_GLIBCXX_BEGIN_NAMESPACE_CXX11
+        -:  257:
+        -:  258:  /// String conversions
+        -:  259:  template<typename _Codecvt, typename _Elem = wchar_t,
+        -:  260:	   typename _Wide_alloc = allocator<_Elem>,
+        -:  261:	   typename _Byte_alloc = allocator<char>>
+        -:  262:    class wstring_convert
+        -:  263:    {
+        -:  264:    public:
+        -:  265:      typedef basic_string<char, char_traits<char>, _Byte_alloc>   byte_string;
+        -:  266:      typedef basic_string<_Elem, char_traits<_Elem>, _Wide_alloc> wide_string;
+        -:  267:      typedef typename _Codecvt::state_type 			   state_type;
+        -:  268:      typedef typename wide_string::traits_type::int_type	   int_type;
+        -:  269:
+        -:  270:      /// Default constructor.
+        -:  271:      wstring_convert() : _M_cvt(new _Codecvt()) { }
+        -:  272:
+        -:  273:      /** Constructor.
+        -:  274:       *
+        -:  275:       * @param  __pcvt The facet to use for conversions.
+        -:  276:       *
+        -:  277:       * Takes ownership of @p __pcvt and will delete it in the destructor.
+        -:  278:       */
+        -:  279:      explicit
+        -:  280:      wstring_convert(_Codecvt* __pcvt) : _M_cvt(__pcvt, "wstring_convert")
+        -:  281:      { }
+        -:  282:
+        -:  283:      /** Construct with an initial converstion state.
+        -:  284:       *
+        -:  285:       * @param  __pcvt The facet to use for conversions.
+        -:  286:       * @param  __state Initial conversion state.
+        -:  287:       *
+        -:  288:       * Takes ownership of @p __pcvt and will delete it in the destructor.
+        -:  289:       * The object's conversion state will persist between conversions.
+        -:  290:       */
+        -:  291:      wstring_convert(_Codecvt* __pcvt, state_type __state)
+        -:  292:      : _M_cvt(__pcvt, "wstring_convert"),
+        -:  293:	_M_state(__state), _M_with_cvtstate(true)
+        -:  294:      { }
+        -:  295:
+        -:  296:      /** Construct with error strings.
+        -:  297:       *
+        -:  298:       * @param  __byte_err A string to return on failed conversions.
+        -:  299:       * @param  __wide_err A wide string to return on failed conversions.
+        -:  300:       */
+        -:  301:      explicit
+        -:  302:      wstring_convert(const byte_string& __byte_err,
+        -:  303:		      const wide_string& __wide_err = wide_string())
+        -:  304:      : _M_cvt(new _Codecvt),
+        -:  305:	_M_byte_err_string(__byte_err), _M_wide_err_string(__wide_err),
+        -:  306:	_M_with_strings(true)
+        -:  307:      { }
+        -:  308:
+        -:  309:      ~wstring_convert() = default;
+        -:  310:
+        -:  311:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  312:      // 2176. Special members for wstring_convert and wbuffer_convert
+        -:  313:      wstring_convert(const wstring_convert&) = delete;
+        -:  314:      wstring_convert& operator=(const wstring_convert&) = delete;
+        -:  315:
+        -:  316:      /// @{ Convert from bytes.
+        -:  317:      wide_string
+        -:  318:      from_bytes(char __byte)
+        -:  319:      {
+        -:  320:	char __bytes[2] = { __byte };
+        -:  321:	return from_bytes(__bytes, __bytes+1);
+        -:  322:      }
+        -:  323:
+        -:  324:      wide_string
+        -:  325:      from_bytes(const char* __ptr)
+        -:  326:      { return from_bytes(__ptr, __ptr+char_traits<char>::length(__ptr)); }
+        -:  327:
+        -:  328:      wide_string
+        -:  329:      from_bytes(const byte_string& __str)
+        -:  330:      {
+        -:  331:	auto __ptr = __str.data();
+        -:  332:	return from_bytes(__ptr, __ptr + __str.size());
+        -:  333:      }
+        -:  334:
+        -:  335:      wide_string
+        -:  336:      from_bytes(const char* __first, const char* __last)
+        -:  337:      {
+        -:  338:	if (!_M_with_cvtstate)
+        -:  339:	  _M_state = state_type();
+        -:  340:	wide_string ___out{ _M_wide_err_string.get_allocator() };
+        -:  341:	if (__str_codecvt_in(__first, __last, ___out, *_M_cvt, _M_state,
+        -:  342:			     _M_count))
+        -:  343:	  return ___out;
+        -:  344:	if (_M_with_strings)
+        -:  345:	  return _M_wide_err_string;
+        -:  346:	__throw_range_error("wstring_convert::from_bytes");
+        -:  347:      }
+        -:  348:      /// @}
+        -:  349:
+        -:  350:      /// @{ Convert to bytes.
+        -:  351:      byte_string
+        -:  352:      to_bytes(_Elem __wchar)
+        -:  353:      {
+        -:  354:	_Elem __wchars[2] = { __wchar };
+        -:  355:	return to_bytes(__wchars, __wchars+1);
+        -:  356:      }
+        -:  357:
+        -:  358:      byte_string
+        -:  359:      to_bytes(const _Elem* __ptr)
+        -:  360:      {
+        -:  361:	return to_bytes(__ptr, __ptr+wide_string::traits_type::length(__ptr));
+        -:  362:      }
+        -:  363:
+        -:  364:      byte_string
+        -:  365:      to_bytes(const wide_string& __wstr)
+        -:  366:      {
+        -:  367:	auto __ptr = __wstr.data();
+        -:  368:	return to_bytes(__ptr, __ptr + __wstr.size());
+        -:  369:      }
+        -:  370:
+        -:  371:      byte_string
+        -:  372:      to_bytes(const _Elem* __first, const _Elem* __last)
+        -:  373:      {
+        -:  374:	if (!_M_with_cvtstate)
+        -:  375:	  _M_state = state_type();
+        -:  376:	byte_string ___out{ _M_byte_err_string.get_allocator() };
+        -:  377:	if (__str_codecvt_out(__first, __last, ___out, *_M_cvt, _M_state,
+        -:  378:			      _M_count))
+        -:  379:	  return ___out;
+        -:  380:	if (_M_with_strings)
+        -:  381:	  return _M_byte_err_string;
+        -:  382:	__throw_range_error("wstring_convert::to_bytes");
+        -:  383:      }
+        -:  384:      /// @}
+        -:  385:
+        -:  386:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  387:      // 2174. wstring_convert::converted() should be noexcept
+        -:  388:      /// The number of elements successfully converted in the last conversion.
+        -:  389:      size_t converted() const noexcept { return _M_count; }
+        -:  390:
+        -:  391:      /// The final conversion state of the last conversion.
+        -:  392:      state_type state() const { return _M_state; }
+        -:  393:
+        -:  394:    private:
+        -:  395:      __detail::_Scoped_ptr<_Codecvt>	_M_cvt;
+        -:  396:      byte_string		_M_byte_err_string;
+        -:  397:      wide_string		_M_wide_err_string;
+        -:  398:      state_type		_M_state = state_type();
+        -:  399:      size_t			_M_count = 0;
+        -:  400:      bool			_M_with_cvtstate = false;
+        -:  401:      bool			_M_with_strings = false;
+        -:  402:    };
+        -:  403:
+        -:  404:_GLIBCXX_END_NAMESPACE_CXX11
+        -:  405:
+        -:  406:  /// Buffer conversions
+        -:  407:  template<typename _Codecvt, typename _Elem = wchar_t,
+        -:  408:	   typename _Tr = char_traits<_Elem>>
+        -:  409:    class wbuffer_convert : public basic_streambuf<_Elem, _Tr>
+        -:  410:    {
+        -:  411:      typedef basic_streambuf<_Elem, _Tr> _Wide_streambuf;
+        -:  412:
+        -:  413:    public:
+        -:  414:      typedef typename _Codecvt::state_type state_type;
+        -:  415:
+        -:  416:      /// Default constructor.
+        -:  417:      wbuffer_convert() : wbuffer_convert(nullptr) { }
+        -:  418:
+        -:  419:      /** Constructor.
+        -:  420:       *
+        -:  421:       * @param  __bytebuf The underlying byte stream buffer.
+        -:  422:       * @param  __pcvt    The facet to use for conversions.
+        -:  423:       * @param  __state   Initial conversion state.
+        -:  424:       *
+        -:  425:       * Takes ownership of @p __pcvt and will delete it in the destructor.
+        -:  426:       */
+        -:  427:      explicit
+        -:  428:      wbuffer_convert(streambuf* __bytebuf, _Codecvt* __pcvt = new _Codecvt,
+        -:  429:		      state_type __state = state_type())
+        -:  430:      : _M_buf(__bytebuf), _M_cvt(__pcvt, "wbuffer_convert"),
+        -:  431:	_M_state(__state), _M_always_noconv(_M_cvt->always_noconv())
+        -:  432:      {
+        -:  433:	if (_M_buf)
+        -:  434:	  {
+        -:  435:	    this->setp(_M_put_area, _M_put_area + _S_buffer_length);
+        -:  436:	    this->setg(_M_get_area + _S_putback_length,
+        -:  437:		       _M_get_area + _S_putback_length,
+        -:  438:		       _M_get_area + _S_putback_length);
+        -:  439:	  }
+        -:  440:      }
+        -:  441:
+        -:  442:      ~wbuffer_convert() = default;
+        -:  443:
+        -:  444:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:  445:      // 2176. Special members for wstring_convert and wbuffer_convert
+        -:  446:      wbuffer_convert(const wbuffer_convert&) = delete;
+        -:  447:      wbuffer_convert& operator=(const wbuffer_convert&) = delete;
+        -:  448:
+        -:  449:      streambuf* rdbuf() const noexcept { return _M_buf; }
+        -:  450:
+        -:  451:      streambuf*
+        -:  452:      rdbuf(streambuf *__bytebuf) noexcept
+        -:  453:      {
+        -:  454:	auto __prev = _M_buf;
+        -:  455:	_M_buf = __bytebuf;
+        -:  456:	return __prev;
+        -:  457:      }
+        -:  458:
+        -:  459:      /// The conversion state following the last conversion.
+        -:  460:      state_type state() const noexcept { return _M_state; }
+        -:  461:
+        -:  462:    protected:
+        -:  463:      int
+        -:  464:      sync()
+        -:  465:      { return _M_buf && _M_conv_put() && !_M_buf->pubsync() ? 0 : -1; }
+        -:  466:
+        -:  467:      typename _Wide_streambuf::int_type
+        -:  468:      overflow(typename _Wide_streambuf::int_type ___out)
+        -:  469:      {
+        -:  470:	if (!_M_buf || !_M_conv_put())
+        -:  471:	  return _Tr::eof();
+        -:  472:	else if (!_Tr::eq_int_type(___out, _Tr::eof()))
+        -:  473:	  return this->sputc(___out);
+        -:  474:	return _Tr::not_eof(___out);
+        -:  475:      }
+        -:  476:
+        -:  477:      typename _Wide_streambuf::int_type
+        -:  478:      underflow()
+        -:  479:      {
+        -:  480:	if (!_M_buf)
+        -:  481:	  return _Tr::eof();
+        -:  482:
+        -:  483:	if (this->gptr() < this->egptr() || (_M_buf && _M_conv_get()))
+        -:  484:	  return _Tr::to_int_type(*this->gptr());
+        -:  485:	else
+        -:  486:	  return _Tr::eof();
+        -:  487:      }
+        -:  488:
+        -:  489:      streamsize
+        -:  490:      xsputn(const typename _Wide_streambuf::char_type* __s, streamsize __n)
+        -:  491:      {
+        -:  492:	if (!_M_buf || __n == 0)
+        -:  493:	  return 0;
+        -:  494:	streamsize __done = 0;
+        -:  495:	do
+        -:  496:	{
+        -:  497:	  auto __nn = std::min<streamsize>(this->epptr() - this->pptr(),
+        -:  498:					   __n - __done);
+        -:  499:	  _Tr::copy(this->pptr(), __s + __done, __nn);
+        -:  500:	  this->pbump(__nn);
+        -:  501:	  __done += __nn;
+        -:  502:	} while (__done < __n && _M_conv_put());
+        -:  503:	return __done;
+        -:  504:      }
+        -:  505:
+        -:  506:    private:
+        -:  507:      // fill the get area from converted contents of the byte stream buffer
+        -:  508:      bool
+        -:  509:      _M_conv_get()
+        -:  510:      {
+        -:  511:	const streamsize __pb1 = this->gptr() - this->eback();
+        -:  512:	const streamsize __pb2 = _S_putback_length;
+        -:  513:	const streamsize __npb = std::min(__pb1, __pb2);
+        -:  514:
+        -:  515:	_Tr::move(_M_get_area + _S_putback_length - __npb,
+        -:  516:		  this->gptr() - __npb, __npb);
+        -:  517:
+        -:  518:	streamsize __nbytes = sizeof(_M_get_buf) - _M_unconv;
+        -:  519:	__nbytes = std::min(__nbytes, _M_buf->in_avail());
+        -:  520:	if (__nbytes < 1)
+        -:  521:	  __nbytes = 1;
+        -:  522:	__nbytes = _M_buf->sgetn(_M_get_buf + _M_unconv, __nbytes);
+        -:  523:	if (__nbytes < 1)
+        -:  524:	  return false;
+        -:  525:	__nbytes += _M_unconv;
+        -:  526:
+        -:  527:	// convert _M_get_buf into _M_get_area
+        -:  528:
+        -:  529:	_Elem* __outbuf = _M_get_area + _S_putback_length;
+        -:  530:	_Elem* __outnext = __outbuf;
+        -:  531:	const char* __bnext = _M_get_buf;
+        -:  532:
+        -:  533:	codecvt_base::result __result;
+        -:  534:	if (_M_always_noconv)
+        -:  535:	  __result = codecvt_base::noconv;
+        -:  536:	else
+        -:  537:	  {
+        -:  538:	    _Elem* __outend = _M_get_area + _S_buffer_length;
+        -:  539:
+        -:  540:	    __result = _M_cvt->in(_M_state,
+        -:  541:				  __bnext, __bnext + __nbytes, __bnext,
+        -:  542:				  __outbuf, __outend, __outnext);
+        -:  543:	  }
+        -:  544:
+        -:  545:	if (__result == codecvt_base::noconv)
+        -:  546:	  {
+        -:  547:	    // cast is safe because noconv means _Elem is same type as char
+        -:  548:	    auto __get_buf = reinterpret_cast<const _Elem*>(_M_get_buf);
+        -:  549:	    _Tr::copy(__outbuf, __get_buf, __nbytes);
+        -:  550:	    _M_unconv = 0;
+        -:  551:	    return true;
+        -:  552:	  }
+        -:  553:
+        -:  554:	if ((_M_unconv = _M_get_buf + __nbytes - __bnext))
+        -:  555:	  char_traits<char>::move(_M_get_buf, __bnext, _M_unconv);
+        -:  556:
+        -:  557:	this->setg(__outbuf, __outbuf, __outnext);
+        -:  558:
+        -:  559:	return __result != codecvt_base::error;
+        -:  560:      }
+        -:  561:
+        -:  562:      // unused
+        -:  563:      bool
+        -:  564:      _M_put(...)
+        -:  565:      { return false; }
+        -:  566:
+        -:  567:      bool
+        -:  568:      _M_put(const char* __p, streamsize __n)
+        -:  569:      {
+        -:  570:	if (_M_buf->sputn(__p, __n) < __n)
+        -:  571:	  return false;
+        -:  572:	return true;
+        -:  573:      }
+        -:  574:
+        -:  575:      // convert the put area and write to the byte stream buffer
+        -:  576:      bool
+        -:  577:      _M_conv_put()
+        -:  578:      {
+        -:  579:	_Elem* const __first = this->pbase();
+        -:  580:	const _Elem* const __last = this->pptr();
+        -:  581:	const streamsize __pending = __last - __first;
+        -:  582:
+        -:  583:	if (_M_always_noconv)
+        -:  584:	  return _M_put(__first, __pending);
+        -:  585:
+        -:  586:	char __outbuf[2 * _S_buffer_length];
+        -:  587:
+        -:  588:	const _Elem* __next = __first;
+        -:  589:	const _Elem* __start;
+        -:  590:	do
+        -:  591:	  {
+        -:  592:	    __start = __next;
+        -:  593:	    char* __outnext = __outbuf;
+        -:  594:	    char* const __outlast = __outbuf + sizeof(__outbuf);
+        -:  595:	    auto __result = _M_cvt->out(_M_state, __next, __last, __next,
+        -:  596:					__outnext, __outlast, __outnext);
+        -:  597:	    if (__result == codecvt_base::error)
+        -:  598:	      return false;
+        -:  599:	    else if (__result == codecvt_base::noconv)
+        -:  600:	      return _M_put(__next, __pending);
+        -:  601:
+        -:  602:	    if (!_M_put(__outbuf, __outnext - __outbuf))
+        -:  603:	      return false;
+        -:  604:	  }
+        -:  605:	while (__next != __last && __next != __start);
+        -:  606:
+        -:  607:	if (__next != __last)
+        -:  608:	  _Tr::move(__first, __next, __last - __next);
+        -:  609:
+        -:  610:	this->pbump(__first - __next);
+        -:  611:	return __next != __first;
+        -:  612:      }
+        -:  613:
+        -:  614:      streambuf*			_M_buf;
+        -:  615:      __detail::_Scoped_ptr<_Codecvt>	_M_cvt;
+        -:  616:      state_type			_M_state;
+        -:  617:
+        -:  618:      static const streamsize	_S_buffer_length = 32;
+        -:  619:      static const streamsize	_S_putback_length = 3;
+        -:  620:      _Elem                     _M_put_area[_S_buffer_length];
+        -:  621:      _Elem                     _M_get_area[_S_buffer_length];
+        -:  622:      streamsize		_M_unconv = 0;
+        -:  623:      char			_M_get_buf[_S_buffer_length-_S_putback_length];
+        -:  624:      bool			_M_always_noconv;
+        -:  625:    };
+        -:  626:
+        -:  627:  /// @} group locales
+        -:  628:
+        -:  629:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  630:} // namespace
+        -:  631:
+        -:  632:#endif // __cplusplus
+        -:  633:
+        -:  634:#endif /* _LOCALE_CONV_H */

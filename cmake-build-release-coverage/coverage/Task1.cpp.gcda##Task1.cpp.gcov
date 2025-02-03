@@ -1,0 +1,297 @@
+        -:    0:Source:D:/Projects/SoftAcademy/Tasks/Task1/Task1.cpp
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task1\Task1.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task1\Task1.cpp.gcda
+        -:    0:Runs:1
+        -:    1:﻿#include "Task1.h"
+        -:    2:
+        -:    3:#include <stdlib.h>
+        -:    4:#include <string.h>
+        -:    5:
+function _ZN8str_list10add_stringEPPPcPKc called 6 returned 100% blocks executed 100%
+        6:    6:void str_list::add_string(char ***list, const char *str) {
+        6:    7:    if (list == nullptr) return;
+        6:    7-block  0
+branch  0 taken 6 (fallthrough)
+branch  1 taken 0
+        -:    8:
+        6:    9:    if (*list == nullptr) {
+        6:    9-block  0
+branch  0 taken 2 (fallthrough)
+branch  1 taken 4
+        2:   10:        *list = static_cast<char **>(malloc(sizeof(char *) * 2));
+        -:   11:
+        2:   12:        (*list)[0] = strdup(str);
+        2:   12-block  0
+call    0 returned 2
+        2:   13:        (*list)[1] = nullptr;
+        -:   14:    } else {
+        -:   15:        int list_size = 0;
+       14:   16:        while ((*list)[list_size] != nullptr) ++list_size;
+       10:   16-block  0
+       14:   16-block  1
+branch  0 taken 10
+branch  1 taken 4 (fallthrough)
+        -:   17:
+        4:   18:        *list = static_cast<char **>(realloc(*list, sizeof(char *) * (list_size + 2)));
+        -:   19:
+        4:   20:        (*list)[list_size] = strdup(str);
+        4:   20-block  0
+call    0 returned 4
+        4:   21:        (*list)[list_size + 1] = nullptr;
+        -:   22:    }
+        -:   23:}
+        -:   24:
+function _ZN8str_list13remove_stringEPPPcPKc called 1 returned 100% blocks executed 64%
+        1:   25:bool str_list::remove_string(char ***list, const char *str) {
+        1:   26:    if (list == nullptr || *list == nullptr) return false;
+        1:   26-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:   26-block  1
+branch  2 taken 1
+branch  3 taken 0
+        -:   27:
+        -:   28:    bool bFound = false;
+        6:   29:    for (int i = 0; (*list)[i] != nullptr; ++i) {
+        5:   29-block  0
+        6:   29-block  1
+branch  0 taken 5
+branch  1 taken 1 (fallthrough)
+        5:   30:        if (strcmp((*list)[i], str) != 0) continue;
+        5:   30-block  0
+branch  0 taken 5 (fallthrough)
+branch  1 taken 0
+        5:   30-block  1
+        -:   31:
+    #####:   32:        free((*list)[i]);
+        -:   33:
+    #####:   34:        for (int j = i; (*list)[j] != nullptr; ++j) {
+    %%%%%:   34-block  0
+    %%%%%:   34-block  1
+branch  0 never executed
+branch  1 never executed (fallthrough)
+    #####:   35:            (*list)[j] = (*list)[j + 1];
+    %%%%%:   35-block  0
+        -:   36:        }
+        -:   37:
+    #####:   38:        --i;
+    %%%%%:   38-block  0
+        -:   39:        bFound = true;
+        -:   40:    }
+        -:   41:
+        -:   42:    return bFound;
+        -:   43:}
+        -:   44:
+function _ZN8str_list5clearEPPPc called 1 returned 100% blocks executed 100%
+        1:   45:void str_list::clear(char ***list) {
+        1:   46:    if (list == nullptr || *list == nullptr) return;
+        1:   46-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:   46-block  1
+branch  2 taken 1
+branch  3 taken 0
+        -:   47:
+        4:   48:    for (int i = 0; (*list)[i] != nullptr; ++i) {
+        4:   48-block  0
+branch  0 taken 3
+branch  1 taken 1 (fallthrough)
+        3:   49:        free((*list)[i]);
+        3:   50:        (*list)[i] = nullptr;
+        3:   50-block  0
+        -:   51:    }
+        1:   52:    free(*list);
+        1:   53:    *list = nullptr;
+        1:   53-block  0
+        -:   54:}
+        -:   55:
+function _ZN8str_list11match_indexEPPPcPKcRj called 2 returned 100% blocks executed 100%
+        2:   56:bool str_list::match_index(char ***list, const char *str, unsigned int &found_index) {
+        2:   57:    if (list == nullptr || *list == nullptr) return false;
+        2:   57-block  0
+branch  0 taken 2 (fallthrough)
+branch  1 taken 0
+        2:   57-block  1
+branch  2 taken 2
+branch  3 taken 0
+        -:   58:
+       11:   59:    for (int i = 0; (*list)[i] != nullptr; ++i) {
+        9:   59-block  0
+       11:   59-block  1
+branch  0 taken 10
+branch  1 taken 1 (fallthrough)
+       10:   60:        if (strcmp((*list)[i], str) == 0) {
+       10:   60-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 9
+        1:   61:            found_index = i;
+        1:   62:            return true;
+        1:   62-block  0
+        -:   63:        }
+        -:   64:    }
+        -:   65:
+        -:   66:    return false;
+        -:   67:}
+        -:   68:
+function _ZN8str_list9num_itemsEPPPc called 3 returned 100% blocks executed 100%
+        3:   69:size_t str_list::num_items(char ***list) {
+        3:   70:    if (list == nullptr || *list == nullptr) return 0;
+        3:   70-block  0
+branch  0 taken 3 (fallthrough)
+branch  1 taken 0
+        3:   70-block  1
+branch  2 taken 2
+branch  3 taken 1
+        -:   71:
+        -:   72:    int list_size = 0;
+       20:   73:    while ((*list)[list_size] != nullptr) ++list_size;
+        5:   73-block  0
+        6:   73-block  1
+branch  0 taken 5
+branch  1 taken 1 (fallthrough)
+        5:   73-block  2
+        6:   73-block  3
+branch  2 taken 5
+branch  3 taken 1 (fallthrough)
+        6:   73-block  4
+        8:   73-block  5
+branch  4 taken 6
+branch  5 taken 2 (fallthrough)
+        -:   74:
+        -:   75:    return list_size;
+        -:   76:}
+        -:   77:
+function _ZN8str_list17remove_duplicatesEPPPc called 1 returned 100% blocks executed 100%
+        1:   78:void str_list::remove_duplicates(char ***list) {
+        1:   79:    if (list == nullptr || *list == nullptr) return;
+        1:   79-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:   79-block  1
+branch  2 taken 1
+branch  3 taken 0
+        -:   80:
+        -:   81:    const size_t list_size = num_items(list);
+        1:   82:    if (list_size < 2) return;
+        1:   82-block  0
+branch  0 taken 1
+branch  1 taken 0
+        -:   83:
+        6:   84:    for (int i = 0; i < list_size; ++i) {
+        5:   84-block  0
+        6:   84-block  1
+branch  0 taken 5
+branch  1 taken 1
+        5:   85:        if ((*list)[i] == nullptr) continue;
+        5:   85-block  0
+branch  0 taken 2 (fallthrough)
+branch  1 taken 3
+        2:   85-block  1
+       10:   86:        for (int j = i + 1; j < list_size; ++j) {
+        3:   86-block  0
+        7:   86-block  1
+       10:   86-block  2
+branch  0 taken 7
+branch  1 taken 3 (fallthrough)
+        7:   87:            if ((*list)[i] == nullptr || (*list)[j] == nullptr || strcmp((*list)[i], (*list)[j]) != 0) continue;
+        7:   87-block  0
+branch  0 taken 7 (fallthrough)
+branch  1 taken 0
+        7:   87-block  1
+branch  2 taken 7 (fallthrough)
+branch  3 taken 0
+        7:   87-block  2
+branch  4 taken 5 (fallthrough)
+branch  5 taken 2
+        5:   87-block  3
+        -:   88:
+        2:   89:            free((*list)[j]);
+        2:   90:            (*list)[j] = nullptr;
+        2:   90-block  0
+        -:   91:        }
+        -:   92:    }
+        -:   93:
+        -:   94:    int newIndex = 0;
+        6:   95:    for (int i = 0; i < list_size; ++i) {
+        5:   95-block  0
+        6:   95-block  1
+branch  0 taken 5
+branch  1 taken 1 (fallthrough)
+        5:   96:        if ((*list)[i] != nullptr) {
+        5:   96-block  0
+branch  0 taken 3 (fallthrough)
+branch  1 taken 2
+        3:   97:            (*list)[newIndex++] = (*list)[i];
+        3:   97-block  0
+        -:   98:        }
+        -:   99:    }
+        -:  100:
+        1:  101:    (*list)[newIndex] = nullptr;
+        1:  101-block  0
+        -:  102:}
+        -:  103:
+function _ZN8str_list11replace_strEPPPcPKcS4_ called 1 returned 100% blocks executed 100%
+        1:  104:bool str_list::replace_str(char ***list, const char *str_to_replace, const char *str_to_insert) {
+        1:  105:    if (list == nullptr || *list == nullptr) return false;
+        1:  105-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  105-block  1
+branch  2 taken 1
+branch  3 taken 0
+        -:  106:
+        5:  107:    for (int i = 0; (*list)[i] != nullptr; ++i) {
+        4:  107-block  0
+        5:  107-block  1
+branch  0 taken 5
+branch  1 taken 0 (fallthrough)
+        5:  108:        if (strcmp((*list)[i], str_to_replace) == 0) {
+        5:  108-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 4
+        1:  109:            free((*list)[i]);
+        1:  110:            (*list)[i] = strdup(str_to_insert);
+        1:  110-block  0
+call    0 returned 1
+        1:  111:            return true;
+        -:  112:        }
+        -:  113:    }
+        -:  114:
+        -:  115:    return false;
+        -:  116:}
+        -:  117:
+function _ZN8str_list4sortEPPPc called 1 returned 100% blocks executed 100%
+        1:  118:void str_list::sort(char ***list) {
+        1:  119:    if (list == nullptr || *list == nullptr) return;
+        1:  119-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  119-block  1
+branch  2 taken 1
+branch  3 taken 0
+        -:  120:
+        -:  121:    const size_t list_size = num_items(list);
+        -:  122:
+        5:  123:    for (int i = 0; i < list_size - 1; ++i) {
+        1:  123-block  0
+        4:  123-block  1
+        5:  123-block  2
+branch  0 taken 4
+branch  1 taken 1 (fallthrough)
+       14:  124:        for (int j = 0; j < list_size - 1 - i; ++j) {
+       10:  124-block  0
+       14:  124-block  1
+branch  0 taken 10
+branch  1 taken 4 (fallthrough)
+       10:  125:            if (strcmp((*list)[j], (*list)[j + 1]) > 0) {
+       10:  125-block  0
+branch  0 taken 4 (fallthrough)
+branch  1 taken 6
+        -:  126:                char *temp = (*list)[j];
+        4:  127:                (*list)[j] = (*list)[j + 1];
+        4:  128:                (*list)[j + 1] = temp;
+        4:  128-block  0
+        -:  129:            }
+        -:  130:        }
+        -:  131:    }
+        -:  132:}

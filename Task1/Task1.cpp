@@ -22,9 +22,10 @@ void str_list::add_string(char ***list, const char *str) {
     }
 }
 
-void str_list::remove_string(char ***list, const char *str) {
-    if (list == nullptr || *list == nullptr) return;
+bool str_list::remove_string(char ***list, const char *str) {
+    if (list == nullptr || *list == nullptr) return false;
 
+    bool bFound = false;
     for (int i = 0; (*list)[i] != nullptr; ++i) {
         if (strcmp((*list)[i], str) != 0) continue;
 
@@ -35,7 +36,10 @@ void str_list::remove_string(char ***list, const char *str) {
         }
 
         --i;
+        bFound = true;
     }
+
+    return bFound;
 }
 
 void str_list::clear(char ***list) {
@@ -53,10 +57,10 @@ bool str_list::match_index(char ***list, const char *str, unsigned int &found_in
     if (list == nullptr || *list == nullptr) return false;
 
     for (int i = 0; (*list)[i] != nullptr; ++i) {
-        if (strcmp((*list)[i], str) != 0) continue;
-
-        found_index = i;
-        return true;
+        if (strcmp((*list)[i], str) == 0) {
+            found_index = i;
+            return true;
+        }
     }
 
     return false;
@@ -97,15 +101,18 @@ void str_list::remove_duplicates(char ***list) {
     (*list)[newIndex] = nullptr;
 }
 
-void str_list::replace_str(char ***list, const char *str_to_replace, const char *str_to_insert) {
-    if (list == nullptr || *list == nullptr) return;
+bool str_list::replace_str(char ***list, const char *str_to_replace, const char *str_to_insert) {
+    if (list == nullptr || *list == nullptr) return false;
 
     for (int i = 0; (*list)[i] != nullptr; ++i) {
-        if (strcmp((*list)[i], str_to_replace) != 0) continue;
-
-        free((*list)[i]);
-        (*list)[i] = strdup(str_to_insert);
+        if (strcmp((*list)[i], str_to_replace) == 0) {
+            free((*list)[i]);
+            (*list)[i] = strdup(str_to_insert);
+            return true;
+        }
     }
+
+    return false;
 }
 
 void str_list::sort(char ***list) {

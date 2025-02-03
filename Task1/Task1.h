@@ -6,8 +6,8 @@ namespace str_list {
     // Adds string to list
     void add_string(char ***list, const char *str);
 
-    // Removes string from list
-    void remove_string(char ***list, const char *str);
+    // Removes string from list. Returns true if string was removed
+    bool remove_string(char ***list, const char *str);
 
     void clear(char ***list);
 
@@ -20,8 +20,8 @@ namespace str_list {
     // Remove all duplicates in list
     void remove_duplicates(char ***list);
 
-    // Replace string with different string
-    void replace_str(char ***list, const char *str_to_replace, const char *str_to_insert);
+    // Replace string with different string. Returns true if replaced successfully
+    bool replace_str(char ***list, const char *str_to_replace, const char *str_to_insert);
 
     // Sorts list with bubble sort
     void sort(char ***list);

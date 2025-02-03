@@ -1,0 +1,2744 @@
+        -:    0:Source:D:/Projects/SoftAcademy/Tasks/tests/test.cpp
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\tests\CMakeFiles\Tests.dir\test.cpp.gcda
+        -:    0:Runs:1
+        -:    1:﻿#include <fstream>
+        -:    2:#include <gtest/gtest.h>
+        -:    3:#include <gmock/gmock.h>
+        -:    4:
+        -:    5:#include "../Task1/Task1.h"
+        -:    6:#include "../Task2/Task2.h"
+        -:    7:#include "../Task3/Task3.h"
+        -:    8:
+       3*:    9:TEST(TestTask1, Test1) {
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:    9-block  0
+        -:   10:    using namespace str_list;
+        -:   11:
+        1:   12:    char **list = nullptr;
+        1:   13:    EXPECT_NO_THROW(add_string(&list, "Dynamically"));
+        -:   14:
+       1*:   15:    EXPECT_TRUE(list != nullptr);
+        -:   16:
+        1:   17:    EXPECT_NO_THROW(add_string(&list, "sized"));
+        1:   18:    EXPECT_NO_THROW(add_string(&list, "sized"));
+        1:   19:    EXPECT_NO_THROW(add_string(&list, "Dynamically"));
+        1:   20:    EXPECT_NO_THROW(add_string(&list, "list"));
+        -:   21:
+       1*:   22:    EXPECT_TRUE(num_items(&list) == 5);
+        -:   23:
+       1*:   24:    EXPECT_FALSE(remove_string(&list, "s"));
+        -:   25:
+       1*:   26:    EXPECT_TRUE(replace_str(&list, "list", "LIST"));
+        -:   27:
+        -:   28:    unsigned int index;
+       1*:   29:    EXPECT_TRUE(match_index(&list, "LIST", index));
+        -:   30:
+        1:   31:    EXPECT_NO_THROW(sort(&list));
+        -:   32:
+       1*:   33:    EXPECT_FALSE(match_index(&list, "Missing string", index));
+        -:   34:
+        1:   35:    EXPECT_NO_THROW(remove_duplicates(&list));
+        1:   36:    EXPECT_NO_THROW(clear(&list));
+        -:   37:
+       1*:   38:    EXPECT_TRUE(list == nullptr);
+       1*:   39:    EXPECT_FALSE(num_items(&list) != 0);
+        -:   40:
+        1:   41:    EXPECT_NO_THROW(add_string(&list, "I live again!"));
+        -:   42:
+       1*:   43:    EXPECT_TRUE(list != nullptr);
+       1*:   44:    EXPECT_TRUE(num_items(&list) == 1);
+        -:   45:
+        1:   46:    EXPECT_NO_THROW(print(&list));
+        1:   47:}
+------------------
+_ZN20TestTask1_Test1_TestD0Ev:
+function _ZN20TestTask1_Test1_TestD0Ev called 1 returned 100% blocks executed 100%
+        1:    9:TEST(TestTask1, Test1) {
+        1:    9-block  0
+call    0 returned 1
+call    1 returned 1
+------------------
+_ZN20TestTask1_Test1_TestD1Ev:
+function _ZN20TestTask1_Test1_TestD1Ev called 0 returned 0% blocks executed 0%
+    #####:    9:TEST(TestTask1, Test1) {
+    %%%%%:    9-block  0
+call    0 never executed
+------------------
+_ZN20TestTask1_Test1_Test8TestBodyEv:
+function _ZN20TestTask1_Test1_Test8TestBodyEv called 1 returned 100% blocks executed 10%
+        1:    9:TEST(TestTask1, Test1) {
+        -:   10:    using namespace str_list;
+        -:   11:
+        1:   12:    char **list = nullptr;
+        1:   12-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   13:    EXPECT_NO_THROW(add_string(&list, "Dynamically"));
+        1:   13-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   13-block  1
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   13-block  2
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   13-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   13-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   13-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   13-block  6
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   13-block  7
+    $$$$$:   13-block  8
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   13-block  9
+call   22 never executed
+    $$$$$:   13-block 10
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   13-block 11
+call   29 never executed
+    $$$$$:   13-block 12
+call   30 never executed
+    $$$$$:   13-block 13
+call   31 never executed
+    $$$$$:   13-block 14
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   13-block 15
+call   35 never executed
+    $$$$$:   13-block 16
+call   36 never executed
+    $$$$$:   13-block 17
+call   37 never executed
+    $$$$$:   13-block 18
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   13-block 19
+call   40 never executed
+        -:   14:
+       1*:   15:    EXPECT_TRUE(list != nullptr);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   15-block  0
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed (throw)
+    %%%%%:   15-block  1
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    %%%%%:   15-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   15-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   15-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    %%%%%:   15-block  5
+    $$$$$:   15-block  6
+call   17 never executed
+    $$$$$:   15-block  7
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   15-block  8
+call   20 never executed
+        -:   16:
+        1:   17:    EXPECT_NO_THROW(add_string(&list, "sized"));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   17-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   17-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   17-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   17-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   17-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   17-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   17-block  6
+    $$$$$:   17-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   17-block  8
+call   22 never executed
+    $$$$$:   17-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   17-block 10
+call   29 never executed
+    $$$$$:   17-block 11
+call   30 never executed
+    $$$$$:   17-block 12
+call   31 never executed
+    $$$$$:   17-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   17-block 14
+call   35 never executed
+    $$$$$:   17-block 15
+call   36 never executed
+    $$$$$:   17-block 16
+call   37 never executed
+    $$$$$:   17-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   17-block 18
+call   40 never executed
+        1:   18:    EXPECT_NO_THROW(add_string(&list, "sized"));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   18-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   18-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   18-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   18-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   18-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   18-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   18-block  6
+    $$$$$:   18-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   18-block  8
+call   22 never executed
+    $$$$$:   18-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   18-block 10
+call   29 never executed
+    $$$$$:   18-block 11
+call   30 never executed
+    $$$$$:   18-block 12
+call   31 never executed
+    $$$$$:   18-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   18-block 14
+call   35 never executed
+    $$$$$:   18-block 15
+call   36 never executed
+    $$$$$:   18-block 16
+call   37 never executed
+    $$$$$:   18-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   18-block 18
+call   40 never executed
+        1:   19:    EXPECT_NO_THROW(add_string(&list, "Dynamically"));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   19-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   19-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   19-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   19-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   19-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   19-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   19-block  6
+    $$$$$:   19-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   19-block  8
+call   22 never executed
+    $$$$$:   19-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   19-block 10
+call   29 never executed
+    $$$$$:   19-block 11
+call   30 never executed
+    $$$$$:   19-block 12
+call   31 never executed
+    $$$$$:   19-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   19-block 14
+call   35 never executed
+    $$$$$:   19-block 15
+call   36 never executed
+    $$$$$:   19-block 16
+call   37 never executed
+    $$$$$:   19-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   19-block 18
+call   40 never executed
+        1:   20:    EXPECT_NO_THROW(add_string(&list, "list"));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   20-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   20-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   20-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   20-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   20-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   20-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   20-block  6
+    $$$$$:   20-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   20-block  8
+call   22 never executed
+    $$$$$:   20-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   20-block 10
+call   29 never executed
+    $$$$$:   20-block 11
+call   30 never executed
+    $$$$$:   20-block 12
+call   31 never executed
+    $$$$$:   20-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   20-block 14
+call   35 never executed
+    $$$$$:   20-block 15
+call   36 never executed
+    $$$$$:   20-block 16
+call   37 never executed
+    $$$$$:   20-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   20-block 18
+call   40 never executed
+        -:   21:
+       1*:   22:    EXPECT_TRUE(num_items(&list) == 5);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   22-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   22-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   22-block  2
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   22-block  3
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:   22-block  4
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed
+    %%%%%:   22-block  5
+    $$$$$:   22-block  6
+call   18 never executed
+    $$$$$:   22-block  7
+branch 19 never executed (fallthrough)
+branch 20 never executed
+    $$$$$:   22-block  8
+call   21 never executed
+        -:   23:
+       1*:   24:    EXPECT_FALSE(remove_string(&list, "s"));
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   24-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   24-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   24-block  2
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   24-block  3
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:   24-block  4
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed
+    %%%%%:   24-block  5
+    $$$$$:   24-block  6
+call   18 never executed
+    $$$$$:   24-block  7
+branch 19 never executed (fallthrough)
+branch 20 never executed
+    $$$$$:   24-block  8
+call   21 never executed
+        -:   25:
+       1*:   26:    EXPECT_TRUE(replace_str(&list, "list", "LIST"));
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   26-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   26-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   26-block  2
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   26-block  3
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:   26-block  4
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed
+    %%%%%:   26-block  5
+    $$$$$:   26-block  6
+call   18 never executed
+    $$$$$:   26-block  7
+branch 19 never executed (fallthrough)
+branch 20 never executed
+    $$$$$:   26-block  8
+call   21 never executed
+        -:   27:
+        -:   28:    unsigned int index;
+       1*:   29:    EXPECT_TRUE(match_index(&list, "LIST", index));
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   29-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   29-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   29-block  2
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   29-block  3
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:   29-block  4
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed
+    %%%%%:   29-block  5
+    $$$$$:   29-block  6
+call   18 never executed
+    $$$$$:   29-block  7
+branch 19 never executed (fallthrough)
+branch 20 never executed
+    $$$$$:   29-block  8
+call   21 never executed
+        -:   30:
+        1:   31:    EXPECT_NO_THROW(sort(&list));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   31-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   31-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   31-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   31-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   31-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   31-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   31-block  6
+    $$$$$:   31-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   31-block  8
+call   22 never executed
+    $$$$$:   31-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   31-block 10
+call   29 never executed
+    $$$$$:   31-block 11
+call   30 never executed
+    $$$$$:   31-block 12
+call   31 never executed
+    $$$$$:   31-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   31-block 14
+call   35 never executed
+    $$$$$:   31-block 15
+call   36 never executed
+    $$$$$:   31-block 16
+call   37 never executed
+    $$$$$:   31-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   31-block 18
+call   40 never executed
+        -:   32:
+       1*:   33:    EXPECT_FALSE(match_index(&list, "Missing string", index));
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   33-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   33-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   33-block  2
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   33-block  3
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:   33-block  4
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed
+    %%%%%:   33-block  5
+    $$$$$:   33-block  6
+call   18 never executed
+    $$$$$:   33-block  7
+branch 19 never executed (fallthrough)
+branch 20 never executed
+    $$$$$:   33-block  8
+call   21 never executed
+        -:   34:
+        1:   35:    EXPECT_NO_THROW(remove_duplicates(&list));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   35-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   35-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   35-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   35-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   35-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   35-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   35-block  6
+    $$$$$:   35-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   35-block  8
+call   22 never executed
+    $$$$$:   35-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   35-block 10
+call   29 never executed
+    $$$$$:   35-block 11
+call   30 never executed
+    $$$$$:   35-block 12
+call   31 never executed
+    $$$$$:   35-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   35-block 14
+call   35 never executed
+    $$$$$:   35-block 15
+call   36 never executed
+    $$$$$:   35-block 16
+call   37 never executed
+    $$$$$:   35-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   35-block 18
+call   40 never executed
+        1:   36:    EXPECT_NO_THROW(clear(&list));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   36-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   36-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   36-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   36-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   36-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   36-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   36-block  6
+    $$$$$:   36-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   36-block  8
+call   22 never executed
+    $$$$$:   36-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   36-block 10
+call   29 never executed
+    $$$$$:   36-block 11
+call   30 never executed
+    $$$$$:   36-block 12
+call   31 never executed
+    $$$$$:   36-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   36-block 14
+call   35 never executed
+    $$$$$:   36-block 15
+call   36 never executed
+    $$$$$:   36-block 16
+call   37 never executed
+    $$$$$:   36-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   36-block 18
+call   40 never executed
+        -:   37:
+       1*:   38:    EXPECT_TRUE(list == nullptr);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   38-block  0
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed (throw)
+    %%%%%:   38-block  1
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    %%%%%:   38-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   38-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   38-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    %%%%%:   38-block  5
+    $$$$$:   38-block  6
+call   17 never executed
+    $$$$$:   38-block  7
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   38-block  8
+call   20 never executed
+       1*:   39:    EXPECT_FALSE(num_items(&list) != 0);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   39-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   39-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   39-block  2
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   39-block  3
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:   39-block  4
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed
+    %%%%%:   39-block  5
+    $$$$$:   39-block  6
+call   18 never executed
+    $$$$$:   39-block  7
+branch 19 never executed (fallthrough)
+branch 20 never executed
+    $$$$$:   39-block  8
+call   21 never executed
+        -:   40:
+        1:   41:    EXPECT_NO_THROW(add_string(&list, "I live again!"));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   41-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   41-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   41-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   41-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   41-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   41-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   41-block  6
+    $$$$$:   41-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   41-block  8
+call   22 never executed
+    $$$$$:   41-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   41-block 10
+call   29 never executed
+    $$$$$:   41-block 11
+call   30 never executed
+    $$$$$:   41-block 12
+call   31 never executed
+    $$$$$:   41-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   41-block 14
+call   35 never executed
+    $$$$$:   41-block 15
+call   36 never executed
+    $$$$$:   41-block 16
+call   37 never executed
+    $$$$$:   41-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   41-block 18
+call   40 never executed
+        -:   42:
+       1*:   43:    EXPECT_TRUE(list != nullptr);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   43-block  0
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed (throw)
+    %%%%%:   43-block  1
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    %%%%%:   43-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   43-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   43-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    %%%%%:   43-block  5
+    $$$$$:   43-block  6
+call   17 never executed
+    $$$$$:   43-block  7
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   43-block  8
+call   20 never executed
+       1*:   44:    EXPECT_TRUE(num_items(&list) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   44-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   44-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   44-block  2
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   44-block  3
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:   44-block  4
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed
+    %%%%%:   44-block  5
+    $$$$$:   44-block  6
+call   18 never executed
+    $$$$$:   44-block  7
+branch 19 never executed (fallthrough)
+branch 20 never executed
+    $$$$$:   44-block  8
+call   21 never executed
+        -:   45:
+        1:   46:    EXPECT_NO_THROW(print(&list));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   46-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   46-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   46-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   46-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   46-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   46-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   46-block  6
+    $$$$$:   46-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   46-block  8
+call   22 never executed
+    $$$$$:   46-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   46-block 10
+call   29 never executed
+    $$$$$:   46-block 11
+call   30 never executed
+    $$$$$:   46-block 12
+call   31 never executed
+    $$$$$:   46-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   46-block 14
+call   35 never executed
+    $$$$$:   46-block 15
+call   36 never executed
+    $$$$$:   46-block 16
+call   37 never executed
+    $$$$$:   46-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   46-block 18
+call   40 never executed
+        1:   47:}
+    $$$$$:   47-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   47-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    $$$$$:   47-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    $$$$$:   47-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    $$$$$:   47-block  4
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    $$$$$:   47-block  5
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed (throw)
+    $$$$$:   47-block  6
+call   18 never executed
+branch 19 never executed (fallthrough)
+branch 20 never executed (throw)
+    $$$$$:   47-block  7
+call   21 never executed
+branch 22 never executed (fallthrough)
+branch 23 never executed (throw)
+    $$$$$:   47-block  8
+call   24 never executed
+branch 25 never executed (fallthrough)
+branch 26 never executed (throw)
+    $$$$$:   47-block  9
+call   27 never executed
+branch 28 never executed (fallthrough)
+branch 29 never executed (throw)
+------------------
+        -:   48:
+       3*:   49:TEST(TestTask2Union, Test2Union) {
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   49-block  0
+        -:   50:    AnyType anyType1 = 1;
+        -:   51:
+        1:   52:    EXPECT_NO_THROW(anyType1.getInt());
+        -:   53:
+        1:   54:    anyType1 = 2.621515;
+        1:   55:    EXPECT_NO_THROW(anyType1.getDouble());
+       1*:   56:    EXPECT_THROW(anyType1.getInt(), std::bad_cast);
+        -:   57:
+        1:   58:    anyType1 = true;
+        1:   59:    EXPECT_NO_THROW(anyType1.getBool());
+       1*:   60:    EXPECT_THROW(anyType1.getInt(), std::bad_cast);
+        -:   61:
+        1:   62:    AnyType anyType2 = anyType1;
+        1:   63:    EXPECT_NO_THROW(anyType2.getBool());
+        -:   64:
+        1:   65:    AnyType anyType3 = std::move(anyType2);
+       1*:   66:    EXPECT_THROW(anyType2.getInt(), std::bad_cast);
+        1:   67:    EXPECT_NO_THROW(anyType3.getBool());
+        -:   68:
+        1:   69:    anyType1 = -51261;
+        1:   70:    anyType1.swap(anyType3);
+        1:   71:    EXPECT_NO_THROW(anyType1.getBool());
+        1:   72:    EXPECT_NO_THROW(anyType3.getInt());
+        1:   73:}
+------------------
+_ZN30TestTask2Union_Test2Union_TestD0Ev:
+function _ZN30TestTask2Union_Test2Union_TestD0Ev called 1 returned 100% blocks executed 100%
+        1:   49:TEST(TestTask2Union, Test2Union) {
+        1:   49-block  0
+call    0 returned 1
+call    1 returned 1
+------------------
+_ZN30TestTask2Union_Test2Union_TestD1Ev:
+function _ZN30TestTask2Union_Test2Union_TestD1Ev called 0 returned 0% blocks executed 0%
+    #####:   49:TEST(TestTask2Union, Test2Union) {
+    %%%%%:   49-block  0
+call    0 never executed
+------------------
+_ZN30TestTask2Union_Test2Union_Test8TestBodyEv:
+function _ZN30TestTask2Union_Test2Union_Test8TestBodyEv called 1 returned 100% blocks executed 12%
+        1:   49:TEST(TestTask2Union, Test2Union) {
+        1:   49-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   50:    AnyType anyType1 = 1;
+        -:   51:
+        1:   52:    EXPECT_NO_THROW(anyType1.getInt());
+        1:   52-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   52-block  1
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   52-block  2
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   52-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   52-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   52-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   52-block  6
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   52-block  7
+    $$$$$:   52-block  8
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   52-block  9
+call   22 never executed
+    $$$$$:   52-block 10
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   52-block 11
+call   29 never executed
+    $$$$$:   52-block 12
+call   30 never executed
+    $$$$$:   52-block 13
+call   31 never executed
+    $$$$$:   52-block 14
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   52-block 15
+call   35 never executed
+    $$$$$:   52-block 16
+call   36 never executed
+    $$$$$:   52-block 17
+call   37 never executed
+    $$$$$:   52-block 18
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   52-block 19
+call   40 never executed
+        -:   53:
+        1:   54:    anyType1 = 2.621515;
+call    0 returned 1
+        1:   55:    EXPECT_NO_THROW(anyType1.getDouble());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   55-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   55-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   55-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   55-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   55-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   55-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   55-block  6
+    $$$$$:   55-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   55-block  8
+call   22 never executed
+    $$$$$:   55-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   55-block 10
+call   29 never executed
+    $$$$$:   55-block 11
+call   30 never executed
+    $$$$$:   55-block 12
+call   31 never executed
+    $$$$$:   55-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   55-block 14
+call   35 never executed
+    $$$$$:   55-block 15
+call   36 never executed
+    $$$$$:   55-block 16
+call   37 never executed
+    $$$$$:   55-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   55-block 18
+call   40 never executed
+       1*:   56:    EXPECT_THROW(anyType1.getInt(), std::bad_cast);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   56-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   56-block  1
+call    5 returned 1
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1 (throw)
+    %%%%%:   56-block  2
+    %%%%%:   56-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   56-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   56-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    %%%%%:   56-block  6
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    %%%%%:   56-block  7
+        1:   56-block  8
+branch 20 taken 1
+branch 21 taken 0
+branch 22 taken 0
+        1:   56-block  9
+call   23 returned 1
+call   24 returned 1
+    $$$$$:   56-block 10
+call   25 never executed
+    $$$$$:   56-block 11
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   56-block 12
+call   32 never executed
+    $$$$$:   56-block 13
+call   33 never executed
+    $$$$$:   56-block 14
+call   34 never executed
+    $$$$$:   56-block 15
+call   35 never executed
+branch 36 never executed (fallthrough)
+branch 37 never executed (throw)
+    $$$$$:   56-block 16
+call   38 never executed
+    $$$$$:   56-block 17
+call   39 never executed
+    $$$$$:   56-block 18
+call   40 never executed
+    $$$$$:   56-block 19
+branch 41 never executed (fallthrough)
+branch 42 never executed
+    $$$$$:   56-block 20
+call   43 never executed
+        -:   57:
+        1:   58:    anyType1 = true;
+call    0 returned 1
+        1:   59:    EXPECT_NO_THROW(anyType1.getBool());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   59-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   59-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   59-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   59-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   59-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   59-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   59-block  6
+    $$$$$:   59-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   59-block  8
+call   22 never executed
+    $$$$$:   59-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   59-block 10
+call   29 never executed
+    $$$$$:   59-block 11
+call   30 never executed
+    $$$$$:   59-block 12
+call   31 never executed
+    $$$$$:   59-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   59-block 14
+call   35 never executed
+    $$$$$:   59-block 15
+call   36 never executed
+    $$$$$:   59-block 16
+call   37 never executed
+    $$$$$:   59-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   59-block 18
+call   40 never executed
+       1*:   60:    EXPECT_THROW(anyType1.getInt(), std::bad_cast);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   60-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   60-block  1
+call    5 returned 1
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1 (throw)
+    %%%%%:   60-block  2
+    %%%%%:   60-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   60-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   60-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    %%%%%:   60-block  6
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    %%%%%:   60-block  7
+        1:   60-block  8
+branch 20 taken 1
+branch 21 taken 0
+branch 22 taken 0
+        1:   60-block  9
+call   23 returned 1
+call   24 returned 1
+    $$$$$:   60-block 10
+call   25 never executed
+    $$$$$:   60-block 11
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   60-block 12
+call   32 never executed
+    $$$$$:   60-block 13
+call   33 never executed
+    $$$$$:   60-block 14
+call   34 never executed
+    $$$$$:   60-block 15
+call   35 never executed
+branch 36 never executed (fallthrough)
+branch 37 never executed (throw)
+    $$$$$:   60-block 16
+call   38 never executed
+    $$$$$:   60-block 17
+call   39 never executed
+    $$$$$:   60-block 18
+call   40 never executed
+    $$$$$:   60-block 19
+branch 41 never executed (fallthrough)
+branch 42 never executed
+    $$$$$:   60-block 20
+call   43 never executed
+        -:   61:
+        1:   62:    AnyType anyType2 = anyType1;
+call    0 returned 1
+        1:   63:    EXPECT_NO_THROW(anyType2.getBool());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   63-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   63-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   63-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   63-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   63-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   63-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   63-block  6
+    $$$$$:   63-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   63-block  8
+call   22 never executed
+    $$$$$:   63-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   63-block 10
+call   29 never executed
+    $$$$$:   63-block 11
+call   30 never executed
+    $$$$$:   63-block 12
+call   31 never executed
+    $$$$$:   63-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   63-block 14
+call   35 never executed
+    $$$$$:   63-block 15
+call   36 never executed
+    $$$$$:   63-block 16
+call   37 never executed
+    $$$$$:   63-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   63-block 18
+call   40 never executed
+        -:   64:
+        1:   65:    AnyType anyType3 = std::move(anyType2);
+call    0 returned 1
+       1*:   66:    EXPECT_THROW(anyType2.getInt(), std::bad_cast);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   66-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   66-block  1
+call    5 returned 1
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1 (throw)
+    %%%%%:   66-block  2
+    %%%%%:   66-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   66-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   66-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    %%%%%:   66-block  6
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    %%%%%:   66-block  7
+        1:   66-block  8
+branch 20 taken 1
+branch 21 taken 0
+branch 22 taken 0
+        1:   66-block  9
+call   23 returned 1
+call   24 returned 1
+    $$$$$:   66-block 10
+call   25 never executed
+    $$$$$:   66-block 11
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   66-block 12
+call   32 never executed
+    $$$$$:   66-block 13
+call   33 never executed
+    $$$$$:   66-block 14
+call   34 never executed
+    $$$$$:   66-block 15
+call   35 never executed
+branch 36 never executed (fallthrough)
+branch 37 never executed (throw)
+    $$$$$:   66-block 16
+call   38 never executed
+    $$$$$:   66-block 17
+call   39 never executed
+    $$$$$:   66-block 18
+call   40 never executed
+    $$$$$:   66-block 19
+branch 41 never executed (fallthrough)
+branch 42 never executed
+    $$$$$:   66-block 20
+call   43 never executed
+        1:   67:    EXPECT_NO_THROW(anyType3.getBool());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   67-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   67-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   67-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   67-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   67-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   67-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   67-block  6
+    $$$$$:   67-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   67-block  8
+call   22 never executed
+    $$$$$:   67-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   67-block 10
+call   29 never executed
+    $$$$$:   67-block 11
+call   30 never executed
+    $$$$$:   67-block 12
+call   31 never executed
+    $$$$$:   67-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   67-block 14
+call   35 never executed
+    $$$$$:   67-block 15
+call   36 never executed
+    $$$$$:   67-block 16
+call   37 never executed
+    $$$$$:   67-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   67-block 18
+call   40 never executed
+        -:   68:
+        1:   69:    anyType1 = -51261;
+call    0 returned 1
+        1:   70:    anyType1.swap(anyType3);
+call    0 returned 1
+        1:   71:    EXPECT_NO_THROW(anyType1.getBool());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   71-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   71-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   71-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   71-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   71-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   71-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   71-block  6
+    $$$$$:   71-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   71-block  8
+call   22 never executed
+    $$$$$:   71-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   71-block 10
+call   29 never executed
+    $$$$$:   71-block 11
+call   30 never executed
+    $$$$$:   71-block 12
+call   31 never executed
+    $$$$$:   71-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   71-block 14
+call   35 never executed
+    $$$$$:   71-block 15
+call   36 never executed
+    $$$$$:   71-block 16
+call   37 never executed
+    $$$$$:   71-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   71-block 18
+call   40 never executed
+        1:   72:    EXPECT_NO_THROW(anyType3.getInt());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   72-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   72-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:   72-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   72-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   72-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:   72-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:   72-block  6
+    $$$$$:   72-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:   72-block  8
+call   22 never executed
+    $$$$$:   72-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   72-block 10
+call   29 never executed
+    $$$$$:   72-block 11
+call   30 never executed
+    $$$$$:   72-block 12
+call   31 never executed
+    $$$$$:   72-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   72-block 14
+call   35 never executed
+    $$$$$:   72-block 15
+call   36 never executed
+    $$$$$:   72-block 16
+call   37 never executed
+    $$$$$:   72-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   72-block 18
+call   40 never executed
+        1:   73:}
+    $$$$$:   73-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   73-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    $$$$$:   73-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    $$$$$:   73-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    $$$$$:   73-block  4
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    $$$$$:   73-block  5
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed (throw)
+    $$$$$:   73-block  6
+call   18 never executed
+branch 19 never executed (fallthrough)
+branch 20 never executed (throw)
+------------------
+        -:   74:
+       3*:   75:TEST(TestTask2Variadic, Test2Variadic) {
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   75-block  0
+        -:   76:    VariadicType variadicType1 = 1;
+        1:   77:    EXPECT_NO_THROW(variadicType1.get<int>());
+        -:   78:
+        -:   79:    variadicType1 = 2.621515;
+        1:   80:    EXPECT_NO_THROW(variadicType1.get<double>());
+       2*:   81:    EXPECT_THROW(variadicType1.get<int>(), std::bad_variant_access);
+        -:   82:
+        -:   83:    variadicType1 = true;
+       3*:   84:    EXPECT_THROW(std::any_cast<int>(variadicType1.get()), std::bad_any_cast);
+        -:   85:
+        1:   86:    VariadicType variadicType2 = variadicType1;
+        1:   87:    EXPECT_NO_THROW(variadicType1.get<bool>());
+        -:   88:
+        1:   89:    VariadicType variadicType3 = std::move(variadicType2);
+       2*:   90:    EXPECT_THROW(variadicType2.get<int>(), std::bad_variant_access);
+        1:   91:    EXPECT_NO_THROW(variadicType3.get<bool>());
+        -:   92:
+        -:   93:    variadicType3 = 515.6262f;
+        1:   94:    variadicType1.swap(variadicType3);
+        1:   95:    EXPECT_NO_THROW(variadicType1.get<float>());
+        1:   96:    EXPECT_NO_THROW(variadicType3.get<bool>());
+        1:   97:}
+------------------
+_ZN36TestTask2Variadic_Test2Variadic_TestD0Ev:
+function _ZN36TestTask2Variadic_Test2Variadic_TestD0Ev called 1 returned 100% blocks executed 100%
+        1:   75:TEST(TestTask2Variadic, Test2Variadic) {
+        1:   75-block  0
+call    0 returned 1
+call    1 returned 1
+------------------
+_ZN36TestTask2Variadic_Test2Variadic_TestD1Ev:
+function _ZN36TestTask2Variadic_Test2Variadic_TestD1Ev called 0 returned 0% blocks executed 0%
+    #####:   75:TEST(TestTask2Variadic, Test2Variadic) {
+    %%%%%:   75-block  0
+call    0 never executed
+------------------
+_ZN36TestTask2Variadic_Test2Variadic_Test8TestBodyEv:
+function _ZN36TestTask2Variadic_Test2Variadic_Test8TestBodyEv called 1 returned 100% blocks executed 14%
+        1:   75:TEST(TestTask2Variadic, Test2Variadic) {
+        1:   75-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   76:    VariadicType variadicType1 = 1;
+        1:   77:    EXPECT_NO_THROW(variadicType1.get<int>());
+        1:   77-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   77-block  1
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+    $$$$$:   77-block  2
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    $$$$$:   77-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   77-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   77-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    $$$$$:   77-block  6
+    $$$$$:   77-block  7
+branch 17 never executed
+branch 18 never executed
+    $$$$$:   77-block  8
+call   19 never executed
+    $$$$$:   77-block  9
+call   20 never executed
+branch 21 never executed (fallthrough)
+branch 22 never executed (throw)
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+    $$$$$:   77-block 10
+call   26 never executed
+    $$$$$:   77-block 11
+call   27 never executed
+    $$$$$:   77-block 12
+call   28 never executed
+    $$$$$:   77-block 13
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   77-block 14
+call   32 never executed
+    $$$$$:   77-block 15
+call   33 never executed
+    $$$$$:   77-block 16
+call   34 never executed
+    $$$$$:   77-block 17
+branch 35 never executed (fallthrough)
+branch 36 never executed
+    $$$$$:   77-block 18
+call   37 never executed
+        -:   78:
+        -:   79:    variadicType1 = 2.621515;
+        1:   80:    EXPECT_NO_THROW(variadicType1.get<double>());
+        1:   80-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   80-block  1
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+    $$$$$:   80-block  2
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    $$$$$:   80-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   80-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   80-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    $$$$$:   80-block  6
+    $$$$$:   80-block  7
+branch 17 never executed
+branch 18 never executed
+    $$$$$:   80-block  8
+call   19 never executed
+    $$$$$:   80-block  9
+call   20 never executed
+branch 21 never executed (fallthrough)
+branch 22 never executed (throw)
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+    $$$$$:   80-block 10
+call   26 never executed
+    $$$$$:   80-block 11
+call   27 never executed
+    $$$$$:   80-block 12
+call   28 never executed
+    $$$$$:   80-block 13
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   80-block 14
+call   32 never executed
+    $$$$$:   80-block 15
+call   33 never executed
+    $$$$$:   80-block 16
+call   34 never executed
+    $$$$$:   80-block 17
+branch 35 never executed (fallthrough)
+branch 36 never executed
+    $$$$$:   80-block 18
+call   37 never executed
+       2*:   81:    EXPECT_THROW(variadicType1.get<int>(), std::bad_variant_access);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   81-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+    %%%%%:   81-block  1
+    %%%%%:   81-block  2
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    %%%%%:   81-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   81-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   81-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    %%%%%:   81-block  6
+        1:   81-block  7
+branch 17 taken 1
+branch 18 taken 0
+branch 19 taken 0
+        1:   81-block  8
+call   20 returned 1
+call   21 returned 1
+    $$$$$:   81-block  9
+call   22 never executed
+    $$$$$:   81-block 10
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   81-block 11
+call   29 never executed
+    $$$$$:   81-block 12
+call   30 never executed
+    $$$$$:   81-block 13
+call   31 never executed
+    $$$$$:   81-block 14
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   81-block 15
+call   35 never executed
+    $$$$$:   81-block 16
+call   36 never executed
+    $$$$$:   81-block 17
+call   37 never executed
+    $$$$$:   81-block 18
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   81-block 19
+call   40 never executed
+        -:   82:
+        -:   83:    variadicType1 = true;
+       3*:   84:    EXPECT_THROW(std::any_cast<int>(variadicType1.get()), std::bad_any_cast);
+        1:   84-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   84-block  1
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:   84-block  2
+call    5 returned 1
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1 (throw)
+    %%%%%:   84-block  3
+    %%%%%:   84-block  4
+    %%%%%:   84-block  5
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   84-block  6
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   84-block  7
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    %%%%%:   84-block  8
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    %%%%%:   84-block  9
+        1:   84-block 10
+branch 20 taken 1
+branch 21 taken 0
+branch 22 taken 0
+        1:   84-block 11
+call   23 returned 1
+call   24 returned 1
+    $$$$$:   84-block 12
+call   25 never executed
+    $$$$$:   84-block 13
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   84-block 14
+call   32 never executed
+    $$$$$:   84-block 15
+call   33 never executed
+    $$$$$:   84-block 16
+call   34 never executed
+    $$$$$:   84-block 17
+call   35 never executed
+branch 36 never executed (fallthrough)
+branch 37 never executed (throw)
+    $$$$$:   84-block 18
+call   38 never executed
+    $$$$$:   84-block 19
+call   39 never executed
+    $$$$$:   84-block 20
+call   40 never executed
+    $$$$$:   84-block 21
+branch 41 never executed (fallthrough)
+branch 42 never executed
+    $$$$$:   84-block 22
+call   43 never executed
+        -:   85:
+        1:   86:    VariadicType variadicType2 = variadicType1;
+call    0 returned 1
+        1:   87:    EXPECT_NO_THROW(variadicType1.get<bool>());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   87-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+    $$$$$:   87-block  1
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    $$$$$:   87-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   87-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   87-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    $$$$$:   87-block  5
+    $$$$$:   87-block  6
+branch 17 never executed
+branch 18 never executed
+    $$$$$:   87-block  7
+call   19 never executed
+    $$$$$:   87-block  8
+call   20 never executed
+branch 21 never executed (fallthrough)
+branch 22 never executed (throw)
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+    $$$$$:   87-block  9
+call   26 never executed
+    $$$$$:   87-block 10
+call   27 never executed
+    $$$$$:   87-block 11
+call   28 never executed
+    $$$$$:   87-block 12
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   87-block 13
+call   32 never executed
+    $$$$$:   87-block 14
+call   33 never executed
+    $$$$$:   87-block 15
+call   34 never executed
+    $$$$$:   87-block 16
+branch 35 never executed (fallthrough)
+branch 36 never executed
+    $$$$$:   87-block 17
+call   37 never executed
+        -:   88:
+        1:   89:    VariadicType variadicType3 = std::move(variadicType2);
+call    0 returned 1
+       2*:   90:    EXPECT_THROW(variadicType2.get<int>(), std::bad_variant_access);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   90-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+    %%%%%:   90-block  1
+    %%%%%:   90-block  2
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    %%%%%:   90-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:   90-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:   90-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    %%%%%:   90-block  6
+        1:   90-block  7
+branch 17 taken 1
+branch 18 taken 0
+branch 19 taken 0
+        1:   90-block  8
+call   20 returned 1
+call   21 returned 1
+    $$$$$:   90-block  9
+call   22 never executed
+    $$$$$:   90-block 10
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:   90-block 11
+call   29 never executed
+    $$$$$:   90-block 12
+call   30 never executed
+    $$$$$:   90-block 13
+call   31 never executed
+    $$$$$:   90-block 14
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:   90-block 15
+call   35 never executed
+    $$$$$:   90-block 16
+call   36 never executed
+    $$$$$:   90-block 17
+call   37 never executed
+    $$$$$:   90-block 18
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   90-block 19
+call   40 never executed
+        1:   91:    EXPECT_NO_THROW(variadicType3.get<bool>());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   91-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+    $$$$$:   91-block  1
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    $$$$$:   91-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   91-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   91-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    $$$$$:   91-block  5
+    $$$$$:   91-block  6
+branch 17 never executed
+branch 18 never executed
+    $$$$$:   91-block  7
+call   19 never executed
+    $$$$$:   91-block  8
+call   20 never executed
+branch 21 never executed (fallthrough)
+branch 22 never executed (throw)
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+    $$$$$:   91-block  9
+call   26 never executed
+    $$$$$:   91-block 10
+call   27 never executed
+    $$$$$:   91-block 11
+call   28 never executed
+    $$$$$:   91-block 12
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   91-block 13
+call   32 never executed
+    $$$$$:   91-block 14
+call   33 never executed
+    $$$$$:   91-block 15
+call   34 never executed
+    $$$$$:   91-block 16
+branch 35 never executed (fallthrough)
+branch 36 never executed
+    $$$$$:   91-block 17
+call   37 never executed
+        -:   92:
+        -:   93:    variadicType3 = 515.6262f;
+        1:   94:    variadicType1.swap(variadicType3);
+        1:   94-block  0
+call    0 returned 1
+        1:   95:    EXPECT_NO_THROW(variadicType1.get<float>());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   95-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+    $$$$$:   95-block  1
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    $$$$$:   95-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   95-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   95-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    $$$$$:   95-block  5
+    $$$$$:   95-block  6
+branch 17 never executed
+branch 18 never executed
+    $$$$$:   95-block  7
+call   19 never executed
+    $$$$$:   95-block  8
+call   20 never executed
+branch 21 never executed (fallthrough)
+branch 22 never executed (throw)
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+    $$$$$:   95-block  9
+call   26 never executed
+    $$$$$:   95-block 10
+call   27 never executed
+    $$$$$:   95-block 11
+call   28 never executed
+    $$$$$:   95-block 12
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   95-block 13
+call   32 never executed
+    $$$$$:   95-block 14
+call   33 never executed
+    $$$$$:   95-block 15
+call   34 never executed
+    $$$$$:   95-block 16
+branch 35 never executed (fallthrough)
+branch 36 never executed
+    $$$$$:   95-block 17
+call   37 never executed
+        1:   96:    EXPECT_NO_THROW(variadicType3.get<bool>());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   96-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+    $$$$$:   96-block  1
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    $$$$$:   96-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:   96-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:   96-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    $$$$$:   96-block  5
+    $$$$$:   96-block  6
+branch 17 never executed
+branch 18 never executed
+    $$$$$:   96-block  7
+call   19 never executed
+    $$$$$:   96-block  8
+call   20 never executed
+branch 21 never executed (fallthrough)
+branch 22 never executed (throw)
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+    $$$$$:   96-block  9
+call   26 never executed
+    $$$$$:   96-block 10
+call   27 never executed
+    $$$$$:   96-block 11
+call   28 never executed
+    $$$$$:   96-block 12
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:   96-block 13
+call   32 never executed
+    $$$$$:   96-block 14
+call   33 never executed
+    $$$$$:   96-block 15
+call   34 never executed
+    $$$$$:   96-block 16
+branch 35 never executed (fallthrough)
+branch 36 never executed
+    $$$$$:   96-block 17
+call   37 never executed
+        1:   97:}
+    $$$$$:   97-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:   97-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    $$$$$:   97-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    $$$$$:   97-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    $$$$$:   97-block  4
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    $$$$$:   97-block  5
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed (throw)
+------------------
+        -:   98:
+       3*:   99:TEST(TestTask3, Test3) {
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   99-block  0
+        -:  100:    namespace fs = std::filesystem;
+        -:  101:
+        1:  102:    std::ofstream ofstream;
+        1:  103:    std::unique_ptr<CodeReader> fileReader;
+        1:  104:    std::unique_ptr<CodeReader> dirReader;
+        1:  105:    std::unique_ptr<CodeReader> errReader;
+        -:  106:
+        1:  107:    EXPECT_NO_THROW(fileReader = std::make_unique<CodeReader>("Task3/Task3.h", fs::file_type::regular));
+        1:  108:    EXPECT_NO_THROW(dirReader = std::make_unique<CodeReader>("Task3", fs::file_type::directory));
+       1*:  109:    EXPECT_THROW(errReader = std::make_unique<CodeReader>("test.cpp", fs::file_type::directory), std::runtime_error);
+        -:  110:
+        1:  111:    EXPECT_NO_THROW(fileReader->outputInfo(ofstream));
+        1:  112:}
+------------------
+_ZN20TestTask3_Test3_TestD0Ev:
+function _ZN20TestTask3_Test3_TestD0Ev called 1 returned 100% blocks executed 100%
+        1:   99:TEST(TestTask3, Test3) {
+        1:   99-block  0
+call    0 returned 1
+call    1 returned 1
+------------------
+_ZN20TestTask3_Test3_TestD1Ev:
+function _ZN20TestTask3_Test3_TestD1Ev called 0 returned 0% blocks executed 0%
+    #####:   99:TEST(TestTask3, Test3) {
+    %%%%%:   99-block  0
+call    0 never executed
+------------------
+_ZN20TestTask3_Test3_Test8TestBodyEv:
+function _ZN20TestTask3_Test3_Test8TestBodyEv called 1 returned 100% blocks executed 15%
+        1:   99:TEST(TestTask3, Test3) {
+        -:  100:    namespace fs = std::filesystem;
+        -:  101:
+        1:  102:    std::ofstream ofstream;
+        1:  102-block  0
+call    0 returned 1
+        1:  103:    std::unique_ptr<CodeReader> fileReader;
+        1:  104:    std::unique_ptr<CodeReader> dirReader;
+        1:  105:    std::unique_ptr<CodeReader> errReader;
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:  106:
+        1:  107:    EXPECT_NO_THROW(fileReader = std::make_unique<CodeReader>("Task3/Task3.h", fs::file_type::regular));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  107-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:  107-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+        1:  107-block  2
+    $$$$$:  107-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:  107-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:  107-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:  107-block  6
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:  107-block  7
+    $$$$$:  107-block  8
+branch 20 never executed
+branch 21 never executed
+    $$$$$:  107-block  9
+call   22 never executed
+    $$$$$:  107-block 10
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:  107-block 11
+call   29 never executed
+    $$$$$:  107-block 12
+call   30 never executed
+    $$$$$:  107-block 13
+call   31 never executed
+    $$$$$:  107-block 14
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:  107-block 15
+call   35 never executed
+    $$$$$:  107-block 16
+call   36 never executed
+    $$$$$:  107-block 17
+call   37 never executed
+    $$$$$:  107-block 18
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:  107-block 19
+call   40 never executed
+        1:  108:    EXPECT_NO_THROW(dirReader = std::make_unique<CodeReader>("Task3", fs::file_type::directory));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  108-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:  108-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+        1:  108-block  2
+    $$$$$:  108-block  3
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:  108-block  4
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:  108-block  5
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:  108-block  6
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:  108-block  7
+    $$$$$:  108-block  8
+branch 20 never executed
+branch 21 never executed
+    $$$$$:  108-block  9
+call   22 never executed
+    $$$$$:  108-block 10
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:  108-block 11
+call   29 never executed
+    $$$$$:  108-block 12
+call   30 never executed
+    $$$$$:  108-block 13
+call   31 never executed
+    $$$$$:  108-block 14
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:  108-block 15
+call   35 never executed
+    $$$$$:  108-block 16
+call   36 never executed
+    $$$$$:  108-block 17
+call   37 never executed
+    $$$$$:  108-block 18
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:  108-block 19
+call   40 never executed
+       1*:  109:    EXPECT_THROW(errReader = std::make_unique<CodeReader>("test.cpp", fs::file_type::directory), std::runtime_error);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  109-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:  109-block  1
+call    5 returned 1
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1 (throw)
+    %%%%%:  109-block  2
+    %%%%%:  109-block  3
+    %%%%%:  109-block  4
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    %%%%%:  109-block  5
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    %%%%%:  109-block  6
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    %%%%%:  109-block  7
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    %%%%%:  109-block  8
+        1:  109-block  9
+branch 20 taken 1
+branch 21 taken 0
+branch 22 taken 0
+        1:  109-block 10
+call   23 returned 1
+call   24 returned 1
+    $$$$$:  109-block 11
+call   25 never executed
+    $$$$$:  109-block 12
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+call   29 never executed
+branch 30 never executed (fallthrough)
+branch 31 never executed (throw)
+    $$$$$:  109-block 13
+call   32 never executed
+    $$$$$:  109-block 14
+call   33 never executed
+    $$$$$:  109-block 15
+call   34 never executed
+    $$$$$:  109-block 16
+call   35 never executed
+branch 36 never executed (fallthrough)
+branch 37 never executed (throw)
+    $$$$$:  109-block 17
+call   38 never executed
+    $$$$$:  109-block 18
+call   39 never executed
+    $$$$$:  109-block 19
+call   40 never executed
+    $$$$$:  109-block 20
+branch 41 never executed (fallthrough)
+branch 42 never executed
+    $$$$$:  109-block 21
+call   43 never executed
+        -:  110:
+        1:  111:    EXPECT_NO_THROW(fileReader->outputInfo(ofstream));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  111-block  0
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0
+        1:  111-block  1
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+    $$$$$:  111-block  2
+call    8 never executed
+branch  9 never executed (fallthrough)
+branch 10 never executed (throw)
+    $$$$$:  111-block  3
+call   11 never executed
+branch 12 never executed (fallthrough)
+branch 13 never executed (throw)
+    $$$$$:  111-block  4
+call   14 never executed
+branch 15 never executed (fallthrough)
+branch 16 never executed (throw)
+    $$$$$:  111-block  5
+call   17 never executed
+branch 18 never executed (fallthrough)
+branch 19 never executed
+    $$$$$:  111-block  6
+    $$$$$:  111-block  7
+branch 20 never executed
+branch 21 never executed
+    $$$$$:  111-block  8
+call   22 never executed
+    $$$$$:  111-block  9
+call   23 never executed
+branch 24 never executed (fallthrough)
+branch 25 never executed (throw)
+call   26 never executed
+branch 27 never executed (fallthrough)
+branch 28 never executed (throw)
+    $$$$$:  111-block 10
+call   29 never executed
+    $$$$$:  111-block 11
+call   30 never executed
+    $$$$$:  111-block 12
+call   31 never executed
+    $$$$$:  111-block 13
+call   32 never executed
+branch 33 never executed (fallthrough)
+branch 34 never executed (throw)
+    $$$$$:  111-block 14
+call   35 never executed
+    $$$$$:  111-block 15
+call   36 never executed
+    $$$$$:  111-block 16
+call   37 never executed
+    $$$$$:  111-block 17
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:  111-block 18
+call   40 never executed
+        1:  112:}
+    $$$$$:  112-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    $$$$$:  112-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    $$$$$:  112-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+        1:  112-block  3
+call    9 returned 1
+    $$$$$:  112-block  4
+call   10 never executed
+------------------
+        -:  113:
+function main called 1 returned 100% blocks executed 100%
+        1:  114:int main(int argc, char *argv[]) {
+        1:  115:    testing::InitGoogleTest(&argc, argv);
+        1:  115-block  0
+call    0 returned 1
+        -:  116:
+        -:  117:    return RUN_ALL_TESTS();
+        -:  118:}

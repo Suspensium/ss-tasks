@@ -1,0 +1,291 @@
+        -:    0:Source:D:/Projects/SoftAcademy/Tasks/Task3/Task3.cpp
+        -:    0:Graph:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task3\Task3.cpp.gcno
+        -:    0:Data:D:\Projects\SoftAcademy\Tasks\cmake-build-release-coverage\CMakeFiles\Tasks.dir\Task3\Task3.cpp.gcda
+        -:    0:Runs:1
+        -:    1:﻿#include "Task3.h"
+        -:    2:
+        -:    3:#include <iostream>
+        -:    4:#include <fstream>
+        -:    5:
+        -:    6:// Remove whitespaces from the start of the string
+function _Z15trimWhitespacesRNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 278 returned 100% blocks executed 100%
+      278:    7:void trimWhitespaces(std::string &line) {
+      278:    7-block  0
+branch  0 taken 216 (fallthrough)
+branch  1 taken 62
+      278:    8:    if (line.empty()) return;
+      278:    8-block  0
+branch  0 taken 216 (fallthrough)
+branch  1 taken 62
+        -:    9:
+      216:   10:    line.erase(
+      216:   10-block  0
+call    0 returned 216
+        -:   11:        line.begin(),
+     1864:   12:        std::ranges::find_if(line, [](unsigned char c) { return !std::isspace(c); })
+     1864:   12-block  0
+branch  0 taken 1648 (fallthrough)
+branch  1 taken 216
+        -:   13:    );
+        -:   14:}
+        -:   15:
+function _ZN10CodeReader8readFileENSt10filesystem7__cxx114pathE called 3 returned 100% blocks executed 71%
+        3:   16:bool CodeReader::readFile(const fs::path filePath) {
+        3:   16-block  0
+call    0 returned 3
+        -:   17:    std::ifstream file{filePath, std::ios::in};
+        -:   18:
+        3:   19:    if (!file.is_open()) {
+branch  0 taken 0 (fallthrough)
+branch  1 taken 3
+    #####:   20:        std::cerr << "Error opening file " << filePath << std::endl;
+    %%%%%:   20-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   21:        return false;
+        -:   22:    }
+        -:   23:
+        -:   24:    // For multi-lined comments
+        -:   25:    bool bInComment = false;
+        -:   26:    std::string line;
+      281:   27:    while (std::getline(file, line, '\n')) {
+      281:   27-block  0
+call    0 returned 281
+branch  1 taken 281 (fallthrough)
+branch  2 taken 0 (throw)
+      281:   27-block  1
+branch  3 taken 278
+branch  4 taken 3 (fallthrough)
+      278:   28:        trimWhitespaces(line);
+      278:   28-block  0
+call    0 returned 278
+        -:   29:
+      278:   30:        if (line.empty()) {
+branch  0 taken 62 (fallthrough)
+branch  1 taken 216
+       62:   31:            bInComment ? ++results.commentLines : ++results.blankLines;
+       62:   31-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 62
+       62:   32:            continue;
+       62:   32-block  0
+        -:   33:        }
+        -:   34:
+      216:   35:        if (line.starts_with("//")) {
+branch  0 taken 2 (fallthrough)
+branch  1 taken 214
+        -:   36:            ++results.commentLines;
+      214:   37:        } else if (line.starts_with("/*")) {
+branch  0 taken 0 (fallthrough)
+branch  1 taken 214
+        -:   38:            ++results.commentLines;
+        -:   39:            bInComment = true;
+      214:   40:        } else if (line.ends_with("*/")) {
+      214:   40-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 214
+        -:   41:            ++results.commentLines;
+        -:   42:            bInComment = false;
+        -:   43:        } else {
+      214:   44:            bInComment ? ++results.commentLines : ++results.codeLines;
+      214:   44-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 214
+        -:   45:        }
+        -:   46:    }
+        -:   47:
+        3:   48:    file.close();
+        3:   48-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   49:
+        -:   50:    ++results.totalProcessedFiles;
+        -:   51:
+        -:   52:    return true;
+        3:   53:}
+        3:   53-block  0
+call    0 returned 3
+    $$$$$:   53-block  1
+call    1 never executed
+        -:   54:
+function _ZN10CodeReader4readEv called 2 returned 100% blocks executed 94%
+        2:   55:void CodeReader::read() {
+        -:   56:    using rdir_iter = fs::recursive_directory_iterator;
+        -:   57:
+        2:   58:    const auto start = std::chrono::high_resolution_clock::now();
+        2:   58-block  0
+call    0 returned 2
+        -:   59:
+        2:   60:    if (fileType == fs::file_type::directory) {
+branch  0 taken 1 (fallthrough)
+branch  1 taken 1
+        7:   61:        for (auto it = rdir_iter{path}; it != rdir_iter{}; ++it) {
+        1:   61-block  0
+call    0 returned 1
+        2:   61-block  1
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+        3:   61-block  2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 1
+        3:   61-block  3
+call    6 returned 3
+branch  7 taken 2
+branch  8 taken 1 (fallthrough)
+        2:   62:            const fs::directory_entry &entry = *it;
+        2:   62-block  0
+call    0 returned 2
+        -:   63:
+       2*:   64:            if (!entry.is_regular_file()) continue;
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   64-block  0
+branch  3 taken 0 (fallthrough)
+branch  4 taken 2
+    %%%%%:   64-block  1
+        -:   65:
+        4:   66:            if (codeFileExtensions.contains(entry.path().extension())) {
+        2:   66-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0
+        2:   67:                threads.emplace_front(&CodeReader::readFile, this, entry.path());
+        2:   67-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   67-block  1
+        -:   68:            }
+        1:   69:        }
+        1:   69-block  0
+call    0 returned 1
+    $$$$$:   69-block  1
+call    1 never executed
+        -:   70:    } else {
+        1:   71:        if (exists(path)) {
+        1:   71-block  0
+call    0 returned 1
+        1:   72:            threads.emplace_front(&CodeReader::readFile, this, path);
+        1:   72-block  0
+call    0 returned 1
+        -:   73:        }
+        -:   74:    }
+        -:   75:
+        -:   76:    joinThreads();
+        -:   77:
+        2:   78:    const auto end = std::chrono::high_resolution_clock::now();
+        2:   78-block  0
+call    0 returned 2
+        -:   79:    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        -:   80:
+        2:   81:    results.totalTime += duration.count();
+        2:   82:}
+        -:   83:
+function _ZNK10CodeReader10outputInfoERSo called 1 returned 100% blocks executed 100%
+        1:   84:uint64_t CodeReader::outputInfo(std::ostream &os) const {
+        1:   84-block  0
+call    0 returned 1
+        -:   85:    os <<
+        -:   86:            "Total processed files: " << results.totalProcessedFiles.load() << '\n' <<
+        1:   87:            "Blank lines: " << results.blankLines.load() << '\n' <<
+call    0 returned 1
+        1:   88:            "Comment lines: " << results.commentLines.load() << '\n' <<
+call    0 returned 1
+        1:   89:            "Code lines: " << results.codeLines.load() << '\n' <<
+call    0 returned 1
+        2:   90:            "Total time taken: " << results.totalTime << " ms.\n";
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:   91:
+        1:   92:    return results.totalTime;
+        -:   93:}
+        -:   94:
+function _Z9run_task3v called 0 returned 0% blocks executed 0%
+    #####:   95:void run_task3() {
+        -:   96:    constexpr size_t iterations = 1;
+        -:   97:
+    #####:   98:    std::ofstream ofstream;
+    %%%%%:   98-block  0
+call    0 never executed
+        -:   99:    uint64_t resultSum{};
+        -:  100:
+    #####:  101:    for (size_t i = 0; i < iterations; ++i) {
+    %%%%%:  101-block  0
+branch  0 never executed
+branch  1 never executed (fallthrough)
+    #####:  102:        std::cout << "Iteration: " << i + 1 << "\n\n";
+    %%%%%:  102-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  103:
+    #####:  104:        CodeReader reader{"D:/Programs/UE_5.5/Engine/Source/", fs::file_type::directory, true};
+    %%%%%:  104-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  104-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  104-block  2
+call    6 never executed
+    $$$$$:  104-block  3
+call    7 never executed
+    #####:  105:        reader.outputInfo(std::cout);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  106:        ofstream.open("Output.txt", std::ios::out);
+    %%%%%:  106-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  107:        resultSum += reader.outputInfo(ofstream);
+    %%%%%:  107-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  108:        ofstream.close();
+    %%%%%:  108-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  109:
+        -:  110:        std::cout << "\n" << std::endl;
+        -:  111:    }
+        -:  112:
+        -:  113:    std::cout << "Medium time result: " << resultSum / iterations << " ms." << std::endl;
+        -:  114:
+    #####:  115:    ofstream.open("Output.txt", std::ios::app);
+    %%%%%:  115-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  116:    ofstream << '\n' << "Medium time result: " << resultSum / iterations << " ms.";
+    %%%%%:  116-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  116-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    #####:  117:    ofstream.close();
+    %%%%%:  117-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  118:}
+    %%%%%:  118-block  0
+call    0 never executed
+    $$$$$:  118-block  1
+call    1 never executed
