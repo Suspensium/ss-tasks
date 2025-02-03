@@ -54,24 +54,24 @@ TEST(TestTask2Union, Test2Union) {
 
 TEST(TestTask2Variadic, Test2Variadic) {
     VariadicType variadicType1 = 1;
-    EXPECT_NO_THROW(variadicType1.getInt());
+    EXPECT_NO_THROW(variadicType1.get<int>());
 
     variadicType1 = 2.621515;
-    EXPECT_NO_THROW(variadicType1.getDouble());
-    EXPECT_THROW(variadicType1.getInt(), std::bad_variant_access);
+    EXPECT_NO_THROW(variadicType1.get<double>());
+    EXPECT_THROW(variadicType1.get<int>(), std::bad_variant_access);
+
+    variadicType1 = true;
+    EXPECT_THROW(std::any_cast<int>(variadicType1.get()), std::bad_any_cast);
 }
 
 TEST(TestTask3, Test3) {
     namespace fs = std::filesystem;
 
     std::ofstream ofstream;
-    std::unique_ptr<CodeReader> fileReader;
-    std::unique_ptr<CodeReader> dirReader;
-    std::unique_ptr<CodeReader> errReader;
 
-    EXPECT_NO_THROW(fileReader = std::make_unique<CodeReader>("Task3/Task3.h", fs::file_type::regular));
-    EXPECT_NO_THROW(dirReader = std::make_unique<CodeReader>("Task3", fs::file_type::directory));
-    EXPECT_THROW(errReader = std::make_unique<CodeReader>("test.cpp", fs::file_type::directory), std::runtime_error);
+    EXPECT_NO_THROW(CodeReader fileReader("Task3/Task3.h", fs::file_type::regular));
+    EXPECT_NO_THROW(CodeReader dirReader("Task3", fs::file_type::directory));
+    EXPECT_THROW(CodeReader errReader("test.cpp", fs::file_type::directory), std::runtime_error);
 }
 
 int main(int argc, char *argv[]) {
