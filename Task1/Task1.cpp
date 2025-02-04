@@ -12,8 +12,7 @@ void str_list::add_string(char ***list, const char *str) {
         (*list)[0] = strdup(str);
         (*list)[1] = nullptr;
     } else {
-        int list_size = 0;
-        while ((*list)[list_size] != nullptr) ++list_size;
+        const size_t list_size = num_items(list);
 
         *list = static_cast<char **>(realloc(*list, sizeof(char *) * (list_size + 2)));
 
